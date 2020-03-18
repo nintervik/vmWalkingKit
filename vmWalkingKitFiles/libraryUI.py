@@ -134,9 +134,20 @@ class WalkLibraryUI(QtWidgets.QDialog):
 
         newTab = QtWidgets.QWidget()
         self.tabs.addTab(newTab, tabName)
-        newTab.layout = QtWidgets.QGridLayout(self)
-        newTab.layout.setContentsMargins(15, 15, 250, 10)
+        newTab.layout = QtWidgets.QGridLayout(newTab)
+        newTab.layout.setContentsMargins(4, 4, 4, 4)
         newTab.setLayout(newTab.layout)
+
+        scrollWidget = QtWidgets.QWidget()
+        scrollWidget.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
+
+        self.scrollLayout = QtWidgets.QGridLayout(scrollWidget)
+        #self.scrollLayout.setContentsMargins(15, 15, 250, 10)
+
+        scrollArea = QtWidgets.QScrollArea()
+        scrollArea.setWidgetResizable(True)
+        scrollArea.setWidget(scrollWidget)
+        newTab.layout.addWidget(scrollArea, 1, 0, 5, 5)
 
         return newTab
 
@@ -156,11 +167,11 @@ class WalkLibraryUI(QtWidgets.QDialog):
         self.paramDropDowns[prefix] = dropDown
 
         # Set parameter layout
-        tab.layout.addWidget(paramText, id, 0, QtCore.Qt.AlignTop)
-        tab.layout.addWidget(dropDown, id, 1, 15, 20, QtCore.Qt.AlignTop)
-        paramText.setMinimumHeight(20)
+        self.scrollLayout.addWidget(paramText, id, 0, 1, 1)
+        self.scrollLayout.addWidget(dropDown, id, 1, 1, 1)
 
         return dropDown
+
 
     # SLOT METHODS
 
