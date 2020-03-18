@@ -40,8 +40,7 @@ class WalkLibraryUI(QtWidgets.QDialog):
 
     def initParamLayersData(self):
 
-        baseAnimationLayer = cmds.animLayer(query=True, root=True)
-        childLayers = cmds.animLayer(baseAnimationLayer, query=True, children=True)
+        childLayers = self.library.getCurrentAnimationLayers()
 
         # General tab
         bodyBeatList = [childLayers[0],  childLayers[1],  childLayers[2]]
