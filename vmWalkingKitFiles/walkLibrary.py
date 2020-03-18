@@ -4,6 +4,7 @@ import json
 
 USER_APP_DIR = cmds.internalVar(userAppDir=True)
 DIRECTORY = os.path.join(USER_APP_DIR, 'vmWalkKitPresets')
+DEFAULT_PRESET_NAME = 'defaultPreset'
 
 def createDirectory(directory=DIRECTORY):
     """
@@ -18,7 +19,7 @@ class WalkLibrary(dict):
 
     def __init__(self):
         createDirectory()
-        self.importPreset()
+        self.resetPreset()
 
     # ANIMATION LAYERS METHODS
 
@@ -62,6 +63,40 @@ class WalkLibrary(dict):
                 self.changeMuteLayerState(layerSet[i], True)
 
     # PRESETS METHODS
+
+    def resetPreset(self):
+        """
+        Imports the given preset into the tool.
+        Args:
+            name(str): the name of the JSON preset file. If not specified,
+            the default preset will be imported.
+            directory(str): the path from where the preset file will be loaded. If
+            not specified, it will be loaded from the default path.
+        """
+
+        # Create directory for the JSON preset file
+        infoFile = os.path.join(DIRECTORY, '%s.json' % DEFAULT_PRESET_NAME)
+
+        activeLayers = []
+
+        # Load JSON content into 'activeLayers' list
+        with open(infoFile, 'r') as f:
+            activeLayers = json.load(f)
+
+        if activeLayers is not None:
+
+            # Find all the animation layers in the scene
+            childLayers = self.getCurrentAnimationLayers()
+
+            for i in range(0, len(childLayers)):
+                if childLayers[i] in activeLayers:
+                    cmds.animLayer(childLayers[i], edit=True, mute=False)
+                else:
+                    cmds.animLayer(childLayers[i], edit=True, mute=True)
+        else:
+            print DEFAULT_PRESET_NAME + "not found."
+
+        return activeLayers
 
     def savePreset(self, name='defaultPreset', directory=DIRECTORY):
         """

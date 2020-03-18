@@ -27,6 +27,7 @@ class WalkLibraryUI(QtWidgets.QDialog):
         # Dropdown options list
         self.frameOptions = ["8f", "12f", "16f"]
         self.rangeOptions = ["Low", "Mid", "High"]
+        self.paramDropDowns = {}
 
         # Prefixes
         self.prefixes = ["BodyBeat", "ArmsBeat", "UpDown", "BodyTilt"]
@@ -114,14 +115,19 @@ class WalkLibraryUI(QtWidgets.QDialog):
         self.layout.addWidget(btnWidget)
 
         # Create 'save' button
-        saveBtn = QtWidgets.QPushButton('Save')
-        saveBtn.clicked.connect(self.onSave)
+        saveBtn = QtWidgets.QPushButton('Save preset')
+        # saveBtn.clicked.connect(self.onSave)
         btnLayout.addWidget(saveBtn)
 
         # Create 'read' button
-        importBtn = QtWidgets.QPushButton('Read')
-        importBtn.clicked.connect(self.onImport)
+        importBtn = QtWidgets.QPushButton('Import preset')
+        #importBtn.clicked.connect(self.onImport)
         btnLayout.addWidget(importBtn)
+
+        # Create 'read' button
+        resetBtn = QtWidgets.QPushButton('Reset')
+        resetBtn.clicked.connect(self.onReset)
+        btnLayout.addWidget(resetBtn)
 
     # UI functionality methods
 
@@ -148,30 +154,41 @@ class WalkLibraryUI(QtWidgets.QDialog):
         if slotName is not None:
             dropDown.currentIndexChanged.connect(partial(getattr(self, slotName), prefix))
 
+        self.paramDropDowns[prefix] = dropDown
+
         # Set parameter layout
         tab.layout.addWidget(paramText, id, 0, QtCore.Qt.AlignTop)
         tab.layout.addWidget(dropDown, id, 1, 15, 20, QtCore.Qt.AlignTop)
         paramText.setMinimumHeight(20)
 
+        return dropDown
+
     # SLOT METHODS
 
     def onParamChanged(self, prefix, index):
-
-        print self.paramLayers[prefix][0]
-        print len(self.paramLayers[prefix])
 
         prefixLayers = []
 
         for i in range(0, len(self.paramLayers[prefix])):
             prefixLayers.append(self.paramLayers[prefix][i])
 
-        self.library.setActiveLayer(prefixLayers,index)
-
-    def onBeatChange(self, index):
-        self.library.setBeat(index)
+        self.library.setActiveLayer(prefixLayers, index)
 
     def onSave(self):
         self.library.savePreset()
+
+    def onReset(self):
+
+        activeLayers = self.library.resetPreset()
+
+        if activeLayers is not None:
+            for i in range(0, len(activeLayers)):
+                splitStr = activeLayers[i].split("_")
+                prefix = splitStr[0]
+                index = int(splitStr[1]) - 1
+                self.paramDropDowns[prefix].setCurrentIndex(index)
+        else:
+            print "Query for default preset file failed."
 
     def onImport(self):
         self.library.importPreset()
