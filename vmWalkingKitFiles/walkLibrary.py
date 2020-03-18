@@ -30,9 +30,6 @@ class WalkLibrary(dict):
             layerNameToMute(str): the animation layer name to mute
         """
 
-        # Stop playback before doing any animation layer operation
-        # cmds.play(state=False)
-
         # If the queried animation layer exists it will be muted
         if cmds.animLayer(layerToChange, query=True, exists=True):
             cmds.animLayer(layerToChange, edit=True, mute=mute)
@@ -56,11 +53,22 @@ class WalkLibrary(dict):
 
     def setActiveLayer(self, layerSet, index):
 
+        wasPlaying = False
+
+        # Stop playback before doing any animation layer operation
+        if cmds.play(query=True, state=True):
+            cmds.play(state=False)
+            wasPlaying = True
+
         for i in range(0, len(layerSet)):
             if i == index:
                 self.changeMuteLayerState(layerSet[i], False)
             else:
                 self.changeMuteLayerState(layerSet[i], True)
+
+        # Once the operations have finished begin playback (only if it was playing before)
+        if wasPlaying:
+            cmds.play(state=True)
 
     # PRESETS METHODS
 
