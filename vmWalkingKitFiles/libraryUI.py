@@ -159,7 +159,7 @@ def showUI():
 
 
 # Call it in Maya's Script Editor
-#from WalkingKit.walkingKitFiles import libraryUI
+#from vmWalkingKit.vmWalkingKitFiles import libraryUI
 #reload(libraryUI)
 
 #ui = libraryUI.showUI()
