@@ -70,6 +70,7 @@ class WalkLibraryUI(QtWidgets.QDialog):
 
         # Initialize tab screen
         self.tabs = QtWidgets.QTabWidget()
+        self.tabs.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.layout.addWidget(self.tabs)
 
         # Create tabs
@@ -145,6 +146,7 @@ class WalkLibraryUI(QtWidgets.QDialog):
         #self.scrollLayout.setContentsMargins(15, 15, 250, 10)
 
         scrollArea = QtWidgets.QScrollArea()
+        scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
         scrollArea.setWidgetResizable(True)
         scrollArea.setWidget(scrollWidget)
         newTab.layout.addWidget(scrollArea, 1, 0, 5, 5)
