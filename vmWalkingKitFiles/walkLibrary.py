@@ -21,7 +21,7 @@ class WalkLibrary(dict):
 
     # ANIMATION LAYERS METHODS
 
-    def muteLayer(self, layerNameToMute):
+    def changeMuteLayerState(self, layerToChange, mute):
         """
         Mutes the given animation layer if this exists
         Args:
@@ -29,37 +29,13 @@ class WalkLibrary(dict):
         """
 
         # Stop playback before doing any animation layer operation
-        cmds.play(state=False)
+        # cmds.play(state=False)
 
         # If the queried animation layer exists it will be muted
-        if cmds.animLayer(layerNameToMute, query=True, exists=True):
-            cmds.animLayer(layerNameToMute, edit=True, mute=True, lock=True)
+        if cmds.animLayer(layerToChange, query=True, exists=True):
+            cmds.animLayer(layerToChange, edit=True, mute=mute, lock=mute)
         else:
-            print(layerNameToMute + " not found!")
-
-    def unmuteLayer(self, layerNameToUnmute):
-        """
-        Unmutes the given animation layer if this exists
-        Args:
-            layerNameToUnmute(str): the animation layer name to unmute
-        """
-
-        # Stop playback before doing any animation layers operation
-        cmds.play(state=False)
-
-        # If the queried animation layer exists it will be unmuted.
-        # The other animation layers will be muted (for now)
-        if cmds.animLayer(layerNameToUnmute, query=True, exists=True):
-            baseAnimationLayer = cmds.animLayer(query=True, root=True)
-            childLayers = cmds.animLayer(baseAnimationLayer, query=True, children=True)
-
-            for child in childLayers:
-                if child != layerNameToUnmute:
-                    cmds.animLayer(child, edit=True, mute=True, lock=True)
-
-            cmds.animLayer(layerNameToUnmute, edit=True, mute=False, lock=False)
-        else:
-            print(layerNameToUnmute + " not found!")
+            print(layerToChange + " not found!")
 
     def getCurrentAnimationLayers(self):
         """
@@ -76,22 +52,13 @@ class WalkLibrary(dict):
 
     # PARAMETERS METHODS
 
-    def setBeat(self, index):
-        """
-        Sets the selected beat by the user
-        Args:
-            index(int): the index of the chosen beat option
-        """
-        beatLayerName = None
+    def setActiveLayer(self, layerSet, index):
 
-        if index == 0:
-            beatLayerName = 'beat_8f'
-        elif index == 1:
-            beatLayerName = 'beat_12f'
-        else:
-            beatLayerName = 'beat_16f'
-
-        self.unmuteLayer(beatLayerName)
+        for i in range(0, len(layerSet)):
+            if i == index:
+                self.changeMuteLayerState(layerSet[i], False)
+            else:
+                self.changeMuteLayerState(layerSet[i], True)
 
     # PRESETS METHODS
 

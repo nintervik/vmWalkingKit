@@ -28,15 +28,28 @@ class WalkLibraryUI(QtWidgets.QDialog):
         self.frameOptions = ["8f", "12f", "16f"]
         self.rangeOptions = ["Low", "Mid", "High"]
 
+        # Populate 'paramLayers' dictionary with the current info on the scene
+        self.initParamLayersData()
+
         # Every time we create a new instance, we will automatically create our UI
         self.createUI()
 
-    def deleteInstance(self):
-        if self.__class__.instance is not None:
-            try:
-                self.__class__.instance.deleteLater()
-            except Exception as e:
-                pass
+    def initParamLayersData(self):
+
+        baseAnimationLayer = cmds.animLayer(query=True, root=True)
+        childLayers = cmds.animLayer(baseAnimationLayer, query=True, children=True)
+
+        bodyBeatList = [childLayers[0],  childLayers[1],  childLayers[2]]
+        armsBeatList = [childLayers[3],  childLayers[4],  childLayers[5]]
+        upDownList =   [childLayers[6],  childLayers[7],  childLayers[8]]
+        bodyTiltList = [childLayers[9],  childLayers[10], childLayers[11]]
+
+        self.paramLayers = {
+            "BodyBeat": bodyBeatList,
+            "ArmsBeat": armsBeatList,
+            "UpDown": upDownList,
+            "BodyTilt": bodyTiltList
+        }
 
     # UI METHODS
 
@@ -80,10 +93,10 @@ class WalkLibraryUI(QtWidgets.QDialog):
         tabGeneral = self.addTab("General")
 
         # Create General tab parameters
-        self.addParam(tabGeneral, "Body beat", self.frameOptions, 0, "onBeatChange")
-        self.addParam(tabGeneral, "Arms beat", self.frameOptions, 1)
-        self.addParam(tabGeneral, "Up & Down", self.rangeOptions, 2)
-        self.addParam(tabGeneral, "Body Tilt", self.rangeOptions, 3)
+        self.addParam(tabGeneral, "Body beat", self.frameOptions, 0, "BodyBeat", "onParamChanged")
+        self.addParam(tabGeneral, "Arms beat", self.frameOptions, 1, "ArmsBeat", "onParamChanged")
+        self.addParam(tabGeneral, "Up & Down", self.rangeOptions, 2, "UpDown", "onParamChanged")
+        self.addParam(tabGeneral, "Body Tilt", self.rangeOptions, 3, "BodyTilt", "onParamChanged")
 
     def createHeadTab(self):
         tabHead = self.addTab("Head")
@@ -117,7 +130,7 @@ class WalkLibraryUI(QtWidgets.QDialog):
 
         return newTab
 
-    def addParam(self, tab, paramName, options, id, slotName=None):
+    def addParam(self, tab, paramName, options, id, prefix, slotName=None):
 
         # Create parameter
         paramText = QtWidgets.QLabel(paramName)
@@ -128,7 +141,7 @@ class WalkLibraryUI(QtWidgets.QDialog):
             dropDown.addItem(options[i])
 
         if slotName is not None:
-            dropDown.currentIndexChanged.connect(partial(getattr(self, slotName)))
+            dropDown.currentIndexChanged.connect(partial(getattr(self, slotName), prefix))
 
         # Set parameter layout
         tab.layout.addWidget(paramText, id, 0, QtCore.Qt.AlignTop)
@@ -136,6 +149,18 @@ class WalkLibraryUI(QtWidgets.QDialog):
         paramText.setMinimumHeight(20)
 
     # SLOT METHODS
+
+    def onParamChanged(self, prefix, index):
+
+        print self.paramLayers[prefix][0]
+        print len(self.paramLayers[prefix])
+
+        prefixLayers = []
+
+        for i in range(0, len(self.paramLayers[prefix])):
+            prefixLayers.append(self.paramLayers[prefix][i])
+
+        self.library.setActiveLayer(prefixLayers,index)
 
     def onBeatChange(self, index):
         self.library.setBeat(index)
@@ -156,7 +181,6 @@ def showUI():
 
     ui.show()
     return ui
-
 
 # Call it in Maya's Script Editor
 #from vmWalkingKit.vmWalkingKitFiles import libraryUI
