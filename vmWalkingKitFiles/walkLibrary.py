@@ -3,7 +3,7 @@ import os
 import json
 
 USER_APP_DIR = cmds.internalVar(userAppDir=True)
-DIRECTORY = os.path.join(USER_APP_DIR, 'walkLibrary')
+DIRECTORY = os.path.join(USER_APP_DIR, 'vmWalkKitPresets')
 
 def createDirectory(directory=DIRECTORY):
     """
@@ -18,6 +18,7 @@ class WalkLibrary(dict):
 
     def __init__(self):
         createDirectory()
+        self.importPreset()
 
     # ANIMATION LAYERS METHODS
 
@@ -33,7 +34,7 @@ class WalkLibrary(dict):
 
         # If the queried animation layer exists it will be muted
         if cmds.animLayer(layerToChange, query=True, exists=True):
-            cmds.animLayer(layerToChange, edit=True, mute=mute, lock=mute)
+            cmds.animLayer(layerToChange, edit=True, mute=mute)
         else:
             print(layerToChange + " not found!")
 
