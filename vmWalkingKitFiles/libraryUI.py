@@ -23,24 +23,22 @@ logging.basicConfig()
 if Qt.__binding__ == 'PySide': # If we are using PySide
     logger.debug('Using PySide with shiboken')
     from shiboken import wrapInstance
-    from Qt.QtCore import Signal
 elif Qt.__binding__.startswith('PyQt'): # If we are using PyQt4 or PyQt5
     logger.debug('Using PyQt with sip')
     from sip import wrapInstance as wrapInstance
-    from Qt.QtCore import pyqtSignal as Signal
 else: # For PySide2 (Maya 2017 and above)
     logger.debug('Using PySide2 with shiboken2')
     from shiboken2 import wrapInstance
-    from Qt.QtCore import Signal
 
 def getMayaMainWindow():
     win = omui.MQtUtil_mainWindow()
     ptr = wrapInstance(long(win), QtWidgets.QMainWindow)
+
     return ptr
 
 def getWindowDock(name='WalkToolDock'):
     deleteWindowDock(name)
-    ctrl = cmds.workspaceControl(name, dockToMainWindow=('right', 1), label='Walk Tool', vis=True)
+    ctrl = cmds.workspaceControl(name, dockToMainWindow=('right', True), label='Walk Tool', vis=True)
     qtCtrl = omui.MQtUtil_findControl(name)
     ptr = wrapInstance(long(qtCtrl), QtWidgets.QWidget)
 
@@ -284,4 +282,4 @@ def showUI():
 #from vmWalkingKit.vmWalkingKitFiles import libraryUI
 #reload(libraryUI)
 
-#ui = libraryUI.showUI()
+#libraryUI.WalkLibraryUI(dock=True)
