@@ -38,7 +38,7 @@ def getMayaMainWindow():
 
 def getWindowDock(name='WalkToolDock'):
     deleteWindowDock(name)
-    ctrl = cmds.workspaceControl(name, dockToMainWindow=('right', 1), label='Walk Tool', vis=True)
+    ctrl = cmds.workspaceControl(name, tabToControl=('AttributeEditor', 2), label='Walk Tool', vis=True)
     qtCtrl = omui.MQtUtil_findControl(name)
     ptr = wrapInstance(long(qtCtrl), QtWidgets.QWidget)
 
