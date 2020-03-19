@@ -1,13 +1,42 @@
-from maya import cmds
+#from maya import cmds
 
 # This is not done like this when shipping the tool.
-# See first 10 minutes of video 57
+# Watch from 5:30 of video 57
 import walkLibrary
-reload(walkLibrary)
-# Substitute PySide2 with Qt when shipping the tool.
+reload(walkLibrary)  # <- delete this
+
+# Substitute 'PySide2' with 'Qt' when shipping the tool.
 # This is only for develop purposes
-from PySide2 import QtWidgets, QtCore, QtGui
+from Qt import QtWidgets, QtCore, QtGui
 from functools import partial
+import Qt
+import logging
+from maya import OpenMayaUI as omui
+
+# Setting up logger
+logger = logging.getLogger('WalkLibraryUI')
+logger.setLevel(logging.DEBUG) # TODO: change to logging.INFO when shipping
+logging.basicConfig()
+
+# This makes sure that all import statements work regardless of what Python library it's been used for Qt
+
+if Qt.__binding__ == 'PySide': # If we are using PySide
+    logger.debug('Using PySide with shiboken')
+    from shiboken import wrapInstance
+    from Qt.QtCore import Signal
+elif Qt.__binding__.startswith('PyQt'): # If we are using PyQt4 or PyQt5
+    logger.debug('Using PyQt with sip')
+    from sip import wrapInstance as wrapInstance
+    from Qt.QtCore import pyqtSignal as Signal
+else: # For PySide2 (Maya 2017 and above)
+    logger.debug('Using PySide2 with shiboken2')
+    from shiboken2 import wrapInstance
+    from Qt.QtCore import Signal
+
+def getMayaMianWindow():
+    win = omui.MQtUtil_mainWindow()
+    ptr = wrapInstance(long(win), QtWidgets.QMainWindow)
+    return ptr
 
 class WalkLibraryUI(QtWidgets.QDialog):
     """
@@ -16,8 +45,9 @@ class WalkLibraryUI(QtWidgets.QDialog):
     windowName = "WalkLibrary"
 
     def __init__(self):
-        super(WalkLibraryUI, self).__init__()
+        parent = getMayaMianWindow()
 
+        super(WalkLibraryUI, self).__init__(parent=parent)
         self.setWindowTitle(self.windowName)
         self.resize(400, 350)
 
