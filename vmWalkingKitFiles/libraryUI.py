@@ -1,4 +1,4 @@
-#from maya import cmds
+from maya import cmds
 
 # This is not done like this when shipping the tool.
 # Watch from 5:30 of video 57
@@ -33,22 +33,45 @@ else: # For PySide2 (Maya 2017 and above)
     from shiboken2 import wrapInstance
     from Qt.QtCore import Signal
 
-def getMayaMianWindow():
+def getMayaMainWindow():
     win = omui.MQtUtil_mainWindow()
     ptr = wrapInstance(long(win), QtWidgets.QMainWindow)
     return ptr
 
-class WalkLibraryUI(QtWidgets.QDialog):
+def getWindowDock(name='WalkToolDock'):
+    deleteWindowDock(name)
+    ctrl = cmds.workspaceControl(name, dockToMainWindow=('right', 1), label='Walk Tool', vis=True)
+    qtCtrl = omui.MQtUtil_findControl(name)
+    ptr = wrapInstance(long(qtCtrl), QtWidgets.QWidget)
+
+    return ptr
+
+def deleteWindowDock(name='WalkToolDock'):
+    if cmds.workspaceControl(name, exists=True):
+        cmds.deleteUI(name)
+
+class WalkLibraryUI(QtWidgets.QWidget):
     """
     The WalkLibraryUI is a dialog that lets us control all the walkTool parameters.
     """
-    windowName = "WalkLibrary"
 
-    def __init__(self):
-        parent = getMayaMianWindow()
+    def __init__(self, dock=True):
+        if dock:
+            parent = getWindowDock()
+        else:
+            deleteWindowDock()
+
+            try:
+                cmds.deleteUI('walktool')
+            except:
+                logger.debug('No previous UI exists.')
+
+            parent = QtWidgets.QDialog(parent=getMayaMainWindow())
+            parent.setObjectName('walktool')
+            parent.setWindowTitle('Walk Tool')
+            layout = QtWidgets.QVBoxLayout(parent)
 
         super(WalkLibraryUI, self).__init__(parent=parent)
-        self.setWindowTitle(self.windowName)
         self.resize(400, 350)
 
         # The Library variable points to an instance of our controller library
@@ -67,6 +90,10 @@ class WalkLibraryUI(QtWidgets.QDialog):
 
         # Every time we create a new instance, we will automatically create our UI
         self.createUI()
+
+        self.parent().layout().addWidget(self)
+        if not dock:
+            parent.show()
 
     def initParamLayersData(self):
 
