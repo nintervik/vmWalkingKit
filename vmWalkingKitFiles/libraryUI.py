@@ -38,7 +38,7 @@ def getMayaMainWindow():
 
 def getWindowDock(name='WalkToolDock'):
     deleteWindowDock(name)
-    ctrl = cmds.workspaceControl(name, dockToMainWindow=('right', True), label='Walk Tool', vis=True)
+    ctrl = cmds.workspaceControl(name, dockToMainWindow=('right', 1), label='Walk Tool', vis=True)
     qtCtrl = omui.MQtUtil_findControl(name)
     ptr = wrapInstance(long(qtCtrl), QtWidgets.QWidget)
 
@@ -54,15 +54,16 @@ class WalkLibraryUI(QtWidgets.QWidget):
     """
 
     def __init__(self, dock=True):
+
+        try:
+            cmds.deleteUI('walktool')
+        except:
+            logger.debug('No previous UI exists.')
+
         if dock:
             parent = getWindowDock()
         else:
             deleteWindowDock()
-
-            try:
-                cmds.deleteUI('walktool')
-            except:
-                logger.debug('No previous UI exists.')
 
             parent = QtWidgets.QDialog(parent=getMayaMainWindow())
             parent.setObjectName('walktool')
@@ -282,4 +283,4 @@ def showUI():
 #from vmWalkingKit.vmWalkingKitFiles import libraryUI
 #reload(libraryUI)
 
-#libraryUI.WalkLibraryUI(dock=True)
+#libraryUI.WalkLibraryUI()
