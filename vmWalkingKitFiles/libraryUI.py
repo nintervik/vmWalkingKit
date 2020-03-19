@@ -19,7 +19,7 @@ class WalkLibraryUI(QtWidgets.QDialog):
         super(WalkLibraryUI, self).__init__()
 
         self.setWindowTitle(self.windowName)
-        self.resize(200, 200)
+        self.resize(400, 350)
 
         # The Library variable points to an instance of our controller library
         self.library = walkLibrary.WalkLibrary()
@@ -70,11 +70,19 @@ class WalkLibraryUI(QtWidgets.QDialog):
 
         # Initialize tab screen
         self.tabs = QtWidgets.QTabWidget()
-        self.tabs.setFrameShape(QtWidgets.QFrame.NoFrame)
+        #self.tabs.setDocumentMode(True)
+        self.tabs.setUsesScrollButtons(True)
         self.layout.addWidget(self.tabs)
 
         # Create tabs
         self.createGeneralTab()
+        self.createHeadTab()
+        self.createHeadTab()
+        self.createHeadTab()
+        self.createHeadTab()
+        self.createHeadTab()
+        self.createHeadTab()
+        self.createHeadTab()
         self.createHeadTab()
 
         # Create bottom buttons
@@ -135,6 +143,7 @@ class WalkLibraryUI(QtWidgets.QDialog):
 
         newTab = QtWidgets.QWidget()
         self.tabs.addTab(newTab, tabName)
+
         newTab.layout = QtWidgets.QGridLayout(newTab)
         newTab.layout.setContentsMargins(4, 4, 4, 4)
         newTab.setLayout(newTab.layout)
@@ -143,8 +152,6 @@ class WalkLibraryUI(QtWidgets.QDialog):
         scrollWidget.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
 
         self.scrollLayout = QtWidgets.QGridLayout(scrollWidget)
-        #self.scrollLayout.setContentsMargins(15, 15, 250, 10)
-
         scrollArea = QtWidgets.QScrollArea()
         scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
         scrollArea.setWidgetResizable(True)
