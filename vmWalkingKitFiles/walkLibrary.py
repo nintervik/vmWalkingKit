@@ -19,6 +19,7 @@ class WalkLibrary(dict):
 
     def __init__(self):
         createDirectory()
+        self.savePreset()
         self.resetPreset()
 
     # ANIMATION LAYERS METHODS
