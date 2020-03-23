@@ -177,8 +177,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Create General tab parameters
         self.addParam(tabGeneral, "Body beat", self.frameOptions, 0, self.prefixes[0], "onDropDownChanged")
         self.addParam(tabGeneral, "Arms beat", self.frameOptions, 1, self.prefixes[1], "onDropDownChanged")
-        self.addParam(tabGeneral, "Up & Down", self.rangeOptions, 2, self.prefixes[2], "onSliderChanged")
-        self.addParam(tabGeneral, "Body Tilt", self.rangeOptions, 3, self.prefixes[3], "onSliderChanged")
+        self.addParam(tabGeneral, "Up & Down", self.rangeOptions, 2, self.prefixes[2], "onDropDownChanged")
+        self.addParam(tabGeneral, "Body Tilt", self.rangeOptions, 3, self.prefixes[3], "onDropDownChanged")
 
     def createHeadTab(self):
         tabHead = self.addTab("Head")
@@ -232,23 +232,29 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Create parameter
         paramText = QtWidgets.QLabel(paramName)
-        dropDown = QtWidgets.QComboBox()
-        dropDown.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
 
-        for i in range(0, len(options)):
-            dropDown.addItem(options[i])
+        widget = None
 
-        if slotName is not None:
-            dropDown.currentIndexChanged.connect(partial(getattr(self, slotName), prefix))
+        if slotName == "onDropDownChanged":
+            widget = QtWidgets.QComboBox()
+            widget.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
 
-        self.paramWidgets[prefix] = dropDown
+            for i in range(0, len(options)):
+                widget.addItem(options[i])
+
+        elif slotName == "onSliderChanged":
+            pass
+            # TODO: Make slider here
+
+        widget.currentIndexChanged.connect(partial(getattr(self, slotName), prefix))
+
+        self.paramWidgets[prefix] = widget
 
         # Set parameter layout
         self.scrollLayout.addWidget(paramText, id, 0, 1, 1)
-        self.scrollLayout.addWidget(dropDown, id, 1, 1, 1)
+        self.scrollLayout.addWidget(widget, id, 1, 1, 1)
 
-        return dropDown
-
+        return widget
 
     # SLOT METHODS
 
