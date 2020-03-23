@@ -177,8 +177,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Create General tab parameters
         self.addParam(tabGeneral, "Body beat", self.frameOptions, 0, self.prefixes[0], "onDropDownChanged")
         self.addParam(tabGeneral, "Arms beat", self.frameOptions, 1, self.prefixes[1], "onDropDownChanged")
-        self.addParam(tabGeneral, "Up & Down", self.rangeOptions, 2, self.prefixes[2], "onDropDownChanged")
-        self.addParam(tabGeneral, "Body Tilt", self.rangeOptions, 3, self.prefixes[3], "onDropDownChanged")
+        self.addParam(tabGeneral, "Up & Down", self.rangeOptions, 2, self.prefixes[2], "onSliderChanged")
+        self.addParam(tabGeneral, "Body Tilt", self.rangeOptions, 3, self.prefixes[3], "onSliderChanged")
 
     def createHeadTab(self):
         tabHead = self.addTab("Head")
@@ -237,16 +237,20 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         if slotName == "onDropDownChanged":
             widget = QtWidgets.QComboBox()
-            widget.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
 
             for i in range(0, len(options)):
                 widget.addItem(options[i])
 
-        elif slotName == "onSliderChanged":
-            pass
-            # TODO: Make slider here
+            widget.currentIndexChanged.connect(partial(getattr(self, slotName), prefix))
 
-        widget.currentIndexChanged.connect(partial(getattr(self, slotName), prefix))
+        elif slotName == "onSliderChanged":
+            widget = QtWidgets.QSlider(QtCore.Qt.Horizontal)
+            widget.setMinimum(0)
+            widget.setMaximum(1000)
+            widget.setValue(500)
+            widget.valueChanged.connect(partial(getattr(self, slotName), prefix))
+
+        widget.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
 
         self.paramWidgets[prefix] = widget
 
@@ -267,37 +271,35 @@ class WalkLibraryUI(QtWidgets.QWidget):
             layerName = key
 
             if indStr in key:
-                self.library.changeLayerStateDropDown(layerName, False)
+                self.library.changeLayerMuteState(layerName, False)
             else:
-               self.library.changeLayerStateDropDown(layerName, True)
+               self.library.changeLayerMuteState(layerName, True)
 
-    def onSliderChanged(self, prefix, index):
+    def onSliderChanged(self, prefix, value):
 
-        indStr = str(index + 1)
-
-        for key in self.paramLayers[prefix]:
-
-            layerName = key
-            weight = self.paramLayers[prefix][layerName]
-
-            if indStr in key:
-                self.library.changeLayerStateSlider(layerName, weight)
-            else:
-               self.library.changeLayerStateSlider(layerName, weight)
+        layerName = list(self.paramLayers[prefix].keys())[0]
+        weight = value / 1000.0
+        self.library.changeLayerWeight(layerName, weight)
 
     def onSave(self):
         self.library.savePreset()
 
     def onReset(self):
 
-        activeLayers = self.library.resetPreset()
+        defaultLayers, defaultWeights = self.library.resetToDefaultPreset()
 
-        if activeLayers is not None:
-            for i in range(0, len(activeLayers)):
-                splitStr = activeLayers[i].split("_")
+        if defaultLayers is not None and defaultWeights is not None:
+            for i in range(0, len(defaultLayers)):
+
+                splitStr = defaultLayers[i].split("_")
                 prefix = splitStr[0]
-                index = int(splitStr[1]) - 1
-                self.paramWidgets[prefix].setCurrentIndex(index)
+                widgetType = type(self.paramWidgets[prefix]).__name__
+
+                if widgetType == 'QComboBox':
+                    index = int(splitStr[1]) - 1
+                    self.paramWidgets[prefix].setCurrentIndex(index)
+                elif widgetType == 'QSlider':
+                    self.paramWidgets[prefix].setValue(defaultWeights[i]*1000.0)
         else:
             print "Query for default preset file failed."
 

@@ -20,12 +20,12 @@ class WalkLibrary(dict):
 
     def __init__(self):
         createDirectory()
-        self.savePreset()
-        self.resetPreset()
+        # self.savePreset() <- Only call this to generate the defaultPreset.json the first time
+        self.resetToDefaultPreset()
 
     # ANIMATION LAYERS METHODS
 
-    def changeLayerStateDropDown(self, layerToChange, mute):
+    def changeLayerMuteState(self, layerToChange, mute):
         """
         Change the muted state of the given animation layer if this exists
         Args:
@@ -49,7 +49,7 @@ class WalkLibrary(dict):
         else:
             print(layerToChange + " not found!")
 
-    def changeLayerStateSlider(self, layerToChange, weight):
+    def changeLayerWeight(self, layerToChange, weight):
         """
         Change the weight of the given animation layer if this exists
         Args:
@@ -84,16 +84,37 @@ class WalkLibrary(dict):
         baseAnimationLayer = cmds.animLayer(query=True, root=True)
         childLayers = cmds.animLayer(baseAnimationLayer, query=True, children=True)
 
-        weights = OrderedDict()
+        weights = []
 
         for i in range(0, len(childLayers)):
-            weights[i] = cmds.animLayer(childLayers[i], query=True, weight=True)
+            weights.append(cmds.animLayer(childLayers[i], query=True, weight=True))
 
         return childLayers, weights
 
+    def getActiveAnimationLayers(self):
+        """
+        Finds all the active animation layers in the scene.
+
+        Returns: returns a dict with all the active layers
+        in the scene (except the base animation layer) and their weights.
+        """
+
+        baseAnimationLayer = cmds.animLayer(query=True, root=True)
+        childLayers = cmds.animLayer(baseAnimationLayer, query=True, children=True)
+
+        activeLayers = []
+        weights = []
+
+        for i in range(0, len(childLayers)):
+            if not cmds.animLayer(childLayers[i], query=True, mute=True):
+                activeLayers.append(childLayers[i])
+                weights.append(cmds.animLayer(childLayers[i], query=True, weight=True))
+
+        return activeLayers, weights
+
     # PRESETS METHODS
 
-    def resetPreset(self):
+    def resetToDefaultPreset(self):
         """
         Imports the given preset into the tool.
         Args:
@@ -106,25 +127,37 @@ class WalkLibrary(dict):
         # Create directory for the JSON preset file
         infoFile = os.path.join(DIRECTORY, '%s.json' % DEFAULT_PRESET_NAME)
 
+        self.activeLayersInfo = OrderedDict()
+
         # Load JSON content into 'activeLayers' list
         with open(infoFile, 'r') as f:
-            activeLayersInfo = json.load(f)
+            self.activeLayersInfo = json.load(f, object_pairs_hook=OrderedDict)
 
-        if activeLayersInfo is not None:
+        defaultLayers = None
+        defaultWeights = None
+
+        if self.activeLayersInfo is not None:
 
             # Find all the animation layers in the scene
-            activeLayers = activeLayersInfo.keys()
+            defaultLayers = self.activeLayersInfo.keys()
+            defaultWeights = self.activeLayersInfo.values()
+
             childLayers, weights = self.getCurrentAnimationLayers()
 
             for i in range(0, len(childLayers)):
-                if childLayers[i] in activeLayers:
-                    cmds.animLayer(childLayers[i], edit=True, mute=False)
+                if childLayers[i] in defaultLayers:
+                    self.changeLayerMuteState(childLayers[i], False)
                 else:
-                    cmds.animLayer(childLayers[i], edit=True, mute=True)
+                    self.changeLayerMuteState(childLayers[i], True)
+
+                self.changeLayerWeight(childLayers[i], 1.0)
+
+            for i in range(0, len(defaultLayers)):
+                self.changeLayerWeight(defaultLayers[i], defaultWeights[i])
         else:
             print DEFAULT_PRESET_NAME + "not found."
 
-        return activeLayers
+        return defaultLayers, defaultWeights
 
     def savePreset(self, name='defaultPreset', directory=DIRECTORY):
         """
@@ -141,13 +174,7 @@ class WalkLibrary(dict):
         infoFile = os.path.join(directory, '%s.json' % name)
 
         # Find all the animation layers in the scene
-        childLayers, weights = self.getCurrentAnimationLayers()
-        activeLayers = []
-
-        # Store all the active (not muted) animation layers in the 'activeLayers' list
-        for i in range(0, len(childLayers)):
-            if not cmds.animLayer(childLayers[i], query=True, mute=True):
-                activeLayers.append(childLayers[i])
+        activeLayers, weights = self.getActiveAnimationLayers()
 
         dataToWrite = OrderedDict()
 
