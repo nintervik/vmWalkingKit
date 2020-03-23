@@ -230,9 +230,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
     def addParam(self, tab, paramName, options, id, prefix, slotName=None):
 
-        # Create parameter
-        paramText = QtWidgets.QLabel(paramName)
-
         widget = None
 
         if slotName == "onDropDownChanged":
@@ -250,13 +247,15 @@ class WalkLibraryUI(QtWidgets.QWidget):
             widget.setValue(500)
             widget.valueChanged.connect(partial(getattr(self, slotName), prefix))
 
-        widget.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
-
         self.paramWidgets[prefix] = widget
 
         # Set parameter layout
-        self.scrollLayout.addWidget(paramText, id, 0, 1, 1)
-        self.scrollLayout.addWidget(widget, id, 1, 1, 1)
+        paramText = QtWidgets.QLabel(paramName)
+
+        self.scrollLayout.addWidget(paramText, id, 0, 1, 3)
+        paramText.setMinimumHeight(25)
+        self.scrollLayout.addWidget(QtWidgets.QLabel(" "), id, 3, 1, 1)
+        self.scrollLayout.addWidget(widget, id, 4, 1, 3)
 
         return widget
 
