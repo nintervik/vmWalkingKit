@@ -1,4 +1,5 @@
 from maya import cmds
+from collections import OrderedDict
 
 # This is not done like this when shipping the tool.
 # Watch from 5:30 of video 57
@@ -79,7 +80,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Dropdown options list
         self.frameOptions = ["8f", "12f", "16f"]
         self.rangeOptions = ["Low", "Mid", "High"]
-        self.paramDropDowns = {}
+        self.paramWidgets = OrderedDict()
 
         # Prefixes
         self.prefixes = ["BodyBeat", "ArmsBeat", "UpDown", "BodyTilt"]
@@ -96,19 +97,30 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
     def initParamLayersData(self):
 
-        childLayers = self.library.getCurrentAnimationLayers()
+        layersNames, layersWeights = self.library.getCurrentAnimationLayers()
 
         # General tab
-        bodyBeatList = [childLayers[0],  childLayers[1],  childLayers[2]]
-        armsBeatList = [childLayers[3],  childLayers[4],  childLayers[5]]
-        upDownList =   [childLayers[6],  childLayers[7],  childLayers[8]]
-        bodyTiltList = [childLayers[9],  childLayers[10], childLayers[11]]
+        bodyBeatDict = OrderedDict()
+        bodyBeatDict[layersNames[0]] = layersWeights[0]
+        bodyBeatDict[layersNames[1]] = layersWeights[1]
+        bodyBeatDict[layersNames[2]] = layersWeights[2]
+
+        armsBeatDict = OrderedDict()
+        armsBeatDict[layersNames[3]] = layersWeights[3]
+        armsBeatDict[layersNames[4]] = layersWeights[4]
+        armsBeatDict[layersNames[5]] = layersWeights[5]
+
+        upDownDict = OrderedDict()
+        upDownDict[layersNames[6]] = layersWeights[6]
+
+        bodyTiltDict = OrderedDict()
+        bodyTiltDict[layersNames[7]] = layersWeights[7]
 
         self.paramLayers = {
-            self.prefixes[0]: bodyBeatList,
-            self.prefixes[1]: armsBeatList,
-            self.prefixes[2]: upDownList,
-            self.prefixes[3]: bodyTiltList
+            self.prefixes[0]: bodyBeatDict,
+            self.prefixes[1]: armsBeatDict,
+            self.prefixes[2]: upDownDict,
+            self.prefixes[3]: bodyTiltDict
         }
 
     # UI METHODS
@@ -163,10 +175,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
         tabGeneral = self.addTab("General")
 
         # Create General tab parameters
-        self.addParam(tabGeneral, "Body beat", self.frameOptions, 0, self.prefixes[0], "onParamChanged")
-        self.addParam(tabGeneral, "Arms beat", self.frameOptions, 1, self.prefixes[1], "onParamChanged")
-        self.addParam(tabGeneral, "Up & Down", self.rangeOptions, 2, self.prefixes[2], "onParamChanged")
-        self.addParam(tabGeneral, "Body Tilt", self.rangeOptions, 3, self.prefixes[3], "onParamChanged")
+        self.addParam(tabGeneral, "Body beat", self.frameOptions, 0, self.prefixes[0], "onDropDownChanged")
+        self.addParam(tabGeneral, "Arms beat", self.frameOptions, 1, self.prefixes[1], "onDropDownChanged")
+        self.addParam(tabGeneral, "Up & Down", self.rangeOptions, 2, self.prefixes[2], "onSliderChanged")
+        self.addParam(tabGeneral, "Body Tilt", self.rangeOptions, 3, self.prefixes[3], "onSliderChanged")
 
     def createHeadTab(self):
         tabHead = self.addTab("Head")
@@ -229,7 +241,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         if slotName is not None:
             dropDown.currentIndexChanged.connect(partial(getattr(self, slotName), prefix))
 
-        self.paramDropDowns[prefix] = dropDown
+        self.paramWidgets[prefix] = dropDown
 
         # Set parameter layout
         self.scrollLayout.addWidget(paramText, id, 0, 1, 1)
@@ -240,14 +252,32 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
     # SLOT METHODS
 
-    def onParamChanged(self, prefix, index):
+    def onDropDownChanged(self, prefix, index):
 
-        prefixLayers = []
+        indStr = str(index + 1)
 
-        for i in range(0, len(self.paramLayers[prefix])):
-            prefixLayers.append(self.paramLayers[prefix][i])
+        for key in self.paramLayers[prefix]:
 
-        self.library.setActiveLayer(prefixLayers, index)
+            layerName = key
+
+            if indStr in key:
+                self.library.changeLayerStateDropDown(layerName, False)
+            else:
+               self.library.changeLayerStateDropDown(layerName, True)
+
+    def onSliderChanged(self, prefix, index):
+
+        indStr = str(index + 1)
+
+        for key in self.paramLayers[prefix]:
+
+            layerName = key
+            weight = self.paramLayers[prefix][layerName]
+
+            if indStr in key:
+                self.library.changeLayerStateSlider(layerName, weight)
+            else:
+               self.library.changeLayerStateSlider(layerName, weight)
 
     def onSave(self):
         self.library.savePreset()
@@ -261,7 +291,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
                 splitStr = activeLayers[i].split("_")
                 prefix = splitStr[0]
                 index = int(splitStr[1]) - 1
-                self.paramDropDowns[prefix].setCurrentIndex(index)
+                self.paramWidgets[prefix].setCurrentIndex(index)
         else:
             print "Query for default preset file failed."
 
