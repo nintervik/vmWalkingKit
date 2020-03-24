@@ -2,9 +2,20 @@ from maya import cmds
 import os
 import json
 from collections import OrderedDict
+import logging
 
+# Setting up logger
+logger = logging.getLogger('WalkLibraryUI')
+logger.setLevel(logging.DEBUG) # TODO: change to logging.INFO when shipping
+logging.basicConfig()
+
+# Querying C:\Users\UserName\Documents\maya
 USER_APP_DIR = cmds.internalVar(userAppDir=True)
+
+# Generating presets path C:\Users\UserName\Documents\maya\vmWalkingKitPresets
 DIRECTORY = os.path.join(USER_APP_DIR, 'vmWalkKitPresets')
+
+# Setting the name for the default preset JSON file
 DEFAULT_PRESET_NAME = 'defaultPreset'
 
 def createDirectory(directory=DIRECTORY):
@@ -17,68 +28,86 @@ def createDirectory(directory=DIRECTORY):
         os.mkdir(directory)
 
 class WalkLibrary(dict):
+    """
+    This class manages all the stuff related to animation layers and presets
+    """
 
-    def __init__(self):
+    def __init__(self, createDefaultPreset = False):
+        """
+        Init method. Here we create the directory to save the presets and reset everything to
+        default by reading from the 'defaultPreset.json' file.
+        """
         createDirectory()
-        # self.savePreset() <- Only call this to generate the defaultPreset.json the first time
-        self.resetToDefaultPreset()
+
+        # Only call this to generate the defaultPreset.json the first time
+        if createDefaultPreset:
+            self.savePreset()
+
+        # Import the default preset
+        self.importPreset()
 
     # ANIMATION LAYERS METHODS
 
-    def changeLayerMuteState(self, layerToChange, mute):
+    def changeLayerMuteState(self, layerNameToChange, mute):
         """
         Change the muted state of the given animation layer if this exists
         Args:
-            layerNameToChange(str): the animation layer change
+            layerNameToChange(str): the animation layer name to change
+            mute(bool): mute state that will be applied to the given layer
         """
 
-        wasPlaying = False
-
-        # Stop playback before doing any animation layer operation
-        if cmds.play(query=True, state=True):
-            cmds.play(state=False)
-            wasPlaying = True
-
         # If the queried animation layer exists it will be muted
-        if cmds.animLayer(layerToChange, query=True, exists=True):
-            cmds.animLayer(layerToChange, edit=True, mute=mute)
+        if cmds.animLayer(layerNameToChange, query=True, exists=True):
+
+            wasPlaying = False
+
+            # Stop playback before doing any animation layer operation
+            if cmds.play(query=True, state=True):
+                cmds.play(state=False)
+                wasPlaying = True
+
+            # Change layer mute state
+            cmds.animLayer(layerNameToChange, edit=True, mute=mute)
 
             # Once the operations have finished begin playback (only if it was playing before)
             if wasPlaying:
                 cmds.play(state=True)
         else:
-            print(layerToChange + " not found!")
+            print(layerNameToChange + " not found!")
 
-    def changeLayerWeight(self, layerToChange, weight):
+    def changeLayerWeight(self, layerNameToChange, weight):
         """
         Change the weight of the given animation layer if this exists
         Args:
-            layerNameToChange(str): the animation layer change
+            layerNameToChange(str): the animation layer name to change
+            weight(float): weight that will be set to the given layer
         """
 
-        wasPlaying = False
-
-        # Stop playback before doing any animation layer operation
-        if cmds.play(query=True, state=True):
-            cmds.play(state=False)
-            wasPlaying = True
-
         # If the queried animation layer exists it will be muted
-        if cmds.animLayer(layerToChange, query=True, exists=True):
-            cmds.animLayer(layerToChange, edit=True, weight=weight)
+        if cmds.animLayer(layerNameToChange, query=True, exists=True):
+
+            wasPlaying = False
+
+            # Stop playback before doing any animation layer operation
+            if cmds.play(query=True, state=True):
+                cmds.play(state=False)
+                wasPlaying = True
+
+            # Change layer weight
+            cmds.animLayer(layerNameToChange, edit=True, weight=weight)
 
             # Once the operations have finished begin playback (only if it was playing before)
             if wasPlaying:
                 cmds.play(state=True)
         else:
-            print(layerToChange + " not found!")
+            print(layerNameToChange + " not found!")
 
     def getCurrentAnimationLayers(self):
         """
         Finds all the current existing animation layers in the scene.
 
-        Returns: returns a dict with all the current existing layers
-        in the scene (except the base animation layer) and their weights.
+        Returns: returns a two lists. One with all the current existing layers in the
+        scene (except the base animation layer) and the other one with their weights.
         """
 
         baseAnimationLayer = cmds.animLayer(query=True, root=True)
@@ -95,8 +124,8 @@ class WalkLibrary(dict):
         """
         Finds all the active animation layers in the scene.
 
-        Returns: returns a dict with all the active layers
-        in the scene (except the base animation layer) and their weights.
+        Returns: returns a two lists. One with all the active layers in the
+        scene (except the base animation layer) and the other one with their weights.
         """
 
         baseAnimationLayer = cmds.animLayer(query=True, root=True)
@@ -114,7 +143,7 @@ class WalkLibrary(dict):
 
     # PRESETS METHODS
 
-    def resetToDefaultPreset(self):
+    def importPreset(self, name=DEFAULT_PRESET_NAME, directory=DIRECTORY):
         """
         Imports the given preset into the tool.
         Args:
@@ -124,38 +153,43 @@ class WalkLibrary(dict):
             not specified, it will be loaded from the default path.
         """
 
-        # Create directory for the JSON preset file
-        infoFile = os.path.join(DIRECTORY, '%s.json' % DEFAULT_PRESET_NAME)
+        # Generate directory name for the JSON preset file
+        infoFile = os.path.join(directory, '%s.json' % name)
 
         self.activeLayersInfo = OrderedDict()
 
-        # Load JSON content into 'activeLayers' list
+        # Load JSON content into 'activeLayersInfo' dict
         with open(infoFile, 'r') as f:
             self.activeLayersInfo = json.load(f, object_pairs_hook=OrderedDict)
 
-        defaultLayers = None
-        defaultWeights = None
-
+        # Make sure the preset file is not empty and exists
         if self.activeLayersInfo is not None:
 
-            # Find all the animation layers in the scene
+            # These two list will store the layers and weight from the default preset
             defaultLayers = self.activeLayersInfo.keys()
             defaultWeights = self.activeLayersInfo.values()
 
+            # Get the all the animation layers in the scene
             childLayers, weights = self.getCurrentAnimationLayers()
 
+            # Iterate over all the animation layers in the scene
             for i in range(0, len(childLayers)):
+                # If a layer is in the default preset file it will be unmuted
                 if childLayers[i] in defaultLayers:
                     self.changeLayerMuteState(childLayers[i], False)
+                # If the layer is not in the default preset file it will be muted
                 else:
                     self.changeLayerMuteState(childLayers[i], True)
 
+                # For now all weights will be 1.0. Just in case the user has manually changed it
                 self.changeLayerWeight(childLayers[i], 1.0)
 
+            # Iterate over the layers in the default preset and set their respective weight
             for i in range(0, len(defaultLayers)):
                 self.changeLayerWeight(defaultLayers[i], defaultWeights[i])
+        # If the preset default file is empty or does not exist we raise a warning
         else:
-            print DEFAULT_PRESET_NAME + "not found."
+            logger.error(DEFAULT_PRESET_NAME + "not found or empty.")
 
         return defaultLayers, defaultWeights
 
@@ -167,48 +201,22 @@ class WalkLibrary(dict):
             it will be called 'defaultPreset' and will overwrite the default
             one.
             directory(str): the path where the preset file will be stored. If
-            not specified, it will be save in the default path.
+            not specified, it will be saved in the default path.
         """
 
         # Create directory for the JSON preset file
         infoFile = os.path.join(directory, '%s.json' % name)
 
-        # Find all the animation layers in the scene
+        # Find all the active animation layers in the scene
         activeLayers, weights = self.getActiveAnimationLayers()
 
+        # Create an ordered dict to store the data
         dataToWrite = OrderedDict()
 
+        # Populate the data dic with the active layers and their weights
         for i in range(0, len(activeLayers)):
             dataToWrite[activeLayers[i]] = weights[i]
 
         # Save all the active animation layers and their weights in the JSON preset file
         with open(infoFile, 'w') as f:
-            json.dump(dataToWrite, f, indent=4)
-
-    def importPreset(self, name='defaultPreset', directory=DIRECTORY):
-        """
-        Imports the given preset into the tool.
-        Args:
-            name(str): the name of the JSON preset file. If not specified,
-            the default preset will be imported.
-            directory(str): the path from where the preset file will be loaded. If
-            not specified, it will be loaded from the default path.
-        """
-
-        # Create directory for the JSON preset file
-        infoFile = os.path.join(directory, '%s.json' % name)
-
-        activeLayers = []
-
-        # Load JSON content into 'activeLayers' list
-        with open(infoFile, 'r') as f:
-            activeLayers = json.load(f)
-
-        # Find all the animation layers in the scene
-        childLayers = self.getCurrentAnimationLayers()
-
-        for i in range(0, len(childLayers)):
-            if childLayers[i] in activeLayers:
-                cmds.animLayer(childLayers[i], edit=True, mute=False)
-            else:
-                cmds.animLayer(childLayers[i], edit=True, mute=True)
+            json.dump(dataToWrite, f, indent=4) # TODO: check for errors here

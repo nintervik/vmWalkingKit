@@ -4,9 +4,9 @@ from collections import OrderedDict
 # This is not done like this when shipping the tool.
 # Watch from 5:30 of video 57
 import walkLibrary
-reload(walkLibrary)  # <- delete this
+reload(walkLibrary)  # TODO: delete this when shipping.
 
-# Substitute 'PySide2' with 'Qt' when shipping the tool.
+# TODO: Substitute 'PySide2' with 'Qt' when shipping the tool.
 # This is only for develop purposes
 from Qt import QtWidgets, QtCore, QtGui
 from functools import partial
@@ -27,7 +27,7 @@ if Qt.__binding__ == 'PySide': # If we are using PySide
 elif Qt.__binding__.startswith('PyQt'): # If we are using PyQt4 or PyQt5
     logger.debug('Using PyQt with sip')
     from sip import wrapInstance as wrapInstance
-else: # For PySide2 (Maya 2017 and above)
+else: # If we are using PySide2 (Maya 2017 and above)
     logger.debug('Using PySide2 with shiboken2')
     from shiboken2 import wrapInstance
 
@@ -285,7 +285,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
     def onReset(self):
 
-        defaultLayers, defaultWeights = self.library.resetToDefaultPreset()
+        defaultLayers, defaultWeights = self.library.importPreset()
 
         if defaultLayers is not None and defaultWeights is not None:
             for i in range(0, len(defaultLayers)):
@@ -304,17 +304,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
     def onImport(self):
         self.library.importPreset()
-
-def showUI():
-    """
-    This shows and returns a handle to the ui
-    Returns:
-        QDialog
-    """
-    ui = WalkLibraryUI()
-
-    ui.show()
-    return ui
 
 # Call it in Maya's Script Editor
 #from vmWalkingKit.vmWalkingKitFiles import libraryUI
