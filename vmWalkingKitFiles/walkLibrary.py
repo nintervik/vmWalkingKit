@@ -32,7 +32,7 @@ class WalkLibrary(dict):
     This class manages all the stuff related to animation layers and presets
     """
 
-    def __init__(self, createDefaultPreset = False):
+    def __init__(self, createDefaultPreset=False):
         """
         Init method. Here we create the directory to save the presets and reset everything to
         default by reading from the 'defaultPreset.json' file.
