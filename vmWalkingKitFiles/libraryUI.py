@@ -158,7 +158,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
     def createMenuBar(self):
         menubar = QtWidgets.QMenuBar()
-        self.layout.addWidget(menubar, 0, 0)
+        self.layout.addWidget(menubar)
         actionFile = menubar.addMenu("File")
         actionFile.addAction("New")
         actionFile.addAction("Open")
