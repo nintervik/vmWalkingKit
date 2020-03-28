@@ -319,6 +319,12 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         defaultLayers, defaultWeights = self.library.importPreset()
 
+        # Setting default playback options
+        cmds.playbackOptions(animationEndTime=96)
+        cmds.playbackOptions(minTime=1)
+        cmds.playbackOptions(maxTime=16)
+        cmds.playbackOptions(animationStartTime=1)
+
         if defaultLayers is not None and defaultWeights is not None:
             for i in range(0, len(defaultLayers)):
 
@@ -333,6 +339,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
                     self.paramWidgets[prefix].setValue(defaultWeights[i]*1000.0)
         else:
             print "Query for default preset file failed."
+
+
 
     def onImport(self):
         self.library.importPreset()
