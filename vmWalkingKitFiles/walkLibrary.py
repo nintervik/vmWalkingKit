@@ -160,6 +160,8 @@ class WalkLibrary(dict):
             not specified, it will be loaded from the default path.
         """
 
+        # TODO: take into account playback range settings when importing preset (as inDropDownChanged)
+
         # Generate directory name for the JSON preset file
         infoFile = os.path.join(directory, '%s.json' % name)
 
