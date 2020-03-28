@@ -301,7 +301,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
         elif (indices[0] == 2 and indices[1] == 3) or (indices[0] == 3 and indices[1] == 2):
             playBackEndRange = 96
 
+        cmds.playbackOptions(animationEndTime=96)
+        cmds.playbackOptions(minTime=1)
         cmds.playbackOptions(maxTime=playBackEndRange)
+        cmds.playbackOptions(animationStartTime=1)
 
     def onSliderChanged(self, prefix, value):
 

@@ -48,7 +48,9 @@ class WalkLibrary(dict):
 
         # Setting playback range to the max frames needed
         cmds.playbackOptions(animationEndTime=96)
+        cmds.playbackOptions(minTime=1)
         cmds.playbackOptions(maxTime=16)
+        cmds.playbackOptions(animationStartTime=1)
 
 
     # ANIMATION LAYERS METHODS

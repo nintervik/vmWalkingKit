@@ -22,8 +22,8 @@
       <file leaf-file-name="libraryUI.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/libraryUI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="536">
-              <caret line="287" column="47" selection-start-line="287" selection-start-column="47" selection-end-line="287" selection-end-column="47" />
+            <state relative-caret-position="432">
+              <caret line="295" column="7" selection-start-line="295" selection-start-column="7" selection-end-line="295" selection-end-column="7" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -34,8 +34,8 @@
       <file leaf-file-name="walkLibrary.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/walkLibrary.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="682">
-              <caret line="50" column="39" selection-start-line="50" selection-start-column="39" selection-end-line="50" selection-end-column="39" />
+            <state relative-caret-position="432">
+              <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="52" selection-end-column="50" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -248,7 +248,7 @@
     <option name="remove_strategy" value="false" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973656" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -295,8 +295,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/walkLibrary.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="682">
-          <caret line="50" column="39" selection-start-line="50" selection-start-column="39" selection-end-line="50" selection-end-column="39" />
+        <state relative-caret-position="432">
+          <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="52" selection-end-column="50" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
@@ -305,8 +305,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/libraryUI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="536">
-          <caret line="287" column="47" selection-start-line="287" selection-start-column="47" selection-end-line="287" selection-end-column="47" />
+        <state relative-caret-position="432">
+          <caret line="295" column="7" selection-start-line="295" selection-start-column="7" selection-end-line="295" selection-end-column="7" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
