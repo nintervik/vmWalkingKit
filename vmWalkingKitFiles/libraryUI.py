@@ -274,6 +274,35 @@ class WalkLibraryUI(QtWidgets.QWidget):
             else:
                self.library.changeLayerMuteState(layerName, True)
 
+        activeLayers, weights = self.library.getActiveAnimationLayers()
+        indices = []
+
+        for i in range(0, len(activeLayers)):
+
+            if len(indices) == 2:
+                break
+
+            splitStr = activeLayers[i].split("_")
+
+            if self.prefixes[0] in splitStr[0] or self.prefixes[1] in splitStr[0]:
+                indices.append(int(splitStr[1]))
+
+        playBackEndRange = 0
+
+        if indices[0] == 1 and indices[1] == 1:
+            playBackEndRange = 16
+        elif (indices[0] == 1 and indices[1] == 2) or (indices[0] == 2 and indices[1] == 1):
+            playBackEndRange = 48
+        elif ((indices[0] == 1 and indices[1] == 3) or (indices[0] == 3 and indices[1] == 1))\
+                or (indices[0] == 3 and indices[1] == 3):
+            playBackEndRange = 32
+        elif indices[0] == 2 and indices[1] == 2:
+            playBackEndRange = 24
+        elif (indices[0] == 2 and indices[1] == 3) or (indices[0] == 3 and indices[1] == 2):
+            playBackEndRange = 96
+
+        cmds.playbackOptions(maxTime=playBackEndRange)
+
     def onSliderChanged(self, prefix, value):
 
         layerName = list(self.paramLayers[prefix].keys())[0]

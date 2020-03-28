@@ -46,6 +46,11 @@ class WalkLibrary(dict):
         # Import the default preset
         self.importPreset()
 
+        # Setting playback range to the max frames needed
+        cmds.playbackOptions(animationEndTime=96)
+        cmds.playbackOptions(maxTime=16)
+
+
     # ANIMATION LAYERS METHODS
 
     def changeLayerMuteState(self, layerNameToChange, mute):
