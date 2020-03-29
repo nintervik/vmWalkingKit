@@ -90,6 +90,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Every time we create a new instance, we will automatically create our UI
         self.createUI()
+        self.onReset()
 
         self.parent().layout().addWidget(self)
         if not dock:
@@ -276,6 +277,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         activeLayers, weights = self.library.getActiveAnimationLayers()
         indices = []
+        bodyIndex = None
+        gotBodyIndex = False
 
         for i in range(0, len(activeLayers)):
 
@@ -285,6 +288,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
             splitStr = activeLayers[i].split("_")
 
             if self.prefixes[0] in splitStr[0] or self.prefixes[1] in splitStr[0]:
+                if prefix == self.prefixes[0] and gotBodyIndex is False:
+                    gotBodyIndex = True
+                    bodyIndex = int(splitStr[1])
+
                 indices.append(int(splitStr[1]))
 
         playBackEndRange = 0
@@ -300,6 +307,26 @@ class WalkLibraryUI(QtWidgets.QWidget):
             playBackEndRange = 24
         elif (indices[0] == 2 and indices[1] == 3) or (indices[0] == 3 and indices[1] == 2):
             playBackEndRange = 96
+
+        if bodyIndex is not None:
+
+            cntrlName = 'Mr_Buttons:Mr_Buttons_COG_Ctrl'
+            currentmaxTime = cmds.playbackOptions(query=True, maxTime=True)
+            newEndTime = 0
+
+            if bodyIndex == 1:
+                newEndTime = 17
+            elif bodyIndex == 2:
+                newEndTime = 25
+            else:
+                newEndTime = 33
+
+            print newEndTime
+
+            cmds.animLayer('UpDown_1', edit=True, lock=False)
+            cmds.scaleKey(cntrlName, time=(1, currentmaxTime), newStartTime=1, newEndTime=newEndTime, attribute='ty')
+            cmds.snapKey(cntrlName, tm=1.0)
+            cmds.animLayer('UpDown_1', edit=True, lock=True)
 
         cmds.playbackOptions(animationEndTime=96)
         cmds.playbackOptions(minTime=1)
@@ -322,7 +349,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Setting default playback options
         cmds.playbackOptions(animationEndTime=96)
         cmds.playbackOptions(minTime=1)
-        cmds.playbackOptions(maxTime=16)
+        cmds.playbackOptions(maxTime=24)
         cmds.playbackOptions(animationStartTime=1)
 
         if defaultLayers is not None and defaultWeights is not None:

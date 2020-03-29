@@ -43,13 +43,10 @@ class WalkLibrary(dict):
         if createDefaultPreset:
             self.savePreset()
 
-        # Import the default preset
-        self.importPreset()
-
         # Setting playback range to the max frames needed
         cmds.playbackOptions(animationEndTime=96)
         cmds.playbackOptions(minTime=1)
-        cmds.playbackOptions(maxTime=16)
+        cmds.playbackOptions(maxTime=24)
         cmds.playbackOptions(animationStartTime=1)
 
 
