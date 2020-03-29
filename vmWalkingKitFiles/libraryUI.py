@@ -90,7 +90,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Every time we create a new instance, we will automatically create our UI
         self.createUI()
-        self.onReset()
+        self.prevBodyIndex = 2
+        #self.onReset()
 
         self.parent().layout().addWidget(self)
         if not dock:
@@ -130,7 +131,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
     def createUI(self):
         """This method creates the UI"""
-
         # This is the master layout
         self.layout = QtWidgets.QVBoxLayout(self)
 
@@ -239,13 +239,14 @@ class WalkLibraryUI(QtWidgets.QWidget):
             for i in range(0, len(options)):
                 widget.addItem(options[i])
 
+            widget.setCurrentIndex(1)
             widget.currentIndexChanged.connect(partial(getattr(self, slotName), prefix))
 
         elif slotName == "onSliderChanged":
             widget = QtWidgets.QSlider(QtCore.Qt.Horizontal)
             widget.setMinimum(0)
             widget.setMaximum(1000)
-            widget.setValue(500)
+            widget.setValue(200)
             widget.valueChanged.connect(partial(getattr(self, slotName), prefix))
 
         self.paramWidgets[prefix] = widget
@@ -264,6 +265,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
     def onDropDownChanged(self, prefix, index):
 
+        print "drop downnnnnfdffffffffffffffffffffffffffffffffffffffffffffff"
         indStr = str(index + 1)
 
         for key in self.paramLayers[prefix]:
@@ -275,10 +277,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
             else:
                self.library.changeLayerMuteState(layerName, True)
 
-        activeLayers, weights = self.library.getActiveAnimationLayers()
         indices = []
-        bodyIndex = None
-        gotBodyIndex = False
+        activeLayers, weights = self.library.getActiveAnimationLayers()
 
         for i in range(0, len(activeLayers)):
 
@@ -288,10 +288,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
             splitStr = activeLayers[i].split("_")
 
             if self.prefixes[0] in splitStr[0] or self.prefixes[1] in splitStr[0]:
-                if prefix == self.prefixes[0] and gotBodyIndex is False:
-                    gotBodyIndex = True
-                    bodyIndex = int(splitStr[1])
-
                 indices.append(int(splitStr[1]))
 
         playBackEndRange = 0
@@ -308,30 +304,45 @@ class WalkLibraryUI(QtWidgets.QWidget):
         elif (indices[0] == 2 and indices[1] == 3) or (indices[0] == 3 and indices[1] == 2):
             playBackEndRange = 96
 
-        if bodyIndex is not None:
+        currBodyIndex = self.paramWidgets[prefix].currentIndex() + 1
+
+        if currBodyIndex is not None:
 
             cntrlName = 'Mr_Buttons:Mr_Buttons_COG_Ctrl'
-            currentmaxTime = cmds.playbackOptions(query=True, maxTime=True)
-            newEndTime = 0
+            attrFull = '%s.%s' % (cntrlName, 'translateY')
+            newKeys = []
+            offset = 0
 
-            if bodyIndex == 1:
-                newEndTime = 17
-            elif bodyIndex == 2:
-                newEndTime = 25
-            else:
-                newEndTime = 33
-
-            print newEndTime
+            if (self.prevBodyIndex == 1 and currBodyIndex == 2) or (self.prevBodyIndex == 2 and currBodyIndex == 3):
+                offset = 1
+            elif (self.prevBodyIndex == 2 and currBodyIndex == 1) or (self.prevBodyIndex == 3 and currBodyIndex == 2):
+                offset = -1
+            elif self.prevBodyIndex == 1 and currBodyIndex == 3:
+                offset = 2
+            elif self.prevBodyIndex == 3 and currBodyIndex == 1:
+                offset = -2
 
             cmds.animLayer('UpDown_1', edit=True, lock=False)
-            cmds.scaleKey(cntrlName, time=(1, currentmaxTime), newStartTime=1, newEndTime=newEndTime, attribute='ty')
-            cmds.snapKey(cntrlName, tm=1.0)
+            cmds.animLayer('UpDown_1', edit=True, selected=True)
+            keyframes = cmds.keyframe(attrFull, query=True)
+
+            for i in range(0, len(keyframes)):
+                if i != 0:
+                    keyframes = cmds.keyframe(attrFull, query=True)
+                    cmds.keyframe(attrFull, edit=True, relative=True, timeChange=offset, time=(keyframes[i], keyframes[len(keyframes)-1]))                #increment += offset
+
+            #for i in range(0, len(newKeys)):
+            #   cmds.keyframe(cntrlName, edit=True, time=(keyframes[i], keyframes[i]), timeChange=newKeys[i])
+
             cmds.animLayer('UpDown_1', edit=True, lock=True)
+            cmds.animLayer('UpDown_1', edit=True, selected=False)
 
         cmds.playbackOptions(animationEndTime=96)
         cmds.playbackOptions(minTime=1)
         cmds.playbackOptions(maxTime=playBackEndRange)
         cmds.playbackOptions(animationStartTime=1)
+
+        self.prevBodyIndex = self.paramWidgets[prefix].currentIndex() + 1
 
     def onSliderChanged(self, prefix, value):
 
