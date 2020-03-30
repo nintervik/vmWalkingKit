@@ -91,7 +91,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Every time we create a new instance, we will automatically create our UI
         self.createUI()
         self.prevBodyIndex = 2
-        #self.onReset()
+        self.onReset()
 
         self.parent().layout().addWidget(self)
         if not dock:
@@ -183,6 +183,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
     def createHeadTab(self):
         tabHead = self.addTab("Head")
+        tmpText = QtWidgets.QLabel("Work in progress.")
+        self.scrollLayout.addWidget(tmpText)
 
     def createBottomBtns(self):
 
@@ -421,8 +423,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
                     self.paramWidgets[prefix].setValue(defaultWeights[i]*1000.0)
         else:
             print "Query for default preset file failed."
-
-
 
     def onImport(self):
         self.library.importPreset()
