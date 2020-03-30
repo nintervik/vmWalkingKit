@@ -176,7 +176,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         tabGeneral = self.addTab("General")
 
         # Create General tab parameters
-        self.addParam(tabGeneral, "Body beat", self.frameOptions, 0, self.prefixes[0], "onDropDownChanged")
+        self.addParam(tabGeneral, "Body beat", self.frameOptions, 0, self.prefixes[0], "onDropDownBodyBeatChanged")
         self.addParam(tabGeneral, "Arms beat", self.frameOptions, 1, self.prefixes[1], "onDropDownChanged")
         self.addParam(tabGeneral, "Up & Down", self.rangeOptions, 2, self.prefixes[2], "onSliderChanged")
         self.addParam(tabGeneral, "Body Tilt", self.rangeOptions, 3, self.prefixes[3], "onSliderChanged")
@@ -233,7 +233,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         widget = None
 
-        if slotName == "onDropDownChanged":
+        if slotName == "onDropDownChanged" or slotName == "onDropDownBodyBeatChanged":
             widget = QtWidgets.QComboBox()
 
             for i in range(0, len(options)):
@@ -265,7 +265,51 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
     def onDropDownChanged(self, prefix, index):
 
-        print "drop downnnnnfdffffffffffffffffffffffffffffffffffffffffffffff"
+        indStr = str(index + 1)
+
+        for key in self.paramLayers[prefix]:
+
+            layerName = key
+
+            if indStr in key:
+                self.library.changeLayerMuteState(layerName, False)
+            else:
+               self.library.changeLayerMuteState(layerName, True)
+
+        activeLayers, weights = self.library.getActiveAnimationLayers()
+        indices = []
+
+        for i in range(0, len(activeLayers)):
+
+            if len(indices) == 2:
+                break
+
+            splitStr = activeLayers[i].split("_")
+
+            if self.prefixes[0] in splitStr[0] or self.prefixes[1] in splitStr[0]:
+                indices.append(int(splitStr[1]))
+
+        playBackEndRange = 0
+
+        if indices[0] == 1 and indices[1] == 1:
+            playBackEndRange = 16
+        elif (indices[0] == 1 and indices[1] == 2) or (indices[0] == 2 and indices[1] == 1):
+            playBackEndRange = 48
+        elif ((indices[0] == 1 and indices[1] == 3) or (indices[0] == 3 and indices[1] == 1))\
+                or (indices[0] == 3 and indices[1] == 3):
+            playBackEndRange = 32
+        elif indices[0] == 2 and indices[1] == 2:
+            playBackEndRange = 24
+        elif (indices[0] == 2 and indices[1] == 3) or (indices[0] == 3 and indices[1] == 2):
+            playBackEndRange = 96
+
+        cmds.playbackOptions(animationEndTime=96)
+        cmds.playbackOptions(minTime=1)
+        cmds.playbackOptions(maxTime=playBackEndRange)
+        cmds.playbackOptions(animationStartTime=1)
+
+    def onDropDownBodyBeatChanged(self, prefix, index):
+
         indStr = str(index + 1)
 
         for key in self.paramLayers[prefix]:
@@ -322,8 +366,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
             elif self.prevBodyIndex == 3 and currBodyIndex == 1:
                 offset = -2
 
-            cmds.animLayer('UpDown_1', edit=True, lock=False)
             cmds.animLayer('UpDown_1', edit=True, selected=True)
+            cmds.animLayer('UpDown_1', edit=True, lock=False)
             keyframes = cmds.keyframe(attrFull, query=True)
 
             for i in range(0, len(keyframes)):
