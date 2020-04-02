@@ -74,6 +74,9 @@ class WalkLibrary(object):
             # Change layer mute state
             cmds.animLayer(layerNameToChange, edit=True, mute=mute)
 
+            if layerNameToChange == 'UpDown_1' and cmds.animLayer('UpDown_1', query=True, lock=True):
+                cmds.animLayer('UpDown_1', edit=True, lock=False)
+
             # Once the operations have finished begin playback (only if it was playing before)
             if wasPlaying:
                 cmds.play(state=True)
@@ -159,6 +162,7 @@ class WalkLibrary(object):
         """
 
         # TODO: take into account playback range settings when importing preset (as inDropDownChanged)
+        # TODO: when importing a new preset the parameters will also need to be changed accordingly. As in resetPreset()
 
         # Generate directory name for the JSON preset file
         infoFile = os.path.join(directory, '%s.json' % name)
@@ -200,7 +204,7 @@ class WalkLibrary(object):
 
         return defaultLayers, defaultWeights
 
-    def savePreset(self, name='defaultPreset', directory=DIRECTORY):
+    def savePreset(self, name=DEFAULT_PRESET_NAME, directory=DIRECTORY):
         """
         Saves the current parameters in a preset JSON file.
         Args:
