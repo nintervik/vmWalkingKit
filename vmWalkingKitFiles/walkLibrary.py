@@ -4,18 +4,18 @@ import json
 from collections import OrderedDict
 import logging
 
-# Setting up logger
+# Set up logger
 logger = logging.getLogger('WalkLibraryUI')
 logger.setLevel(logging.DEBUG) # TODO: change to logging.INFO when shipping
 logging.basicConfig()
 
-# Querying C:\Users\UserName\Documents\maya
+# Query C:\Users\userName\Documents\maya
 USER_APP_DIR = cmds.internalVar(userAppDir=True)
 
-# Generating presets path C:\Users\UserName\Documents\maya\vmWalkingKitPresets
+# Generate presets path C:\Users\userName\Documents\maya\vmWalkingKitPresets
 DIRECTORY = os.path.join(USER_APP_DIR, 'vmWalkKitPresets')
 
-# Setting the name for the default preset JSON file
+# Set the name for the default preset JSON file
 DEFAULT_PRESET_NAME = 'defaultPreset'
 
 def createDirectory(directory=DIRECTORY):
@@ -24,15 +24,17 @@ def createDirectory(directory=DIRECTORY):
     Args:
         directory(str): the directory to create
     """
+
     if not os.path.exists(directory):
         os.mkdir(directory)
 
-class WalkLibrary(dict):
+class WalkLibrary(object):
     """
     This class manages all the stuff related to animation layers and presets
     """
 
     def __init__(self, createDefaultPreset=False):
+
         """
         Init method. Here we create the directory to save the presets and reset everything to
         default by reading from the 'defaultPreset.json' file.
@@ -48,7 +50,6 @@ class WalkLibrary(dict):
         cmds.playbackOptions(minTime=1)
         cmds.playbackOptions(maxTime=24)
         cmds.playbackOptions(animationStartTime=1)
-
 
     # ANIMATION LAYERS METHODS
 

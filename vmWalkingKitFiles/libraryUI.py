@@ -31,23 +31,6 @@ else: # If we are using PySide2 (Maya 2017 and above)
     logger.debug('Using PySide2 with shiboken2')
     from shiboken2 import wrapInstance
 
-def getMayaMainWindow():
-    win = omui.MQtUtil_mainWindow()
-    ptr = wrapInstance(long(win), QtWidgets.QMainWindow)
-
-    return ptr
-
-def getWindowDock(name='WalkToolDock'):
-    deleteWindowDock(name)
-    ctrl = cmds.workspaceControl(name, tabToControl=('AttributeEditor', 2), label='Walk Tool', vis=True)
-    qtCtrl = omui.MQtUtil_findControl(name)
-    ptr = wrapInstance(long(qtCtrl), QtWidgets.QWidget)
-
-    return ptr
-
-def deleteWindowDock(name='WalkToolDock'):
-    if cmds.workspaceControl(name, exists=True):
-        cmds.deleteUI(name)
 
 class WalkLibraryUI(QtWidgets.QWidget):
     """
@@ -56,22 +39,28 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
     def __init__(self, dock=True):
 
+        # Delete UI if it already exists
         try:
             cmds.deleteUI('walktool')
         except:
             logger.debug('No previous UI exists.')
 
+        # If dock mode is queried the parent will be the docked window
+        # If not, the parent will be the main Maya window
+        # TODO: explain this dock(bool) option in the documentation of the tool
         if dock:
             parent = getWindowDock()
         else:
             deleteWindowDock()
-
             parent = QtWidgets.QDialog(parent=getMayaMainWindow())
             parent.setObjectName('walktool')
             parent.setWindowTitle('Walk Tool')
             layout = QtWidgets.QVBoxLayout(parent)
 
+        # Now that our parent is set we can initialize it
         super(WalkLibraryUI, self).__init__(parent=parent)
+
+        # Set default size of the window
         self.resize(400, 350)
 
         # The Library variable points to an instance of our controller library
@@ -90,10 +79,15 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Every time we create a new instance, we will automatically create our UI
         self.createUI()
-        self.prevBodyIndex = 2
         self.onReset()
 
+        # Saving initial BodyBeat index for adapting UpDown paramater accordingly
+        self.prevBodyIndex = 2
+
+        # Add ourself (QtWidgets.QWidget) to the parent's layout
         self.parent().layout().addWidget(self)
+
+        # If docked mode is off, directly show our parent
         if not dock:
             parent.show()
 
@@ -426,6 +420,59 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
     def onImport(self):
         self.library.importPreset()
+
+# MAYA WINDOWS FUNCTIONS
+
+def getMayaMainWindow():
+    """
+    Get the main Maya windows (which is also built with Qt).
+
+    Returns:
+        ptr(QtWidgets.QMainWindow): The Maya MainWindow
+    """
+
+    # With OpenMayaUI API we query a reference to Maya's MainWindow
+    win = omui.MQtUtil_mainWindow()
+
+    # We cast the queried window to QMainWindow so it's manageable within our Python code
+    ptr = wrapInstance(long(win), QtWidgets.QMainWindow)
+
+    return ptr
+
+def getWindowDock(name='WalkToolDock'):
+    """
+    Create dock with the given name.
+    Args:
+        name(str): name of the dock to create.
+
+    Returns:
+        ptr(QtWidget.QWidget): The dock's widget
+    """
+
+    # Delete older dock
+    deleteWindowDock(name)
+
+    # Create a dock and query its name
+    ctrl = cmds.workspaceControl(name, tabToControl=('AttributeEditor', 2), label='Walk Tool', vis=True)
+
+    # Query the correspondent QtWidget associated with the dock
+    qtCtrl = omui.MQtUtil_findControl(name)
+
+    # We cast the queried window to QWidget so it's manageable within our Python code
+    ptr = wrapInstance(long(qtCtrl), QtWidgets.QWidget)
+
+    return ptr
+
+def deleteWindowDock(name='WalkToolDock'):
+    """
+    Deletes the given dock if this exists.
+    Args:
+        name(str): name of the window to delete
+    """
+
+    if cmds.workspaceControl(name, exists=True):
+        cmds.deleteUI(name)
+
 
 # Call it in Maya's Script Editor
 #from vmWalkingKit.vmWalkingKitFiles import libraryUI
