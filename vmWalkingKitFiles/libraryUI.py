@@ -307,9 +307,18 @@ class WalkLibraryUI(QtWidgets.QWidget):
     # SLOT METHODS
 
     def onDropDownChanged(self, prefix, index):
+        """
+        Takes in the new current index of the dropdown to change the layer state accordingly.
 
+        Args:
+            prefix:(string): prefix of the layer associated with this parameter.
+            index (int): index of the current selected option in the dropdown
+        """
+
+        # Convert the index into a string and inside a [1-3] range to match the animation layer naming convention
         indStr = str(index + 1)
 
+        # Change animation layers mute state according to the current index
         for key in self.paramLayers[prefix]:
 
             layerName = key
@@ -319,19 +328,27 @@ class WalkLibraryUI(QtWidgets.QWidget):
             else:
                self.library.changeLayerMuteState(layerName, True)
 
+        # Retrieve the current BodyBeat and ArmsBeat indices by iterating the current active layers and
+        # checking for the unmuted ones
         activeLayers, weights = self.library.getActiveAnimationLayers()
         indices = []
 
         for i in range(0, len(activeLayers)):
 
+            # Once we got both indices we break out of the for loop
             if len(indices) == 2:
                 break
 
+            # Split layer name into prefix and index
             splitStr = activeLayers[i].split("_")
 
+            # If we find 'BodyBeat' or 'ArmsBeat' we store their indices
             if self.prefixes[0] in splitStr[0] or self.prefixes[1] in splitStr[0]:
                 indices.append(int(splitStr[1]))
 
+        # Calculate the playback range according to the current indices retrieved above. Body and arms beat dictate
+        # the length of the whole walk cycle animation. This allows for a minimum playback time while always allowing
+        # the animation to be looped properly.
         playBackEndRange = 0
 
         if indices[0] == 1 and indices[1] == 1:
@@ -346,15 +363,27 @@ class WalkLibraryUI(QtWidgets.QWidget):
         elif (indices[0] == 2 and indices[1] == 3) or (indices[0] == 3 and indices[1] == 2):
             playBackEndRange = 96
 
+        # Set de new calculated playback range
         cmds.playbackOptions(animationEndTime=96)
         cmds.playbackOptions(minTime=1)
         cmds.playbackOptions(maxTime=playBackEndRange)
         cmds.playbackOptions(animationStartTime=1)
 
     def onDropDownBodyBeatChanged(self, prefix, index):
+        """
+        Takes in the new current index of the dropdown to change the layer state accordingly. It only differs from
+        the onDropDownChanged() method in the sense that this one is also in charge of moving the keyframes of the
+        UpDown_1 layer in order to adapt to the BodyBeat parameter.
 
+        Args:
+            prefix:(string): prefix of the layer associated with this parameter.
+            index (int): index of the current selected option in the dropdown
+        """
+
+        # Convert the index into a string and inside a [1-3] range to match the animation layer naming convention
         indStr = str(index + 1)
 
+        # Change animation layers mute state according to the current index
         for key in self.paramLayers[prefix]:
 
             layerName = key
@@ -364,19 +393,27 @@ class WalkLibraryUI(QtWidgets.QWidget):
             else:
                self.library.changeLayerMuteState(layerName, True)
 
+        # Retrieve the current BodyBeat and ArmsBeat indices by iterating the current active layers and
+        # checking for the unmuted ones
         indices = []
         activeLayers, weights = self.library.getActiveAnimationLayers()
 
         for i in range(0, len(activeLayers)):
 
+            # Once we got both indices we break out of the for loop
             if len(indices) == 2:
                 break
 
+            # Split layer name into prefix and index
             splitStr = activeLayers[i].split("_")
 
+            # If we find 'BodyBeat' or 'ArmsBeat' we store their indices
             if self.prefixes[0] in splitStr[0] or self.prefixes[1] in splitStr[0]:
                 indices.append(int(splitStr[1]))
 
+        # Calculate the playback range according to the current indices retrieved above. Body and arms beat dictate
+        # the length of the whole walk cycle animation. This allows for a minimum playback time while always allowing
+        # the animation to be looped properly.
         playBackEndRange = 0
 
         if indices[0] == 1 and indices[1] == 1:
@@ -391,14 +428,18 @@ class WalkLibraryUI(QtWidgets.QWidget):
         elif (indices[0] == 2 and indices[1] == 3) or (indices[0] == 3 and indices[1] == 2):
             playBackEndRange = 96
 
+        # Query the current BodyBeat index
         currBodyIndex = self.paramWidgets[prefix].currentIndex() + 1
 
         if currBodyIndex is not None:
+
+            # Create the ty attribute of the controller that handles the up and down movement
             cntrlName = 'Mr_Buttons:Mr_Buttons_COG_Ctrl'
             attrFull = '%s.%s' % (cntrlName, 'translateY')
-            newKeys = []
             offset = 0
 
+            # Calculate the offset of the keyframes that need to be moved according to the current and previous index
+            # of the BodyBeat parameter
             if (self.prevBodyIndex == 1 and currBodyIndex == 2) or (self.prevBodyIndex == 2 and currBodyIndex == 3):
                 offset = 1
             elif (self.prevBodyIndex == 2 and currBodyIndex == 1) or (self.prevBodyIndex == 3 and currBodyIndex == 2):
@@ -408,23 +449,30 @@ class WalkLibraryUI(QtWidgets.QWidget):
             elif self.prevBodyIndex == 3 and currBodyIndex == 1:
                 offset = -2
 
-            cmds.animLayer('UpDown_1', edit=True, lock=False)
+            # Select the UpDown layer so its keyframes can be moved
             cmds.animLayer('UpDown_1', edit=True, selected=True)
 
+            # Query the current keyframes in Translate Y
             keyframes = cmds.keyframe(attrFull, query=True)
 
+            # For each of the current keyframes move them the 'offset' amount. Except for the frame 1 that will be
+            # always at the same position
             for i in range(0, len(keyframes)):
                 if i != 0:
+                    # Every time before moving, query again the current keyframes as they are now moved
                     keyframes = cmds.keyframe(attrFull, query=True)
+                    # Move the keyframes the 'offset' amount in the range from the current one to the last one
                     cmds.keyframe(attrFull, edit=True, relative=True,
                                   timeChange=offset, time=(keyframes[i],
                                   keyframes[len(keyframes)-1]))
 
+        # Set de new calculated playback range
         cmds.playbackOptions(animationEndTime=96)
         cmds.playbackOptions(minTime=1)
         cmds.playbackOptions(maxTime=playBackEndRange)
         cmds.playbackOptions(animationStartTime=1)
 
+        # Store the previous BodyBeat index for the next calculation
         self.prevBodyIndex = self.paramWidgets[prefix].currentIndex() + 1
 
     def onSliderChanged(self, prefix, value):
