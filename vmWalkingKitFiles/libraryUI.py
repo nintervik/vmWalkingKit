@@ -190,10 +190,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
         tabGeneral = self.addTab("General")
 
         # Create General tab parameters
-        self.addParam(tabGeneral, "Body beat", self.frameOptions, 0, self.prefixes[0], "onDropDownBodyBeatChanged")
-        self.addParam(tabGeneral, "Arms beat", self.frameOptions, 1, self.prefixes[1], "onDropDownChanged")
-        self.addParam(tabGeneral, "Up & Down", self.rangeOptions, 2, self.prefixes[2], "onSliderChanged")
-        self.addParam(tabGeneral, "Body Tilt", self.rangeOptions, 3, self.prefixes[3], "onSliderChanged")
+        self.addDropDownParam(tabGeneral, "Body beat", self.frameOptions, 0, self.prefixes[0], "onDropDownBodyBeatChanged")
+        self.addDropDownParam(tabGeneral, "Arms beat", self.frameOptions, 1, self.prefixes[1], "onDropDownChanged")
+        self.addSliderParam(tabGeneral, "Up & Down", 2, self.prefixes[2], "onSliderChanged")
+        self.addSliderParam(tabGeneral, "Body Tilt", 3, self.prefixes[3], "onSliderChanged")
 
     def createHeadTab(self):
         """
@@ -217,17 +217,19 @@ class WalkLibraryUI(QtWidgets.QWidget):
         btnLayout = QtWidgets.QHBoxLayout(btnWidget)
         self.layout.addWidget(btnWidget)
 
-        # Create 'save' button
+        # Create buttons, connect them to a slot and add them to our btnLayout
+
+        # Save button
         saveBtn = QtWidgets.QPushButton('Save preset')
         # saveBtn.clicked.connect(self.onSave)
         btnLayout.addWidget(saveBtn)
 
-        # Create 'read' button
+        # Read button
         importBtn = QtWidgets.QPushButton('Import preset')
         #importBtn.clicked.connect(self.onImport)
         btnLayout.addWidget(importBtn)
 
-        # Create 'read' button
+        # Reset
         resetBtn = QtWidgets.QPushButton('Reset')
         resetBtn.clicked.connect(self.onReset)
         btnLayout.addWidget(resetBtn)
@@ -235,18 +237,32 @@ class WalkLibraryUI(QtWidgets.QWidget):
     # UI functionality methods
 
     def addTab(self, tabName):
+        """
+        Creates a tab with the given name.
+        Args:
+            tabName(str): name of the tab to create.
 
+        Returns:
+            newTab(QtWidgets.QWidget): a reference to the new created tab.
+        """
+
+        # Create a new tab and add it to the QTabWidget
         newTab = QtWidgets.QWidget()
         self.tabs.addTab(newTab, tabName)
 
+        # Set a QGridLayout for the new tab
         newTab.layout = QtWidgets.QGridLayout(newTab)
         newTab.layout.setContentsMargins(4, 4, 4, 4)
         newTab.setLayout(newTab.layout)
 
+        # Create the scroll widget that will contain all the parameters of this new tab
         scrollWidget = QtWidgets.QWidget()
         scrollWidget.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
 
+        # Set the scroll layout
         self.scrollLayout = QtWidgets.QGridLayout(scrollWidget)
+
+        # Create the scroll area to add the new tab
         scrollArea = QtWidgets.QScrollArea()
         scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
         scrollArea.setWidgetResizable(True)
@@ -255,25 +271,28 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         return newTab
 
-    def addParam(self, tab, paramName, options, id, prefix, slotName=None):
+    def addDropDownParam(self, tab, paramName, options, id, prefix, slotName=None):
 
-        widget = None
+        widget = QtWidgets.QComboBox()
+        for i in range(0, len(options)):
+            widget.addItem(options[i])
 
-        if slotName == "onDropDownChanged" or slotName == "onDropDownBodyBeatChanged":
-            widget = QtWidgets.QComboBox()
+        widget.setCurrentIndex(1)  # TODO: not hardcode this? Maybe read from JSON default preset file
+        widget.currentIndexChanged.connect(partial(getattr(self, slotName), prefix))
 
-            for i in range(0, len(options)):
-                widget.addItem(options[i])
+        self.setUpParamWidget(prefix, widget, paramName, id)
 
-            widget.setCurrentIndex(1)
-            widget.currentIndexChanged.connect(partial(getattr(self, slotName), prefix))
+    def addSliderParam(self, tab, paramName, id, prefix, slotName=None):
 
-        elif slotName == "onSliderChanged":
-            widget = QtWidgets.QSlider(QtCore.Qt.Horizontal)
-            widget.setMinimum(0)
-            widget.setMaximum(1000)
-            widget.setValue(200)
-            widget.valueChanged.connect(partial(getattr(self, slotName), prefix))
+        widget = QtWidgets.QSlider(QtCore.Qt.Horizontal)
+        widget.setMinimum(0)
+        widget.setMaximum(1000)
+        widget.setValue(200)
+        widget.valueChanged.connect(partial(getattr(self, slotName), prefix))
+
+        self.setUpParamWidget(prefix, widget, paramName, id)
+
+    def setUpParamWidget(self, prefix, widget, paramName, id):
 
         self.paramWidgets[prefix] = widget
 
@@ -284,8 +303,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
         paramText.setMinimumHeight(25)
         self.scrollLayout.addWidget(QtWidgets.QLabel(" "), id, 3, 1, 1)
         self.scrollLayout.addWidget(widget, id, 4, 1, 3)
-
-        return widget
 
     # SLOT METHODS
 
