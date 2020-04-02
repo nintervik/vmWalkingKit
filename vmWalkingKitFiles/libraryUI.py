@@ -92,26 +92,36 @@ class WalkLibraryUI(QtWidgets.QWidget):
             parent.show()
 
     def initParamLayersData(self):
+        """
+        Initializes all the data structures needed for controlling animation layers and parameters.
+        """
 
+        # Get the names and weights of all the animation layers in the scene
         layersNames, layersWeights = self.library.getCurrentAnimationLayers()
 
-        # General tab
+        # Create ordered dictionaries to store the parameters data
+
+        # BodyBeat
         bodyBeatDict = OrderedDict()
         bodyBeatDict[layersNames[0]] = layersWeights[0]
         bodyBeatDict[layersNames[1]] = layersWeights[1]
         bodyBeatDict[layersNames[2]] = layersWeights[2]
 
+        # ArmsBeat
         armsBeatDict = OrderedDict()
         armsBeatDict[layersNames[3]] = layersWeights[3]
         armsBeatDict[layersNames[4]] = layersWeights[4]
         armsBeatDict[layersNames[5]] = layersWeights[5]
 
+        # UpDown
         upDownDict = OrderedDict()
         upDownDict[layersNames[6]] = layersWeights[6]
 
+        # BodyTilt
         bodyTiltDict = OrderedDict()
         bodyTiltDict[layersNames[7]] = layersWeights[7]
 
+        # Create main data list with all the layers information sorted by parameter
         self.paramLayers = {
             self.prefixes[0]: bodyBeatDict,
             self.prefixes[1]: armsBeatDict,
@@ -125,6 +135,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
     def createUI(self):
         """This method creates the UI"""
+
         # This is the master layout
         self.layout = QtWidgets.QVBoxLayout(self)
 
@@ -133,7 +144,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Initialize tab screen
         self.tabs = QtWidgets.QTabWidget()
-        #self.tabs.setDocumentMode(True)
         self.tabs.setUsesScrollButtons(True)
         self.layout.addWidget(self.tabs)
 
@@ -152,8 +162,15 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.createBottomBtns()
 
     def createMenuBar(self):
+        """
+        Creates the top menu bar.
+        """
+
+        # Creates the menu bar widges and add it to the master layout
         menubar = QtWidgets.QMenuBar()
         self.layout.addWidget(menubar)
+
+        # Add the main menu options
         actionFile = menubar.addMenu("File")
         actionFile.addAction("New")
         actionFile.addAction("Open")
@@ -165,8 +182,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
         menubar.addMenu("Help")
 
     def createGeneralTab(self):
+        """
+        Creates the general tab.
+        """
 
-        # Add tab
+        # Add general tab
         tabGeneral = self.addTab("General")
 
         # Create General tab parameters
@@ -176,11 +196,21 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.addParam(tabGeneral, "Body Tilt", self.rangeOptions, 3, self.prefixes[3], "onSliderChanged")
 
     def createHeadTab(self):
+        """
+        Creates the head tab
+        """
+
+        # Add tab for the head
         tabHead = self.addTab("Head")
+
+        # Add placeholder text to the scroll layout
         tmpText = QtWidgets.QLabel("Work in progress.")
         self.scrollLayout.addWidget(tmpText)
 
     def createBottomBtns(self):
+        """
+        Creates the bottom buttons.
+        """
 
         # This is our child widget that holds all the buttons
         btnWidget = QtWidgets.QWidget()
