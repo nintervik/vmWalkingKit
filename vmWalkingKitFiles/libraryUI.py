@@ -72,7 +72,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.paramWidgets = OrderedDict()
 
         # Prefixes
-        self.prefixes = ["BodyBeat", "ArmsBeat", "UpDown", "BodyTilt"]
+        self.prefixes = ["BodyBeat", "ArmsBeat", "UpDown", "BodyTilt", "HeadUpDown"]
 
         # Populate 'paramLayers' dictionary with the current info on the scene
         self.initParamLayersData()
@@ -121,12 +121,17 @@ class WalkLibraryUI(QtWidgets.QWidget):
         bodyTiltDict = OrderedDict()
         bodyTiltDict[layersNames[7]] = layersWeights[7]
 
+        # HeadUpDown
+        headUpDownDict = OrderedDict()
+        headUpDownDict[layersNames[8]] = layersWeights[8]
+
         # Create main data list with all the layers information sorted by parameter
         self.paramLayers = {
             self.prefixes[0]: bodyBeatDict,
             self.prefixes[1]: armsBeatDict,
             self.prefixes[2]: upDownDict,
-            self.prefixes[3]: bodyTiltDict
+            self.prefixes[3]: bodyTiltDict,
+            self.prefixes[4]: headUpDownDict,
         }
 
     # UI METHODS
@@ -203,9 +208,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Add tab for the head
         tabHead = self.addTab("Head")
 
-        # Add placeholder text to the scroll layout
-        tmpText = QtWidgets.QLabel("Work in progress.")
-        self.scrollLayout.addWidget(tmpText)
+        # Create General tab parameters
+        self.addSliderParam(tabHead, "Head up-down", 0, self.prefixes[4], "onSliderChanged")
 
     def createTrunkTab(self):
         """
@@ -568,6 +572,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         """
 
         layerName = list(self.paramLayers[prefix].keys())[0]
+        print layerName
         weight = value / 1000.0
         self.library.changeLayerWeight(layerName, weight)
 
