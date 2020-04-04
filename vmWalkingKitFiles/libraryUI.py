@@ -72,7 +72,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.paramWidgets = OrderedDict()
 
         # Prefixes
-        self.prefixes = ["BodyBeat", "ArmsBeat", "UpDown", "BodyTilt", "HeadUpDown"]
+        self.prefixes = ["BodyBeat", "ArmsBeat", "UpDown", "BodyTilt", "HeadUpDown", "HeadPigeon"]
 
         # Populate 'paramLayers' dictionary with the current info on the scene
         self.initParamLayersData()
@@ -125,6 +125,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
         headUpDownDict = OrderedDict()
         headUpDownDict[layersNames[8]] = layersWeights[8]
 
+        # HeadPigeon
+        headPigeonDict = OrderedDict()
+        headPigeonDict[layersNames[9]] = layersWeights[9]
+
         # Create main data list with all the layers information sorted by parameter
         self.paramLayers = {
             self.prefixes[0]: bodyBeatDict,
@@ -132,6 +136,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
             self.prefixes[2]: upDownDict,
             self.prefixes[3]: bodyTiltDict,
             self.prefixes[4]: headUpDownDict,
+            self.prefixes[5]: headPigeonDict
         }
 
     # UI METHODS
@@ -210,6 +215,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Create General tab parameters
         self.addSliderParam(tabHead, "Head up-down", 0, self.prefixes[4], "onSliderChanged")
+        self.addSliderParam(tabHead, "Head pigeon", 1, self.prefixes[5], "onSliderChanged")
 
     def createTrunkTab(self):
         """
@@ -497,6 +503,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
             attrHeadUpDown = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.translateY'
             self.offsetKeyFrames(attrHeadUpDown, 'HeadUpDown_1', currBodyIndex)
 
+            # TODO: fix this
+            #attrHeadPigeon = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.translateZ'
+            #self.offsetKeyFrames(attrHeadPigeon, 'HeadPigeon_1', currBodyIndex)
+
         # Store the previous BodyBeat index for the next calculation
         self.prevBodyIndex = self.paramWidgets[prefix].currentIndex() + 1
 
@@ -602,11 +612,14 @@ class WalkLibraryUI(QtWidgets.QWidget):
         elif self.prevBodyIndex == 3 and currBodyIndex == 1:
             offset = -2
 
+        print offset
         # Select the layer so its keyframes can be moved
         cmds.animLayer(layerName, edit=True, selected=True)
 
         # Query the current keyframes in the given attribute
         keyframes = cmds.keyframe(attrFull, query=True)
+
+        print len(keyframes)
 
         # For each of the current keyframes move them the 'offset' amount. Except for the frame 1 that will always
         # be at the same position
@@ -618,6 +631,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
                 cmds.keyframe(attrFull, edit=True, relative=True,
                               timeChange=offset, time=(keyframes[i],
                               keyframes[len(keyframes)-1]))
+
+        cmds.animLayer(layerName, edit=True, selected=False)
 
     def calculatePlaybackRange(self, indices):
 
