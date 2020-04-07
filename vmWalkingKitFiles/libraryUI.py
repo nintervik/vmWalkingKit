@@ -7,7 +7,7 @@ import walkLibrary
 reload(walkLibrary)  # TODO: delete this when shipping.
 
 # TODO: Substitute 'PySide2' with 'Qt' when shipping the tool.
-# This is only for develop purposes
+# This is only for developing purposes
 from Qt import QtWidgets, QtCore, QtGui
 from functools import partial
 import Qt
@@ -36,6 +36,9 @@ class WalkLibraryUI(QtWidgets.QWidget):
     """
     The WalkLibraryUI is a dialog that lets us control all the walkTool parameters.
     """
+
+    # Saving initial BodyBeat index for adapting UpDown parameter accordingly
+    prevBodyIndex = 2
 
     def __init__(self, dock=True):
 
@@ -81,8 +84,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.createUI()
         self.onReset()
 
-        # Saving initial BodyBeat index for adapting UpDown paramater accordingly
-        self.prevBodyIndex = 2
+
 
         # Add ourself (QtWidgets.QWidget) to the parent's layout
         self.parent().layout().addWidget(self)
@@ -372,7 +374,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
             widget.addItem(options[i])
 
         widget.setCurrentIndex(1)  # TODO: not hardcode this? Maybe read from JSON default preset file
-        widget.currentIndexChanged.connect(partial(getattr(self, slotName), prefix))
+
+        if prefix == 'BodyBeat':
+            widget.currentIndexChanged.connect(partial(getattr(self, slotName)))
+        else:
+            widget.currentIndexChanged.connect(partial(getattr(self, slotName), prefix))
 
         self.setUpParamWidget(prefix, widget, paramName, id)
 
@@ -445,16 +451,19 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # the animation to be looped properly.
         self.calculatePlaybackRange(indices)
 
-    def onDropDownBodyBeatChanged(self, prefix, index):
+    def onDropDownBodyBeatChanged(self, index):
         """
         Takes in the new current index of the dropdown to change the layer state accordingly. It only differs from
         the onDropDownChanged() method in the sense that this one is also in charge of moving the keyframes of the
         UpDown_1 layer in order to adapt to the BodyBeat parameter.
 
         Args:
-            prefix:(string): prefix of the layer associated with this parameter.
             index (int): index of the current selected option in the dropdown
         """
+
+        print "hiiiiiipp"
+
+        prefix = 'BodyBeat'
 
         # Convert the index into a string and inside a [1-3] range to match the animation layer naming convention
         indStr = str(index + 1)
@@ -500,15 +509,15 @@ class WalkLibraryUI(QtWidgets.QWidget):
             attrGeneralUpDown = 'Mr_Buttons:Mr_Buttons_COG_Ctrl.translateY'
             self.offsetKeyFrames(attrGeneralUpDown, 'UpDown_1', currBodyIndex)
 
+            # TODO: fix this
+            attrHeadPigeon = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.translateZ'
+            self.offsetKeyFrames(attrHeadPigeon, 'HeadPigeon_1', currBodyIndex)
+
             attrHeadUpDown = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.translateY'
             self.offsetKeyFrames(attrHeadUpDown, 'HeadUpDown_1', currBodyIndex)
 
-            # TODO: fix this
-            #attrHeadPigeon = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.translateZ'
-            #self.offsetKeyFrames(attrHeadPigeon, 'HeadPigeon_1', currBodyIndex)
-
         # Store the previous BodyBeat index for the next calculation
-        self.prevBodyIndex = self.paramWidgets[prefix].currentIndex() + 1
+        prevBodyIndex = self.paramWidgets[prefix].currentIndex() + 1
 
     def onSliderChanged(self, prefix, value):
         """
@@ -570,9 +579,12 @@ class WalkLibraryUI(QtWidgets.QWidget):
                 # Set the current index or change the slider value accordingly
                 if widgetType == 'QComboBox':
                     index = int(splitStr[1]) - 1
-                    self.paramWidgets[prefix].setCurrentIndex(index)
+                    if prefix == self.prefixes[0]:
+                        self.onDropDownBodyBeatChanged(index)
+                    else:
+                        self.onDropDownChanged(prefix, index)
                 elif widgetType == 'QSlider':
-                    self.paramWidgets[prefix].setValue(defaultWeights[i]*1000.0)
+                    self.onSliderChanged(prefix, defaultWeights[i]*1000.0)
         else:
             logger.debug("Query for default preset file failed.")
 
@@ -612,27 +624,37 @@ class WalkLibraryUI(QtWidgets.QWidget):
         elif self.prevBodyIndex == 3 and currBodyIndex == 1:
             offset = -2
 
-        print offset
-        # Select the layer so its keyframes can be moved
+        layerPlug = cmds.animLayer(layerName, e=True, findCurveForPlug=attrFull)
+        keyframes = cmds.keyframe(layerPlug[0], q=True)
+
         cmds.animLayer(layerName, edit=True, selected=True)
 
-        # Query the current keyframes in the given attribute
-        keyframes = cmds.keyframe(attrFull, query=True)
+        # Select attrFull
+        cmds.select(attrFull.split('.')[0], r=True)
 
-        print len(keyframes)
+
+
+        # Query the current keyframes in the given attribute
+        #keyframes = cmds.keyframe(attrFull, query=True)
 
         # For each of the current keyframes move them the 'offset' amount. Except for the frame 1 that will always
         # be at the same position
         for i in range(0, len(keyframes)):
             if i != 0:
                 # Every time before moving, query again the current keyframes as they are now moved
-                keyframes = cmds.keyframe(attrFull, query=True)
+                keyframes = cmds.keyframe(layerPlug[0], query=True)
                 # Move the keyframes the 'offset' amount in the range from the current one to the last one
                 cmds.keyframe(attrFull, edit=True, relative=True,
                               timeChange=offset, time=(keyframes[i],
                               keyframes[len(keyframes)-1]))
 
+        # Clear the active list
+        cmds.select(clear=True)
+
+        # Select the layer so its keyframes can be moved
         cmds.animLayer(layerName, edit=True, selected=False)
+
+
 
     def calculatePlaybackRange(self, indices):
 
