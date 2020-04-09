@@ -461,8 +461,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
             index (int): index of the current selected option in the dropdown
         """
 
-        print "hiiiiiipp"
-
         prefix = 'BodyBeat'
 
         # Convert the index into a string and inside a [1-3] range to match the animation layer naming convention
@@ -507,17 +505,17 @@ class WalkLibraryUI(QtWidgets.QWidget):
         if currBodyIndex is not None:
             # Create the ty attribute of the controller that handles the up and down body movement
             attrGeneralUpDown = 'Mr_Buttons:Mr_Buttons_COG_Ctrl.translateY'
-            self.offsetKeyFrames(attrGeneralUpDown, 'UpDown_1', currBodyIndex)
+            self.offsetKeyframes(attrGeneralUpDown, 'UpDown_1', currBodyIndex)
 
             # TODO: fix this
             attrHeadPigeon = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.translateZ'
-            self.offsetKeyFrames(attrHeadPigeon, 'HeadPigeon_1', currBodyIndex)
+            self.offsetKeyframes(attrHeadPigeon, 'HeadPigeon_1', currBodyIndex)
 
             attrHeadUpDown = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.translateY'
-            self.offsetKeyFrames(attrHeadUpDown, 'HeadUpDown_1', currBodyIndex)
+            self.offsetKeyframes(attrHeadUpDown, 'HeadUpDown_1', currBodyIndex)
 
         # Store the previous BodyBeat index for the next calculation
-        prevBodyIndex = self.paramWidgets[prefix].currentIndex() + 1
+        WalkLibraryUI.prevBodyIndex = self.paramWidgets[prefix].currentIndex() + 1
 
     def onSliderChanged(self, prefix, value):
         """
@@ -528,7 +526,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
         """
 
         layerName = list(self.paramLayers[prefix].keys())[0]
-        print layerName
         weight = value / 1000.0
         self.library.changeLayerWeight(layerName, weight)
 
@@ -609,7 +606,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
     # KEYFRAMES METHODS
 
-    def offsetKeyFrames(self, attrFull, layerName, currBodyIndex):
+    def offsetKeyframes(self, attrFull, layerName, currBodyIndex):
 
         offset = 0
 
@@ -624,18 +621,21 @@ class WalkLibraryUI(QtWidgets.QWidget):
         elif self.prevBodyIndex == 3 and currBodyIndex == 1:
             offset = -2
 
+        print "---------------------"
+        print "prevIndex"
+        print self.prevBodyIndex
+        print "currIndex"
+        print currBodyIndex
+        print "offset"
+        print offset
+        print "---------------------"
         layerPlug = cmds.animLayer(layerName, e=True, findCurveForPlug=attrFull)
         keyframes = cmds.keyframe(layerPlug[0], q=True)
 
-        cmds.animLayer(layerName, edit=True, selected=True)
-
         # Select attrFull
         cmds.select(attrFull.split('.')[0], r=True)
-
-
-
-        # Query the current keyframes in the given attribute
-        #keyframes = cmds.keyframe(attrFull, query=True)
+        cmds.animLayer(layerName, edit=True, selected=True, preferred=True)
+        cmds.animLayer(uir=True)
 
         # For each of the current keyframes move them the 'offset' amount. Except for the frame 1 that will always
         # be at the same position
@@ -652,9 +652,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         cmds.select(clear=True)
 
         # Select the layer so its keyframes can be moved
-        cmds.animLayer(layerName, edit=True, selected=False)
-
-
+        cmds.animLayer(layerName, edit=True, selected=False, preferred=False)
 
     def calculatePlaybackRange(self, indices):
 
