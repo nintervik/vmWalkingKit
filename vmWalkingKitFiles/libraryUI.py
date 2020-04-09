@@ -576,11 +576,13 @@ class WalkLibraryUI(QtWidgets.QWidget):
                 # Set the current index or change the slider value accordingly
                 if widgetType == 'QComboBox':
                     index = int(splitStr[1]) - 1
+                    self.paramWidgets[prefix].setCurrentIndex(index)
                     if prefix == self.prefixes[0]:
                         self.onDropDownBodyBeatChanged(index)
                     else:
                         self.onDropDownChanged(prefix, index)
                 elif widgetType == 'QSlider':
+                    self.paramWidgets[prefix].setValue(defaultWeights[i]*1000.0)
                     self.onSliderChanged(prefix, defaultWeights[i]*1000.0)
         else:
             logger.debug("Query for default preset file failed.")
