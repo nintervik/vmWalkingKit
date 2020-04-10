@@ -76,7 +76,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Prefixes
         self.prefixes = ["BodyBeat", "ArmsBeat", "UpDown", "BodyTilt", "HeadUpDown", "HeadPigeon",
-                         "HeadEgoist", "HeadNodding", "HeadTilt"]
+                         "HeadEgoist", "HeadNodding", "HeadTilt", "BackCurvature"]
 
         # Populate 'paramLayers' dictionary with the current info on the scene
         self.initParamLayersData()
@@ -142,6 +142,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
         headTilt = OrderedDict()
         headTilt[layersNames[12]] = layersWeights[12]
 
+        # BackCurvature
+        backCurvature = OrderedDict()
+        backCurvature[layersNames[13]] = layersWeights[13]
+
         # Create main data list with all the layers information sorted by parameter
         self.paramLayers = {
             self.prefixes[0]: bodyBeatDict,
@@ -152,7 +156,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
             self.prefixes[5]: headPigeonDict,
             self.prefixes[6]: headEgoist,
             self.prefixes[7]: headNodding,
-            self.prefixes[8]: headTilt
+            self.prefixes[8]: headTilt,
+            self.prefixes[9]: backCurvature
         }
 
     # UI METHODS
@@ -229,12 +234,12 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Add tab for the head
         tabHead = self.addTab("Head")
 
-        # Create General tab parameters
+        # Create Head tab parameters
         self.addSliderParam(tabHead, "Head up-down", 0, self.prefixes[4], "onSliderChanged")
         self.addSliderParam(tabHead, "Head pigeon", 1, self.prefixes[5], "onSliderChanged")
         self.addSliderParam(tabHead, "Head egoist", 2, self.prefixes[6], "onSliderChanged")
         self.addSliderParam(tabHead, "Head nodding", 3, self.prefixes[7], "onSliderChanged")
-        self.addSliderParam(tabHead, "Head tilt", 4, self.prefixes[8], "onSliderChanged")
+        self.addSliderParam(tabHead, "Head tilt", 4, self.prefixes[8], "onSliderChanged", 500)
 
     def createTrunkTab(self):
         """
@@ -244,9 +249,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Add tab for the trunk
         tabTrunk = self.addTab("Trunk")
 
-        # Add placeholder text to the scroll layout
-        tmpText = QtWidgets.QLabel("Work in progress.")
-        self.scrollLayout.addWidget(tmpText)
+        # Create Head tab parameters
+        self.addSliderParam(tabTrunk, "Back curvature", 0, self.prefixes[9], "onSliderChanged", 500)
 
     def createArmsTab(self):
         """
@@ -399,12 +403,12 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         self.setUpParamWidget(prefix, widget, paramName, id)
 
-    def addSliderParam(self, tab, paramName, id, prefix, slotName=None):
+    def addSliderParam(self, tab, paramName, id, prefix, slotName=None, defaultValue=200):
 
         widget = QtWidgets.QSlider(QtCore.Qt.Horizontal)
         widget.setMinimum(0)
         widget.setMaximum(1000)
-        widget.setValue(200)
+        widget.setValue(defaultValue)
         widget.valueChanged.connect(partial(getattr(self, slotName), prefix))
 
         self.setUpParamWidget(prefix, widget, paramName, id)
@@ -535,7 +539,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
             attrHeadNodding = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.rotateX'
             self.offsetKeyframes(attrHeadNodding, 'HeadNodding_1', currBodyIndex)
-            
+
             attrHeadTilt = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.rotateX'
             self.offsetKeyframes(attrHeadTilt, 'HeadTilt_1', currBodyIndex)
 
