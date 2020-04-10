@@ -75,7 +75,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.paramWidgets = OrderedDict()
 
         # Prefixes
-        self.prefixes = ["BodyBeat", "ArmsBeat", "UpDown", "BodyTilt", "HeadUpDown", "HeadPigeon"]
+        self.prefixes = ["BodyBeat", "ArmsBeat", "UpDown", "BodyTilt", "HeadUpDown", "HeadPigeon",
+                         "HeadEgoist", "HeadNodding", "HeadTilt"]
 
         # Populate 'paramLayers' dictionary with the current info on the scene
         self.initParamLayersData()
@@ -83,8 +84,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Every time we create a new instance, we will automatically create our UI
         self.createUI()
         self.onReset()
-
-
 
         # Add ourself (QtWidgets.QWidget) to the parent's layout
         self.parent().layout().addWidget(self)
@@ -131,6 +130,18 @@ class WalkLibraryUI(QtWidgets.QWidget):
         headPigeonDict = OrderedDict()
         headPigeonDict[layersNames[9]] = layersWeights[9]
 
+        # HeadEgoist
+        headEgoist = OrderedDict()
+        headEgoist[layersNames[10]] = layersWeights[10]
+
+        # HeadNodding
+        headNodding = OrderedDict()
+        headNodding[layersNames[11]] = layersWeights[11]
+
+        # HeadNodding
+        headTilt = OrderedDict()
+        headTilt[layersNames[12]] = layersWeights[12]
+
         # Create main data list with all the layers information sorted by parameter
         self.paramLayers = {
             self.prefixes[0]: bodyBeatDict,
@@ -138,7 +149,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
             self.prefixes[2]: upDownDict,
             self.prefixes[3]: bodyTiltDict,
             self.prefixes[4]: headUpDownDict,
-            self.prefixes[5]: headPigeonDict
+            self.prefixes[5]: headPigeonDict,
+            self.prefixes[6]: headEgoist,
+            self.prefixes[7]: headNodding,
+            self.prefixes[8]: headTilt
         }
 
     # UI METHODS
@@ -218,6 +232,9 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Create General tab parameters
         self.addSliderParam(tabHead, "Head up-down", 0, self.prefixes[4], "onSliderChanged")
         self.addSliderParam(tabHead, "Head pigeon", 1, self.prefixes[5], "onSliderChanged")
+        self.addSliderParam(tabHead, "Head egoist", 2, self.prefixes[6], "onSliderChanged")
+        self.addSliderParam(tabHead, "Head nodding", 3, self.prefixes[7], "onSliderChanged")
+        self.addSliderParam(tabHead, "Head tilt", 4, self.prefixes[8], "onSliderChanged")
 
     def createTrunkTab(self):
         """
@@ -507,12 +524,21 @@ class WalkLibraryUI(QtWidgets.QWidget):
             attrGeneralUpDown = 'Mr_Buttons:Mr_Buttons_COG_Ctrl.translateY'
             self.offsetKeyframes(attrGeneralUpDown, 'UpDown_1', currBodyIndex)
 
-            # TODO: fix this
             attrHeadPigeon = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.translateZ'
             self.offsetKeyframes(attrHeadPigeon, 'HeadPigeon_1', currBodyIndex)
 
             attrHeadUpDown = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.translateY'
             self.offsetKeyframes(attrHeadUpDown, 'HeadUpDown_1', currBodyIndex)
+
+            attrheadEgoist = 'Mr_Buttons:Mr_Buttons_Neck_01FKCtrl.rotateZ'
+            self.offsetKeyframes(attrheadEgoist, 'HeadEgoist_1', currBodyIndex)
+
+            attrHeadNodding = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.rotateX'
+            self.offsetKeyframes(attrHeadNodding, 'HeadNodding_1', currBodyIndex)
+            
+            attrHeadTilt = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.rotateX'
+            self.offsetKeyframes(attrHeadTilt, 'HeadTilt_1', currBodyIndex)
+
 
         # Store the previous BodyBeat index for the next calculation
         WalkLibraryUI.prevBodyIndex = self.paramWidgets[prefix].currentIndex() + 1
@@ -623,14 +649,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
         elif self.prevBodyIndex == 3 and currBodyIndex == 1:
             offset = -2
 
-        print "---------------------"
-        print "prevIndex"
-        print self.prevBodyIndex
-        print "currIndex"
-        print currBodyIndex
-        print "offset"
-        print offset
-        print "---------------------"
         layerPlug = cmds.animLayer(layerName, e=True, findCurveForPlug=attrFull)
         keyframes = cmds.keyframe(layerPlug[0], q=True)
 
