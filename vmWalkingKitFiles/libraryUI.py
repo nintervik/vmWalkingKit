@@ -76,7 +76,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Prefixes
         self.prefixes = ["BodyBeat", "ArmsBeat", "UpDown", "BodyTilt", "HeadUpDown", "HeadPigeon",
-                         "HeadEgoist", "HeadNodding", "HeadTilt", "BackCurvature"]
+                         "HeadEgoist", "HeadNodding", "HeadTilt", "BackCurvature", "TrunkRotation"]
 
         # Populate 'paramLayers' dictionary with the current info on the scene
         self.initParamLayersData()
@@ -146,6 +146,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
         backCurvature = OrderedDict()
         backCurvature[layersNames[13]] = layersWeights[13]
 
+        # TrunkRotation
+        trunkRotation = OrderedDict()
+        trunkRotation[layersNames[14]] = layersWeights[14]
+
         # Create main data list with all the layers information sorted by parameter
         self.paramLayers = {
             self.prefixes[0]: bodyBeatDict,
@@ -157,7 +161,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
             self.prefixes[6]: headEgoist,
             self.prefixes[7]: headNodding,
             self.prefixes[8]: headTilt,
-            self.prefixes[9]: backCurvature
+            self.prefixes[9]: backCurvature,
+            self.prefixes[10]: trunkRotation
         }
 
     # UI METHODS
@@ -251,6 +256,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Create Head tab parameters
         self.addSliderParam(tabTrunk, "Back curvature", 0, self.prefixes[9], "onSliderChanged", 500)
+        self.addSliderParam(tabTrunk, "Trunk rotation", 1, self.prefixes[10], "onSliderChanged")
 
     def createArmsTab(self):
         """
@@ -543,6 +549,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
             attrHeadTilt = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.rotateX'
             self.offsetKeyframes(attrHeadTilt, 'HeadTilt_1', currBodyIndex)
 
+            attrTrunkRotation = 'Mr_Buttons:Mr_Buttons_COG_Ctrl.rotateY'
+            self.offsetKeyframes(attrTrunkRotation, 'TrunkRotation_1', currBodyIndex)
 
         # Store the previous BodyBeat index for the next calculation
         WalkLibraryUI.prevBodyIndex = self.paramWidgets[prefix].currentIndex() + 1
