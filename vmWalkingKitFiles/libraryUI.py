@@ -76,8 +76,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Prefixes
         self.prefixes = ["BodyBeat", "ArmsBeat", "UpDown", "BodyTilt", "HeadUpDown", "HeadPigeon",
-                         "HeadEgoist", "HeadNodding", "HeadTilt", "BackCurvature", "TrunkRotation",
-                         "TrunkLeftRight"]
+                         "HeadEgoist", "HeadNodding", "HeadTilt", "BackCurvature", "PelvisYRotation",
+                         "PelvisWeightShift", "ChestYRotation", "ChestUpDown"]
 
         # Populate 'paramLayers' dictionary with the current info on the scene
         self.initParamLayersData()
@@ -147,13 +147,21 @@ class WalkLibraryUI(QtWidgets.QWidget):
         backCurvature = OrderedDict()
         backCurvature[layersNames[13]] = layersWeights[13]
 
-        # TrunkRotation
-        trunkRotation = OrderedDict()
-        trunkRotation[layersNames[14]] = layersWeights[14]
+        # PelvisYRotation
+        pelvisYRotation = OrderedDict()
+        pelvisYRotation[layersNames[14]] = layersWeights[14]
 
-        # TrunkLeftRight
-        trunkLeftRight = OrderedDict()
-        trunkLeftRight[layersNames[15]] = layersWeights[15]
+        # PelvisWeightShift
+        pelvisWeightShift = OrderedDict()
+        pelvisWeightShift[layersNames[15]] = layersWeights[15]
+
+        # ChestYRotation
+        chestYRotation = OrderedDict()
+        chestYRotation[layersNames[16]] = layersWeights[16]
+
+        # ChestUpDown
+        chestUpDown = OrderedDict()
+        chestUpDown[layersNames[17]] = layersWeights[17]
 
         # Create main data list with all the layers information sorted by parameter
         self.paramLayers = {
@@ -167,8 +175,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
             self.prefixes[7]:  headNodding,
             self.prefixes[8]:  headTilt,
             self.prefixes[9]:  backCurvature,
-            self.prefixes[10]: trunkRotation,
-            self.prefixes[11]: trunkLeftRight
+            self.prefixes[10]: pelvisYRotation,
+            self.prefixes[11]: pelvisWeightShift,
+            self.prefixes[12]: chestYRotation,
+            self.prefixes[13]: chestUpDown
         }
 
     # UI METHODS
@@ -260,10 +270,14 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Add tab for the trunk
         tabTrunk = self.addTab("Trunk")
 
+        # TODO: do a ++i for the ui IDs
+
         # Create Head tab parameters
         self.addSliderParam(tabTrunk, "Back curvature", 0, self.prefixes[9], "onSliderChanged", 500)
-        self.addSliderParam(tabTrunk, "Trunk rotation", 1, self.prefixes[10], "onSliderChanged")
-        self.addSliderParam(tabTrunk, "Trunk left-right", 2, self.prefixes[11], "onSliderChanged")
+        self.addSliderParam(tabTrunk, "Pelvis Y-rotation", 1, self.prefixes[10], "onSliderChanged")
+        self.addSliderParam(tabTrunk, "Pelvis weight shift", 2, self.prefixes[11], "onSliderChanged")
+        self.addSliderParam(tabTrunk, "Chest Y-rotation", 3, self.prefixes[12], "onSliderChanged")
+        self.addSliderParam(tabTrunk, "Chest up-down", 4, self.prefixes[13], "onSliderChanged")
 
     def createArmsTab(self):
         """
@@ -541,11 +555,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
             attrGeneralUpDown = 'Mr_Buttons:Mr_Buttons_COG_Ctrl.translateY'
             self.offsetKeyframes(attrGeneralUpDown, 'UpDown_1', currBodyIndex)
 
-            attrTrunkRotation = 'Mr_Buttons:Mr_Buttons_COG_Ctrl.rotateY'
-            self.offsetKeyframes(attrTrunkRotation, 'TrunkRotation_1', currBodyIndex)
+            attrPelvisYRotation = 'Mr_Buttons:Mr_Buttons_COG_Ctrl.rotateY'
+            self.offsetKeyframes(attrPelvisYRotation, 'PelvisYRotation_1', currBodyIndex)
 
-            attrTrunkLeftRight = 'Mr_Buttons:Mr_Buttons_COG_Ctrl.translateX'
-            self.offsetKeyframes(attrTrunkLeftRight, 'TrunkLeftRight_1', currBodyIndex)
+            attrPelvisWeightShift = 'Mr_Buttons:Mr_Buttons_COG_Ctrl.translateX'
+            self.offsetKeyframes(attrPelvisWeightShift, 'PelvisWeightShift_1', currBodyIndex)
 
             attrHeadPigeon = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.translateZ'
             self.offsetKeyframes(attrHeadPigeon, 'HeadPigeon_1', currBodyIndex)
@@ -561,6 +575,12 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
             attrHeadTilt = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.rotateX'
             self.offsetKeyframes(attrHeadTilt, 'HeadTilt_1', currBodyIndex)
+
+            attrChestUpDown = 'Mr_Buttons:Mr_Buttons_Spine_03FKCtrl.translateY'
+            self.offsetKeyframes(attrChestUpDown, 'ChestUpDown_1', currBodyIndex)
+
+            attrChestYRotation = 'Mr_Buttons:Mr_Buttons_Spine_03FKCtrl.rotateY'
+            self.offsetKeyframes(attrChestYRotation, 'ChestYRotation_1', currBodyIndex)
 
         # Store the previous BodyBeat index for the next calculation
         WalkLibraryUI.prevBodyIndex = self.paramWidgets[prefix].currentIndex() + 1
