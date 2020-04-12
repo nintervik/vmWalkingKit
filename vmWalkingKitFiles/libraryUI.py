@@ -693,6 +693,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         layerPlug = cmds.animLayer(layerName, e=True, findCurveForPlug=attrFull)
         keyframes = cmds.keyframe(layerPlug[0], q=True)
+        backupKeyframes = keyframes
 
         # Select attrFull
         cmds.select(attrFull.split('.')[0], r=True)
@@ -709,6 +710,13 @@ class WalkLibraryUI(QtWidgets.QWidget):
                 cmds.keyframe(attrFull, edit=True, relative=True,
                               timeChange=offset, time=(keyframes[i],
                               keyframes[len(keyframes)-1]))
+
+        # Spline all keyframes tangents for curves to be smoother. Except if we are in 12f, as they are already
+        # tweaked there. # TODO: better way to do this?
+        #if currBodyIndex != 2:
+            #print "splineeee --------------"
+            #cmds.keyTangent(attrFull.split('.')[0], itt='spline', ott='spline',
+                            #time=(backupKeyframes[0], backupKeyframes[len(keyframes)-1]))
 
         # Clear the active list
         cmds.select(clear=True)
