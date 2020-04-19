@@ -57,7 +57,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
             deleteWindowDock()
             parent = QtWidgets.QDialog(parent=getMayaMainWindow())
             parent.setObjectName('walktool')
-            parent.setWindowTitle('Walk Tool')
+            parent.setWindowTitle('vmWalkingKit')
             layout = QtWidgets.QVBoxLayout(parent)
 
         # Now that our parent is set we can initialize it
@@ -624,6 +624,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Import the default preset and query the layer names and weights
         defaultLayers, defaultWeights = self.library.importPreset()
 
+        # TODO: make this a method of wallkLibrary
         # Set default playback options
         cmds.playbackOptions(animationEndTime=96)
         cmds.playbackOptions(minTime=1)
@@ -677,7 +678,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
     # KEYFRAMES METHODS
 
     def offsetKeyframes(self, attrFull, layerName, currBodyIndex):
-
+        # TODO: this method should be in the other file
         offset = 0
 
         # Calculate the offset of the keyframes that need to be moved according to the current and previous index
@@ -764,7 +765,7 @@ def getMayaMainWindow():
 
     return ptr
 
-def getWindowDock(name='WalkToolDock'):
+def getWindowDock(name='WalkToolWinDock'):
     """
     Create dock with the given name.
     Args:
@@ -778,7 +779,7 @@ def getWindowDock(name='WalkToolDock'):
     deleteWindowDock(name)
 
     # Create a dock and query its name
-    ctrl = cmds.workspaceControl(name, tabToControl=('AttributeEditor', 2), label='Walk Tool', vis=True)
+    ctrl = cmds.workspaceControl(name, tabToControl=('AttributeEditor', 2), label='vmWalkingKit', vis=True)
 
     # Query the correspondent QtWidget associated with the dock
     qtCtrl = omui.MQtUtil_findControl(name)
@@ -788,7 +789,7 @@ def getWindowDock(name='WalkToolDock'):
 
     return ptr
 
-def deleteWindowDock(name='WalkToolDock'):
+def deleteWindowDock(name='WalkToolWinDock'):
     """
     Deletes the given dock if this exists.
     Args:
