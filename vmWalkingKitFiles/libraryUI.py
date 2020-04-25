@@ -555,7 +555,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
             attrGeneralUpDown = 'Mr_Buttons:Mr_Buttons_COG_Ctrl.translateY'
             self.library.offsetKeyframes(attrGeneralUpDown, 'UpDown_1', self.prevBodyIndex, currBodyIndex)
 
-            walkLibrary.
             attrPelvisYRotation = 'Mr_Buttons:Mr_Buttons_COG_Ctrl.rotateY'
             self.library.offsetKeyframes(attrPelvisYRotation, 'PelvisYRotation_1',  self.prevBodyIndex, currBodyIndex)
 
