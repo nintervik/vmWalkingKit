@@ -149,6 +149,78 @@ class WalkLibrary(object):
 
         return activeLayers, weights
 
+    # KEYFRAMES METHODS
+
+    def offsetKeyframes(self, attrFull, layerName, prevBodyIndex, currBodyIndex):
+        # TODO: this method should be in the other file
+        offset = 0
+
+        # Calculate the offset of the keyframes that need to be moved according to the current and previous index
+        # of the BodyBeat parameter
+        if (prevBodyIndex == 1 and currBodyIndex == 2) or (prevBodyIndex == 2 and currBodyIndex == 3):
+            offset = 1
+        elif (prevBodyIndex == 2 and currBodyIndex == 1) or (prevBodyIndex == 3 and currBodyIndex == 2):
+            offset = -1
+        elif prevBodyIndex == 1 and currBodyIndex == 3:
+            offset = 2
+        elif prevBodyIndex == 3 and currBodyIndex == 1:
+            offset = -2
+
+        layerPlug = cmds.animLayer(layerName, e=True, findCurveForPlug=attrFull)
+        keyframes = cmds.keyframe(layerPlug[0], q=True)
+        backupKeyframes = keyframes
+
+        # Select attrFull
+        cmds.select(attrFull.split('.')[0], r=True)
+        cmds.animLayer(layerName, edit=True, selected=True, preferred=True)
+        cmds.animLayer(uir=True)
+
+        # For each of the current keyframes move them the 'offset' amount. Except for the frame 1 that will always
+        # be at the same position
+        for i in range(0, len(keyframes)):
+            if i != 0:
+                # Every time before moving, query again the current keyframes as they are now moved
+                keyframes = cmds.keyframe(layerPlug[0], query=True)
+                # Move the keyframes the 'offset' amount in the range from the current one to the last one
+                cmds.keyframe(attrFull, edit=True, relative=True,
+                              timeChange=offset, time=(keyframes[i],
+                              keyframes[len(keyframes)-1]))
+
+        # Spline all keyframes tangents for curves to be smoother. Except if we are in 12f, as they are already
+        # tweaked there. # TODO: better way to do this?
+        #if currBodyIndex != 2:
+            #print "splineeee --------------"
+            #cmds.keyTangent(attrFull.split('.')[0], itt='spline', ott='spline',
+                            #time=(backupKeyframes[0], backupKeyframes[len(keyframes)-1]))
+
+        # Clear the active list
+        cmds.select(clear=True)
+
+        # Select the layer so its keyframes can be moved
+        cmds.animLayer(layerName, edit=True, selected=False, preferred=False)
+
+    def calculatePlaybackRange(self, indices):
+
+        playBackEndRange = 0
+
+        if indices[0] == 1 and indices[1] == 1:
+            playBackEndRange = 16
+        elif (indices[0] == 1 and indices[1] == 2) or (indices[0] == 2 and indices[1] == 1):
+            playBackEndRange = 48
+        elif ((indices[0] == 1 and indices[1] == 3) or (indices[0] == 3 and indices[1] == 1))\
+                or (indices[0] == 3 and indices[1] == 3):
+            playBackEndRange = 32
+        elif indices[0] == 2 and indices[1] == 2:
+            playBackEndRange = 24
+        elif (indices[0] == 2 and indices[1] == 3) or (indices[0] == 3 and indices[1] == 2):
+            playBackEndRange = 96
+
+        # Set de new calculated playback range
+        cmds.playbackOptions(animationEndTime=96)
+        cmds.playbackOptions(minTime=1)
+        cmds.playbackOptions(maxTime=playBackEndRange)
+        cmds.playbackOptions(animationStartTime=1)
+
     # PRESETS METHODS
 
     def importPreset(self, name=DEFAULT_PRESET_NAME, directory=DIRECTORY):

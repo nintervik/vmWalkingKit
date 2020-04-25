@@ -497,7 +497,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Calculate the playback range according to the current indices retrieved above. Body and arms beat dictate
         # the length of the whole walk cycle animation. This allows for a minimum playback time while always allowing
         # the animation to be looped properly.
-        self.calculatePlaybackRange(indices)
+        self.library.calculatePlaybackRange(indices)
 
     def onDropDownBodyBeatChanged(self, index):
         """
@@ -545,7 +545,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Calculate the playback range according to the current indices retrieved above. Body and arms beat dictate
         # the length of the whole walk cycle animation. This allows for a minimum playback time while always allowing
         # the animation to be looped properly.
-        self.calculatePlaybackRange(indices)
+        self.library.calculatePlaybackRange(indices)
 
         # Query the current BodyBeat index
         currBodyIndex = self.paramWidgets[prefix].currentIndex() + 1
@@ -553,34 +553,35 @@ class WalkLibraryUI(QtWidgets.QWidget):
         if currBodyIndex is not None:
             # Create the ty attribute of the controller that handles the up and down body movement
             attrGeneralUpDown = 'Mr_Buttons:Mr_Buttons_COG_Ctrl.translateY'
-            self.offsetKeyframes(attrGeneralUpDown, 'UpDown_1', currBodyIndex)
+            self.library.offsetKeyframes(attrGeneralUpDown, 'UpDown_1', self.prevBodyIndex, currBodyIndex)
 
+            walkLibrary.
             attrPelvisYRotation = 'Mr_Buttons:Mr_Buttons_COG_Ctrl.rotateY'
-            self.offsetKeyframes(attrPelvisYRotation, 'PelvisYRotation_1', currBodyIndex)
+            self.library.offsetKeyframes(attrPelvisYRotation, 'PelvisYRotation_1',  self.prevBodyIndex, currBodyIndex)
 
             attrPelvisWeightShift = 'Mr_Buttons:Mr_Buttons_COG_Ctrl.translateX'
-            self.offsetKeyframes(attrPelvisWeightShift, 'PelvisWeightShift_1', currBodyIndex)
+            self.library.offsetKeyframes(attrPelvisWeightShift, 'PelvisWeightShift_1', self.prevBodyIndex, currBodyIndex)
 
             attrHeadPigeon = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.translateZ'
-            self.offsetKeyframes(attrHeadPigeon, 'HeadPigeon_1', currBodyIndex)
+            self.library.offsetKeyframes(attrHeadPigeon, 'HeadPigeon_1',  self.prevBodyIndex, currBodyIndex)
 
             attrHeadUpDown = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.translateY'
-            self.offsetKeyframes(attrHeadUpDown, 'HeadUpDown_1', currBodyIndex)
+            self.library.offsetKeyframes(attrHeadUpDown, 'HeadUpDown_1',  self.prevBodyIndex, currBodyIndex)
 
             attrheadEgoist = 'Mr_Buttons:Mr_Buttons_Neck_01FKCtrl.rotateZ'
-            self.offsetKeyframes(attrheadEgoist, 'HeadEgoist_1', currBodyIndex)
+            self.library.offsetKeyframes(attrheadEgoist, 'HeadEgoist_1',  self.prevBodyIndex, currBodyIndex)
 
             attrHeadNodding = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.rotateX'
-            self.offsetKeyframes(attrHeadNodding, 'HeadNodding_1', currBodyIndex)
+            self.library.offsetKeyframes(attrHeadNodding, 'HeadNodding_1',  self.prevBodyIndex, currBodyIndex)
 
             attrHeadTilt = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.rotateX'
-            self.offsetKeyframes(attrHeadTilt, 'HeadTilt_1', currBodyIndex)
+            self.library.offsetKeyframes(attrHeadTilt, 'HeadTilt_1',  self.prevBodyIndex, currBodyIndex)
 
             attrChestUpDown = 'Mr_Buttons:Mr_Buttons_Spine_03FKCtrl.translateY'
-            self.offsetKeyframes(attrChestUpDown, 'ChestUpDown_1', currBodyIndex)
+            self.library.offsetKeyframes(attrChestUpDown, 'ChestUpDown_1',  self.prevBodyIndex, currBodyIndex)
 
             attrChestYRotation = 'Mr_Buttons:Mr_Buttons_Spine_03FKCtrl.rotateY'
-            self.offsetKeyframes(attrChestYRotation, 'ChestYRotation_1', currBodyIndex)
+            self.library.offsetKeyframes(attrChestYRotation, 'ChestYRotation_1',  self.prevBodyIndex, currBodyIndex)
 
         # Store the previous BodyBeat index for the next calculation
         WalkLibraryUI.prevBodyIndex = self.paramWidgets[prefix].currentIndex() + 1
@@ -674,78 +675,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
             self.library.importPreset(name, directory)
         else:
             logger.debug("If a directory is given a name must be given as well.")
-
-    # KEYFRAMES METHODS
-
-    def offsetKeyframes(self, attrFull, layerName, currBodyIndex):
-        # TODO: this method should be in the other file
-        offset = 0
-
-        # Calculate the offset of the keyframes that need to be moved according to the current and previous index
-        # of the BodyBeat parameter
-        if (self.prevBodyIndex == 1 and currBodyIndex == 2) or (self.prevBodyIndex == 2 and currBodyIndex == 3):
-            offset = 1
-        elif (self.prevBodyIndex == 2 and currBodyIndex == 1) or (self.prevBodyIndex == 3 and currBodyIndex == 2):
-            offset = -1
-        elif self.prevBodyIndex == 1 and currBodyIndex == 3:
-            offset = 2
-        elif self.prevBodyIndex == 3 and currBodyIndex == 1:
-            offset = -2
-
-        layerPlug = cmds.animLayer(layerName, e=True, findCurveForPlug=attrFull)
-        keyframes = cmds.keyframe(layerPlug[0], q=True)
-        backupKeyframes = keyframes
-
-        # Select attrFull
-        cmds.select(attrFull.split('.')[0], r=True)
-        cmds.animLayer(layerName, edit=True, selected=True, preferred=True)
-        cmds.animLayer(uir=True)
-
-        # For each of the current keyframes move them the 'offset' amount. Except for the frame 1 that will always
-        # be at the same position
-        for i in range(0, len(keyframes)):
-            if i != 0:
-                # Every time before moving, query again the current keyframes as they are now moved
-                keyframes = cmds.keyframe(layerPlug[0], query=True)
-                # Move the keyframes the 'offset' amount in the range from the current one to the last one
-                cmds.keyframe(attrFull, edit=True, relative=True,
-                              timeChange=offset, time=(keyframes[i],
-                              keyframes[len(keyframes)-1]))
-
-        # Spline all keyframes tangents for curves to be smoother. Except if we are in 12f, as they are already
-        # tweaked there. # TODO: better way to do this?
-        #if currBodyIndex != 2:
-            #print "splineeee --------------"
-            #cmds.keyTangent(attrFull.split('.')[0], itt='spline', ott='spline',
-                            #time=(backupKeyframes[0], backupKeyframes[len(keyframes)-1]))
-
-        # Clear the active list
-        cmds.select(clear=True)
-
-        # Select the layer so its keyframes can be moved
-        cmds.animLayer(layerName, edit=True, selected=False, preferred=False)
-
-    def calculatePlaybackRange(self, indices):
-
-        playBackEndRange = 0
-
-        if indices[0] == 1 and indices[1] == 1:
-            playBackEndRange = 16
-        elif (indices[0] == 1 and indices[1] == 2) or (indices[0] == 2 and indices[1] == 1):
-            playBackEndRange = 48
-        elif ((indices[0] == 1 and indices[1] == 3) or (indices[0] == 3 and indices[1] == 1))\
-                or (indices[0] == 3 and indices[1] == 3):
-            playBackEndRange = 32
-        elif indices[0] == 2 and indices[1] == 2:
-            playBackEndRange = 24
-        elif (indices[0] == 2 and indices[1] == 3) or (indices[0] == 3 and indices[1] == 2):
-            playBackEndRange = 96
-
-        # Set de new calculated playback range
-        cmds.playbackOptions(animationEndTime=96)
-        cmds.playbackOptions(minTime=1)
-        cmds.playbackOptions(maxTime=playBackEndRange)
-        cmds.playbackOptions(animationStartTime=1)
 
 # MAYA WINDOWS FUNCTIONS
 
