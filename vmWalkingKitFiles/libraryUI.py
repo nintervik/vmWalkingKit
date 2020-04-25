@@ -75,11 +75,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.handOptions = ["Relaxed", "Fist"]
         self.paramWidgets = OrderedDict()
 
-        # TODO: order prefixes in the order of appearance in the tabs
         # Prefixes
         self.prefixes = ["BodyBeat", "ArmsBeat", "UpDown", "BodyTilt", "HeadUpDown", "HeadPigeon",
                          "HeadEgoist", "HeadNodding", "HeadTilt", "BackCurvature", "PelvisYRotation",
-                         "PelvisWeightShift", "ChestYRotation", "ChestUpDown", "ArmsSwing", "ArmsWidth",
+                         "PelvisWeightShift", "ChestYRotation", "ChestUpDown", "ArmsWidth",
                          "ElbowsDrag", "HandsDrag", "HandsPose"]
 
         # Populate 'paramLayers' dictionary with the current info on the scene
@@ -106,6 +105,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Create ordered dictionaries to store the parameters data
 
+        # TODO: automate this below
         # BodyBeat
         bodyBeatDict = OrderedDict()
         bodyBeatDict[layersNames[0]] = layersWeights[0]
@@ -135,36 +135,53 @@ class WalkLibraryUI(QtWidgets.QWidget):
         headPigeonDict[layersNames[9]] = layersWeights[9]
 
         # HeadEgoist
-        headEgoist = OrderedDict()
-        headEgoist[layersNames[10]] = layersWeights[10]
+        headEgoistDict = OrderedDict()
+        headEgoistDict[layersNames[10]] = layersWeights[10]
 
         # HeadNodding
-        headNodding = OrderedDict()
-        headNodding[layersNames[11]] = layersWeights[11]
+        headNoddingDict = OrderedDict()
+        headNoddingDict[layersNames[11]] = layersWeights[11]
 
         # HeadNodding
-        headTilt = OrderedDict()
-        headTilt[layersNames[12]] = layersWeights[12]
+        headTiltDict = OrderedDict()
+        headTiltDict[layersNames[12]] = layersWeights[12]
 
         # BackCurvature
-        backCurvature = OrderedDict()
-        backCurvature[layersNames[13]] = layersWeights[13]
+        backCurvatureDict = OrderedDict()
+        backCurvatureDict[layersNames[13]] = layersWeights[13]
 
         # PelvisYRotation
-        pelvisYRotation = OrderedDict()
-        pelvisYRotation[layersNames[14]] = layersWeights[14]
+        pelvisYRotationDict = OrderedDict()
+        pelvisYRotationDict[layersNames[14]] = layersWeights[14]
 
         # PelvisWeightShift
-        pelvisWeightShift = OrderedDict()
-        pelvisWeightShift[layersNames[15]] = layersWeights[15]
+        pelvisWeightShiftDict = OrderedDict()
+        pelvisWeightShiftDict[layersNames[15]] = layersWeights[15]
 
         # ChestYRotation
-        chestYRotation = OrderedDict()
-        chestYRotation[layersNames[16]] = layersWeights[16]
+        chestYRotationDict = OrderedDict()
+        chestYRotationDict[layersNames[16]] = layersWeights[16]
 
         # ChestUpDown
-        chestUpDown = OrderedDict()
-        chestUpDown[layersNames[17]] = layersWeights[17]
+        chestUpDownDict = OrderedDict()
+        chestUpDownDict[layersNames[17]] = layersWeights[17]
+
+        # ArmsWidth
+        armsWidthDict = OrderedDict()
+        armsWidthDict[layersNames[18]] = layersWeights[18]
+
+        # ElbowsDrag
+        elbowsDragDict = OrderedDict()
+        elbowsDragDict[layersNames[19]] = layersWeights[19]
+
+        # HandsDrag
+        handsDragDict = OrderedDict()
+        handsDragDict[layersNames[20]] = layersWeights[20]
+
+        # HandsPose
+        handsPoseDict = OrderedDict()
+        handsPoseDict[layersNames[21]] = layersWeights[21]
+        handsPoseDict[layersNames[22]] = layersWeights[22]
 
         # Create main data list with all the layers information sorted by parameter
         self.paramLayers = {
@@ -174,14 +191,18 @@ class WalkLibraryUI(QtWidgets.QWidget):
             self.prefixes[3]:  bodyTiltDict,
             self.prefixes[4]:  headUpDownDict,
             self.prefixes[5]:  headPigeonDict,
-            self.prefixes[6]:  headEgoist,
-            self.prefixes[7]:  headNodding,
-            self.prefixes[8]:  headTilt,
-            self.prefixes[9]:  backCurvature,
-            self.prefixes[10]: pelvisYRotation,
-            self.prefixes[11]: pelvisWeightShift,
-            self.prefixes[12]: chestYRotation,
-            self.prefixes[13]: chestUpDown
+            self.prefixes[6]:  headEgoistDict,
+            self.prefixes[7]:  headNoddingDict,
+            self.prefixes[8]:  headTiltDict,
+            self.prefixes[9]:  backCurvatureDict,
+            self.prefixes[10]: pelvisYRotationDict,
+            self.prefixes[11]: pelvisWeightShiftDict,
+            self.prefixes[12]: chestYRotationDict,
+            self.prefixes[13]: chestUpDownDict,
+            self.prefixes[14]: armsWidthDict,
+            self.prefixes[15]: elbowsDragDict,
+            self.prefixes[16]: handsDragDict,
+            self.prefixes[17]: handsPoseDict
         }
 
     # UI METHODS
@@ -290,11 +311,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
         tabArms = self.addTab("Arms")
 
         # Create Arms tab parameters
-        self.addSliderParam(tabArms, "Arms swing", 0, self.prefixes[14], "onSliderChanged", 500)
-        self.addSliderParam(tabArms, "Arms Width", 1, self.prefixes[15], "onSliderChanged", 500)
-        self.addSliderParam(tabArms, "Elbows drag", 2, self.prefixes[16], "onSliderChanged", 500)
-        self.addSliderParam(tabArms, "Hands drag", 3, self.prefixes[17], "onSliderChanged", 500)
-        self.addDropDownParam(tabArms, "Hand pose", self.handOptions, 4, self.prefixes[18], "onDropDownChanged")
+        self.addSliderParam(tabArms, "Arms swing", 0, self.prefixes[1], "onSliderChanged", 500)
+        self.addSliderParam(tabArms, "Arms Width", 1, self.prefixes[14], "onSliderChanged", 500)
+        self.addSliderParam(tabArms, "Elbows drag", 2, self.prefixes[15], "onSliderChanged", 500)
+        self.addSliderParam(tabArms, "Hands drag", 3, self.prefixes[16], "onSliderChanged", 500)
+        self.addDropDownParam(tabArms, "Hands pose", self.handOptions, 4, self.prefixes[17], "onDropDownChanged")
 
     def createLegsTab(self):
         """
@@ -435,7 +456,12 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
     def setUpParamWidget(self, prefix, widget, paramName, id):
 
-        self.paramWidgets[prefix] = widget
+        if prefix == self.prefixes[1] and self.prefixes[1] not in self.paramWidgets:
+            self.paramWidgets[prefix] = [widget, None]
+        elif prefix == self.prefixes[1] and self.prefixes[1] in self.paramWidgets:
+            self.paramWidgets[prefix][1] = widget
+        else:
+            self.paramWidgets[prefix] = widget
 
         # Set parameter layout
         paramText = QtWidgets.QLabel(paramName)
@@ -466,6 +492,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
             if indStr in key:
                 self.library.changeLayerMuteState(layerName, False)
+
+                if self.prefixes[1] in layerName:
+                    self.library.changeLayerWeight(layerName, 0.5)
+                    currWeight = self.paramLayers[prefix][layerName]
+                    self.paramWidgets[prefix][1].setValue(currWeight*1000.0)
             else:
                self.library.changeLayerMuteState(layerName, True)
 
@@ -586,7 +617,12 @@ class WalkLibraryUI(QtWidgets.QWidget):
             value(float): current value of the slider
         """
 
-        layerName = list(self.paramLayers[prefix].keys())[0]
+        currIndex = 0
+
+        if prefix == self.prefixes[1]:
+            currIndex = self.paramWidgets[prefix][0].currentIndex()
+
+        layerName = list(self.paramLayers[prefix].keys())[currIndex]
         weight = value / 1000.0
         self.library.changeLayerWeight(layerName, weight)
 
@@ -631,21 +667,29 @@ class WalkLibraryUI(QtWidgets.QWidget):
                 # Get layer prefix
                 splitStr = defaultLayers[i].split("_")
                 prefix = splitStr[0]
-
                 # Get the widget type
-                widgetType = type(self.paramWidgets[prefix]).__name__
 
-                # Set the current index or change the slider value accordingly
-                if widgetType == 'QComboBox':
+                if prefix == self.prefixes[1]:
                     index = int(splitStr[1]) - 1
-                    self.paramWidgets[prefix].setCurrentIndex(index)
-                    if prefix == self.prefixes[0]:
-                        self.onDropDownBodyBeatChanged(index)
-                    else:
-                        self.onDropDownChanged(prefix, index)
-                elif widgetType == 'QSlider':
-                    self.paramWidgets[prefix].setValue(defaultWeights[i]*1000.0)
+                    self.paramWidgets[prefix][0].setCurrentIndex(index)
+                    self.onDropDownChanged(prefix, index)
+
+                    self.paramWidgets[prefix][1].setValue(defaultWeights[i]*1000.0)
                     self.onSliderChanged(prefix, defaultWeights[i]*1000.0)
+                else:
+                    widgetType = type(self.paramWidgets[prefix]).__name__
+
+                    # Set the current index or change the slider value accordingly
+                    if widgetType == 'QComboBox':
+                        index = int(splitStr[1]) - 1
+                        self.paramWidgets[prefix].setCurrentIndex(index)
+                        if prefix == self.prefixes[0]:
+                            self.onDropDownBodyBeatChanged(index)
+                        else:
+                            self.onDropDownChanged(prefix, index)
+                    elif widgetType == 'QSlider':
+                        self.paramWidgets[prefix].setValue(defaultWeights[i]*1000.0)
+                        self.onSliderChanged(prefix, defaultWeights[i]*1000.0)
         else:
             logger.debug("Query for default preset file failed.")
 

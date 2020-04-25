@@ -265,7 +265,9 @@ class WalkLibrary(object):
                     self.changeLayerMuteState(childLayers[i], True)
 
                 # For now all weights will be 1.0. Just in case the user has manually changed it
-                self.changeLayerWeight(childLayers[i], 1.0)
+
+                if "ArmsBeat" in childLayers[i]:
+                    self.changeLayerWeight(childLayers[i], 0.5)
 
             # Iterate over the layers in the default preset and set their respective weight
             for i in range(0, len(defaultLayers)):
