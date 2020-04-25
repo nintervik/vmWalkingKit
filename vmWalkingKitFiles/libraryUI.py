@@ -72,12 +72,15 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Dropdown options list
         self.frameOptions = ["8f", "12f", "16f"]
         self.rangeOptions = ["Low", "Mid", "High"]
+        self.handOptions = ["Relaxed", "Fist"]
         self.paramWidgets = OrderedDict()
 
+        # TODO: order prefixes in the order of appearance in the tabs
         # Prefixes
         self.prefixes = ["BodyBeat", "ArmsBeat", "UpDown", "BodyTilt", "HeadUpDown", "HeadPigeon",
                          "HeadEgoist", "HeadNodding", "HeadTilt", "BackCurvature", "PelvisYRotation",
-                         "PelvisWeightShift", "ChestYRotation", "ChestUpDown"]
+                         "PelvisWeightShift", "ChestYRotation", "ChestUpDown", "ArmsSwing", "ArmsWidth",
+                         "ElbowsDrag", "HandsDrag", "HandsPose"]
 
         # Populate 'paramLayers' dictionary with the current info on the scene
         self.initParamLayersData()
@@ -204,7 +207,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.createHeadTab()
         self.createTrunkTab()
         self.createArmsTab()
-        self.createHandsTab()
         self.createLegsTab()
         self.createFeetTab()
         self.createTailTab()
@@ -272,7 +274,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # TODO: do a ++i for the ui IDs
 
-        # Create Head tab parameters
+        # Create Trunk tab parameters
         self.addSliderParam(tabTrunk, "Back curvature", 0, self.prefixes[9], "onSliderChanged", 500)
         self.addSliderParam(tabTrunk, "Pelvis Y-rotation", 1, self.prefixes[10], "onSliderChanged")
         self.addSliderParam(tabTrunk, "Pelvis weight shift", 2, self.prefixes[11], "onSliderChanged")
@@ -287,21 +289,12 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Add tab for the arms
         tabArms = self.addTab("Arms")
 
-        # Add placeholder text to the scroll layout
-        tmpText = QtWidgets.QLabel("Work in progress.")
-        self.scrollLayout.addWidget(tmpText)
-
-    def createHandsTab(self):
-        """
-        Creates the hands tab
-        """
-
-        # Add tab for the hans
-        tabHands = self.addTab("Hands")
-
-        # Add placeholder text to the scroll layout
-        tmpText = QtWidgets.QLabel("Work in progress.")
-        self.scrollLayout.addWidget(tmpText)
+        # Create Arms tab parameters
+        self.addSliderParam(tabArms, "Arms swing", 0, self.prefixes[14], "onSliderChanged", 500)
+        self.addSliderParam(tabArms, "Arms Width", 1, self.prefixes[15], "onSliderChanged", 500)
+        self.addSliderParam(tabArms, "Elbows drag", 2, self.prefixes[16], "onSliderChanged", 500)
+        self.addSliderParam(tabArms, "Hands drag", 3, self.prefixes[17], "onSliderChanged", 500)
+        self.addDropDownParam(tabArms, "Hand pose", self.handOptions, 4, self.prefixes[18], "onDropDownChanged")
 
     def createLegsTab(self):
         """
