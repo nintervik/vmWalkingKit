@@ -37,8 +37,9 @@ class WalkLibraryUI(QtWidgets.QWidget):
     The WalkLibraryUI is a dialog that lets us control all the walkTool parameters.
     """
 
-    # Saving initial BodyBeat index for adapting UpDown parameter accordingly
+    # Saving initial BodyBeat and ArmsBeat indices for adapting others parameters accordingly
     prevBodyIndex = 2
+    prevArmsIndex = 2
 
     def __init__(self, dock=True):
 
@@ -266,7 +267,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Create General tab parameters
         self.addDropDownParam(tabGeneral, "Body beat", self.frameOptions, 0, self.prefixes[0], "onDropDownBodyBeatChanged")
-        self.addDropDownParam(tabGeneral, "Arms beat", self.frameOptions, 1, self.prefixes[1], "onDropDownChanged")
+        self.addDropDownParam(tabGeneral, "Arms beat", self.frameOptions, 1, self.prefixes[1], "onDropDownArmsBeatChanged")
         self.addSliderParam(tabGeneral, "Up & Down", 2, self.prefixes[2], "onSliderChanged")
         self.addSliderParam(tabGeneral, "Body Tilt", 3, self.prefixes[3], "onSliderChanged")
 
@@ -437,7 +438,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         widget.setCurrentIndex(1)  # TODO: not hardcode this? Maybe read from JSON default preset file
 
-        if prefix == 'BodyBeat':
+        if prefix == 'BodyBeat' or prefix == 'ArmsBeat':
             widget.currentIndexChanged.connect(partial(getattr(self, slotName)))
         else:
             widget.currentIndexChanged.connect(partial(getattr(self, slotName), prefix))
@@ -608,6 +609,64 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Store the previous BodyBeat index for the next calculation
         WalkLibraryUI.prevBodyIndex = self.paramWidgets[prefix].currentIndex() + 1
+
+    def onDropDownArmsBeatChanged(self, index):
+        """
+        Takes in the new current index of the dropdown to change the layer state accordingly. It only differs from
+        the onDropDownChanged() method in the sense that this one is also in charge of moving the keyframes of the
+        UpDown_1 layer in order to adapt to the BodyBeat parameter.
+
+        Args:
+            index (int): index of the current selected option in the dropdown
+        """
+
+        prefix = 'ArmsBeat'
+
+        # Convert the index into a string and inside a [1-3] range to match the animation layer naming convention
+        indStr = str(index + 1)
+
+        # Change animation layers mute state according to the current index
+        for key in self.paramLayers[prefix]:
+
+            layerName = key
+
+            if indStr in key:
+                self.library.changeLayerMuteState(layerName, False)
+            else:
+               self.library.changeLayerMuteState(layerName, True)
+
+        # Retrieve the current BodyBeat and ArmsBeat indices by iterating the current active layers and
+        # checking for the unmuted ones
+        indices = []
+        activeLayers, weights = self.library.getActiveAnimationLayers()
+
+        for i in range(0, len(activeLayers)):
+
+            # Once we got both indices we break out of the for loop
+            if len(indices) == 2:
+                break
+
+            # Split layer name into prefix and index
+            splitStr = activeLayers[i].split("_")
+
+            # If we find 'BodyBeat' or 'ArmsBeat' we store their indices
+            if self.prefixes[0] in splitStr[0] or self.prefixes[1] in splitStr[0]:
+                indices.append(int(splitStr[1]))
+
+        # Calculate the playback range according to the current indices retrieved above. Body and arms beat dictate
+        # the length of the whole walk cycle animation. This allows for a minimum playback time while always allowing
+        # the animation to be looped properly.
+        self.library.calculatePlaybackRange(indices)
+
+        # Query the current ArmsBeat index
+        currArmsIndex = self.paramWidgets[prefix][0].currentIndex() + 1
+
+        if currArmsIndex is not None:
+            attrArmsElbowDrag = 'Mr_Buttons:Mr_Buttons_r_Arm_ElbowFKCtrl.rotateY'
+            self.library.offsetKeyframes(attrArmsElbowDrag, 'ElbowsDrag_1', self.prevArmsIndex, currArmsIndex)
+
+        # Store the previous ArmsBeat index for the next calculation
+        WalkLibraryUI.prevArmsIndex = self.paramWidgets[prefix][0].currentIndex() + 1
 
     def onSliderChanged(self, prefix, value):
         """

@@ -151,19 +151,19 @@ class WalkLibrary(object):
 
     # KEYFRAMES METHODS
 
-    def offsetKeyframes(self, attrFull, layerName, prevBodyIndex, currBodyIndex):
-        # TODO: this method should be in the other file
+    def offsetKeyframes(self, attrFull, layerName, prevIndex, currIndex):
+
         offset = 0
 
         # Calculate the offset of the keyframes that need to be moved according to the current and previous index
         # of the BodyBeat parameter
-        if (prevBodyIndex == 1 and currBodyIndex == 2) or (prevBodyIndex == 2 and currBodyIndex == 3):
+        if (prevIndex == 1 and currIndex == 2) or (prevIndex == 2 and currIndex == 3):
             offset = 1
-        elif (prevBodyIndex == 2 and currBodyIndex == 1) or (prevBodyIndex == 3 and currBodyIndex == 2):
+        elif (prevIndex == 2 and currIndex == 1) or (prevIndex == 3 and currIndex == 2):
             offset = -1
-        elif prevBodyIndex == 1 and currBodyIndex == 3:
+        elif prevIndex == 1 and currIndex == 3:
             offset = 2
-        elif prevBodyIndex == 3 and currBodyIndex == 1:
+        elif prevIndex == 3 and currIndex == 1:
             offset = -2
 
         layerPlug = cmds.animLayer(layerName, e=True, findCurveForPlug=attrFull)
