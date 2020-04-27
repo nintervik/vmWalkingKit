@@ -151,6 +151,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
         backCurvatureDict = OrderedDict()
         backCurvatureDict[layersNames[13]] = layersWeights[13]
 
+        # AngryFace
+
         # PelvisYRotation
         pelvisYRotationDict = OrderedDict()
         pelvisYRotationDict[layersNames[14]] = layersWeights[14]
