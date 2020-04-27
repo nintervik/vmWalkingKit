@@ -662,8 +662,17 @@ class WalkLibraryUI(QtWidgets.QWidget):
         currArmsIndex = self.paramWidgets[prefix][0].currentIndex() + 1
 
         if currArmsIndex is not None:
-            attrArmsElbowDrag = 'Mr_Buttons:Mr_Buttons_r_Arm_ElbowFKCtrl.rotateY'
-            self.library.offsetKeyframes(attrArmsElbowDrag, 'ElbowsDrag_1', self.prevArmsIndex, currArmsIndex)
+            attrElbowsDragRight = 'Mr_Buttons:Mr_Buttons_r_Arm_ElbowFKCtrl.rotateY'
+            self.library.offsetKeyframes(attrElbowsDragRight, 'ElbowsDrag_1', self.prevArmsIndex, currArmsIndex)
+
+            attrElbowsDragLeft = 'Mr_Buttons:Mr_Buttons_l_Arm_ElbowFKCtrl.rotateY'
+            self.library.offsetKeyframes(attrElbowsDragLeft, 'ElbowsDrag_1', self.prevArmsIndex, currArmsIndex)
+
+            attrHandsDragRight = 'Mr_Buttons:Mr_Buttons_r_Arm_WristFKCtrl.rotateY'
+            self.library.offsetKeyframes(attrHandsDragRight, 'HandsDrag_1', self.prevArmsIndex, currArmsIndex)
+
+            attrHandsDragLeft = 'Mr_Buttons:Mr_Buttons_l_Arm_WristFKCtrl.rotateY'
+            self.library.offsetKeyframes(attrHandsDragLeft, 'HandsDrag_1', self.prevArmsIndex, currArmsIndex)
 
         # Store the previous ArmsBeat index for the next calculation
         WalkLibraryUI.prevArmsIndex = self.paramWidgets[prefix][0].currentIndex() + 1

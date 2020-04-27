@@ -123,8 +123,15 @@ class WalkLibrary(object):
 
         weights = []
 
+        indexToRemove = None
+
         for i in range(0, len(childLayers)):
+            if "Corrective" in childLayers[i]:
+                indexToRemove = i
             weights.append(cmds.animLayer(childLayers[i], query=True, weight=True))
+
+        childLayers.pop(indexToRemove)
+        weights.pop(indexToRemove)
 
         return childLayers, weights
 
