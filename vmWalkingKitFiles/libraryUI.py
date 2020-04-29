@@ -471,11 +471,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
         scrollArea.setWidget(scrollWidget)
         newTab.layout.addWidget(scrollArea, 1, 0, 5, 5)
 
-
-
-
-
-
         return newTab
 
     def addDropDownParam(self, tab, paramName, options, id, prefix, slotName=None):
@@ -513,7 +508,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
             self.paramWidgets[prefix] = widget
 
         # Set parameter layout
-        paramText = QtWidgets.QLabel(paramName)
+        paramText = ParamLabel(paramName)
 
         self.scrollLayout.addWidget(paramText, id, 0, 1, 3)
         paramText.setMinimumHeight(25)
@@ -827,6 +822,20 @@ class WalkLibraryUI(QtWidgets.QWidget):
             self.library.importPreset(name, directory)
         else:
             logger.debug("If a directory is given a name must be given as well.")
+
+
+class ParamLabel(QtWidgets.QLabel):
+    def __init__(self, text, parent=None):
+        super(ParamLabel, self).__init__(parent)
+        self.setAutoFillBackground(False)
+        self.setMouseTracking(True)
+        self.setText(text)
+
+    def enterEvent(self, event):
+        print("hovered")
+
+    def leaveEvent(self, event):
+        print("left")
 
 # MAYA WINDOWS FUNCTIONS
 
