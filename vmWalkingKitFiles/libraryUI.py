@@ -83,6 +83,31 @@ class WalkLibraryUI(QtWidgets.QWidget):
                          "PelvisYRotation", "PelvisWeightShift", "ChestYRotation", "ChestUpDown",
                          "ArmsWidth", "ElbowsDrag", "HandsDrag", "HandsPose"]
 
+        self.paramDescriptions = OrderedDict([
+            (self.prefixes[0],  "Place holder description 1"),
+            (self.prefixes[1],  "Place holder description 2"),
+            (self.prefixes[2],  "Place holder description 3"),
+            (self.prefixes[3],  "Place holder description 4"),
+            (self.prefixes[4],  "Place holder description 5"),
+            (self.prefixes[5],  "Place holder description 6"),
+            (self.prefixes[6],  "Place holder description 7"),
+            (self.prefixes[7],  "Place holder description 8"),
+            (self.prefixes[8],  "Place holder description 9"),
+            (self.prefixes[9],  "Place holder description 10"),
+            (self.prefixes[10], "Place holder description 11"),
+            (self.prefixes[11], "Place holder description 12"),
+            (self.prefixes[12], "Place holder description 13"),
+            (self.prefixes[13], "Place holder description 14"),
+            (self.prefixes[14], "Place holder description 15"),
+            ("ArmsSwing",       "Place holder description 16"),
+            (self.prefixes[15], "Place holder description 17"),
+            (self.prefixes[16], "Place holder description 18"),
+            (self.prefixes[17], "Place holder description 19"),
+            (self.prefixes[18], "Place holder description 20")
+        ])
+
+        self.paramDescriptionWidgets = []
+
         # Populate 'paramLayers' dictionary with the current info on the scene
         self.initParamLayersData()
 
@@ -267,6 +292,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         menubar.addMenu("Help")
 
     def createDisplaySection(self, text, id):
+
         # Information display area
         scrollWidgetInfo = QtWidgets.QWidget()
         scrollWidgetInfo.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
@@ -287,6 +313,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         textWidget.setWordWrap(True)
 
         textWidget.setFont(QtGui.QFont('Arial', 9.5))
+        self.paramDescriptionWidgets.append(textWidget)
 
         self.scrollLayoutInfo.addWidget(textWidget, 0, 0, 0, 0, QtCore.Qt.AlignTop)
 
@@ -315,11 +342,13 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         self.createTabDescription()
 
+        index = 0
+
         # Create General tab parameters
-        self.addDropDownParam(tabGeneral, "Body beat", self.frameOptions, 2, self.prefixes[0], "onDropDownBodyBeatChanged")
-        self.addDropDownParam(tabGeneral, "Arms beat", self.frameOptions, 3, self.prefixes[1], "onDropDownArmsBeatChanged")
-        self.addSliderParam(tabGeneral, "Up & Down", 4, self.prefixes[2], "onSliderChanged")
-        self.addSliderParam(tabGeneral, "Body Tilt", 5, self.prefixes[3], "onSliderChanged")
+        self.addDropDownParam("Body beat", self.frameOptions, 2, self.prefixes[0], index, "onDropDownBodyBeatChanged")
+        self.addDropDownParam("Arms beat", self.frameOptions, 3, self.prefixes[1], index, "onDropDownArmsBeatChanged")
+        self.addSliderParam("Up & Down", 4, self.prefixes[2], index, "onSliderChanged")
+        self.addSliderParam("Body Tilt", 5, self.prefixes[3], index, "onSliderChanged")
 
         self.createDisplaySection("Hover over a parameter to see its description.", 6)
 
@@ -333,16 +362,17 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         self.createTabDescription()
 
+        index = 1
+
         # Create Head tab parameters
-        self.addSliderParam(tabHead, "Head up-down", 2, self.prefixes[4], "onSliderChanged")
-        self.addSliderParam(tabHead, "Head pigeon", 3, self.prefixes[5], "onSliderChanged")
-        self.addSliderParam(tabHead, "Head egoist", 4, self.prefixes[6], "onSliderChanged")
-        self.addSliderParam(tabHead, "Head nodding", 5, self.prefixes[7], "onSliderChanged")
-        self.addSliderParam(tabHead, "Head tilt", 6, self.prefixes[8], "onSliderChanged", 500)
-        self.addDropDownParam(tabHead, "Facial expression", self.faceOptions, 7, self.prefixes[9], "onDropDownChanged")
+        self.addSliderParam("Head up-down", 2, self.prefixes[4], index, "onSliderChanged")
+        self.addSliderParam("Head pigeon", 3, self.prefixes[5], index, "onSliderChanged")
+        self.addSliderParam("Head egoist", 4, self.prefixes[6], index, "onSliderChanged",)
+        self.addSliderParam("Head nodding", 5, self.prefixes[7], index, "onSliderChanged")
+        self.addSliderParam("Head tilt", 6, self.prefixes[8], index, "onSliderChanged", 500)
+        self.addDropDownParam("Facial expression", self.faceOptions, 7, self.prefixes[9], index, "onDropDownChanged")
 
         self.createDisplaySection("Hover over a parameter to see its description", 8)
-
 
     def createTrunkTab(self):
         """
@@ -354,17 +384,18 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         self.createTabDescription()
 
+        index = 2
+
         # TODO: do a ++i for the ui IDs
 
         # Create Trunk tab parameters
-        self.addSliderParam(tabTrunk, "Back curvature", 2, self.prefixes[10], "onSliderChanged", 500)
-        self.addSliderParam(tabTrunk, "Pelvis Y-rotation", 3, self.prefixes[11], "onSliderChanged")
-        self.addSliderParam(tabTrunk, "Pelvis weight shift", 4, self.prefixes[12], "onSliderChanged")
-        self.addSliderParam(tabTrunk, "Chest Y-rotation", 5, self.prefixes[13], "onSliderChanged")
-        self.addSliderParam(tabTrunk, "Chest up-down", 6, self.prefixes[14], "onSliderChanged")
+        self.addSliderParam("Back curvature", 2, self.prefixes[10], index, "onSliderChanged", 500)
+        self.addSliderParam("Pelvis Y-rotation", 3, self.prefixes[11], index, "onSliderChanged")
+        self.addSliderParam("Pelvis weight shift", 4, self.prefixes[12], index, "onSliderChanged")
+        self.addSliderParam("Chest Y-rotation", 5, self.prefixes[13], index, "onSliderChanged")
+        self.addSliderParam("Chest up-down", 6, self.prefixes[14], index, "onSliderChanged")
 
         self.createDisplaySection("Hover over a parameter to see its description", 7)
-
 
     def createArmsTab(self):
         """
@@ -374,14 +405,16 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Add tab for the arms
         tabArms = self.addTab("Arms")
 
+        index = 3
+
         self.createTabDescription()
 
         # Create Arms tab parameters
-        self.addSliderParam(tabArms, "Arms swing", 2, self.prefixes[1], "onSliderChanged", 500)
-        self.addSliderParam(tabArms, "Arms separation", 3, self.prefixes[15], "onSliderChanged", 500)
-        self.addSliderParam(tabArms, "Elbows drag", 4, self.prefixes[16], "onSliderChanged", 500)
-        self.addSliderParam(tabArms, "Hands drag", 5, self.prefixes[17], "onSliderChanged", 500)
-        self.addDropDownParam(tabArms, "Hands pose", self.handOptions, 6, self.prefixes[18], "onDropDownChanged")
+        self.addSliderParam("Arms swing", 2, self.prefixes[1], index, "onSliderChanged", 500)
+        self.addSliderParam("Arms separation", 3, self.prefixes[15], index, "onSliderChanged", 500)
+        self.addSliderParam("Elbows drag", 4, self.prefixes[16], index, "onSliderChanged", 500)
+        self.addSliderParam("Hands drag", 5, self.prefixes[17], index, "onSliderChanged", 500)
+        self.addDropDownParam("Hands pose", self.handOptions, 6, self.prefixes[18], index, "onDropDownChanged")
 
         self.createDisplaySection("Hover over a parameter to see its description", 7)
 
@@ -392,6 +425,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Add tab for the legs
         tabLegs = self.addTab("Legs")
+
+        index = 4
 
         self.createTabDescription()
 
@@ -404,6 +439,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Add tab for the head
         tabSettings = self.addTab("Settings")
+
+        index = 5
 
         self.createTabDescription()
 
@@ -473,7 +510,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         return newTab
 
-    def addDropDownParam(self, tab, paramName, options, id, prefix, slotName=None):
+    def addDropDownParam(self, paramName, options, id, prefix, index, slotName=None):
 
         widget = QtWidgets.QComboBox()
         for i in range(0, len(options)):
@@ -486,9 +523,9 @@ class WalkLibraryUI(QtWidgets.QWidget):
         else:
             widget.currentIndexChanged.connect(partial(getattr(self, slotName), prefix))
 
-        self.setUpParamWidget(prefix, widget, paramName, id)
+        self.setUpParamWidget(prefix, widget, paramName, id, index)
 
-    def addSliderParam(self, tab, paramName, id, prefix, slotName=None, defaultValue=200):
+    def addSliderParam(self, paramName, id, prefix, index, slotName=None, defaultValue=200):
 
         widget = QtWidgets.QSlider(QtCore.Qt.Horizontal)
         widget.setMinimum(0)
@@ -496,9 +533,9 @@ class WalkLibraryUI(QtWidgets.QWidget):
         widget.setValue(defaultValue)
         widget.valueChanged.connect(partial(getattr(self, slotName), prefix))
 
-        self.setUpParamWidget(prefix, widget, paramName, id)
+        self.setUpParamWidget(prefix, widget, paramName, id, index)
 
-    def setUpParamWidget(self, prefix, widget, paramName, id):
+    def setUpParamWidget(self, prefix, widget, paramName, id, index):
 
         if prefix == self.prefixes[1] and self.prefixes[1] not in self.paramWidgets:
             self.paramWidgets[prefix] = [widget, None]
@@ -508,7 +545,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
             self.paramWidgets[prefix] = widget
 
         # Set parameter layout
-        paramText = ParamLabel(paramName)
+        paramText = ParamLabel(paramName, self, prefix, index)
 
         self.scrollLayout.addWidget(paramText, id, 0, 1, 3)
         paramText.setMinimumHeight(25)
@@ -823,19 +860,34 @@ class WalkLibraryUI(QtWidgets.QWidget):
         else:
             logger.debug("If a directory is given a name must be given as well.")
 
+    def HoverEvent(self, hovered, prefix, index):
+        if hovered:
+            if index == 3 and prefix == self.prefixes[1]:
+                prefix = "ArmsSwing"
+
+            self.paramDescriptionWidgets[index].setText(self.paramDescriptions[prefix])
+        else:
+            text = "Hover over a parameter to see its description"
+
 
 class ParamLabel(QtWidgets.QLabel):
-    def __init__(self, text, parent=None):
+    def __init__(self, text, ref, prefix, index, parent=None):
         super(ParamLabel, self).__init__(parent)
         self.setAutoFillBackground(False)
         self.setMouseTracking(True)
         self.setText(text)
+        self.hovered = False
+        self.ref = ref
+        self.prefix = prefix
+        self.index = index
 
     def enterEvent(self, event):
-        print("hovered")
+        self.ref.HoverEvent(True, self.prefix, self.index)
+        pass
 
     def leaveEvent(self, event):
-        print("left")
+        self.ref.HoverEvent(False, self.prefix, self.index)
+        pass
 
 # MAYA WINDOWS FUNCTIONS
 
