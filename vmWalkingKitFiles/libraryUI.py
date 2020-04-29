@@ -414,6 +414,26 @@ class WalkLibraryUI(QtWidgets.QWidget):
         scrollArea.setWidget(scrollWidget)
         newTab.layout.addWidget(scrollArea, 1, 0, 5, 5)
 
+        # Information display area
+        scrollWidgetInfo = QtWidgets.QWidget()
+        scrollWidgetInfo.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
+
+        self.scrollLayoutInfo = QtWidgets.QGridLayout(scrollWidget)
+
+        # Create the scroll area to add the new tab
+        scrollAreaInfo = QtWidgets.QScrollArea()
+        #scrollAreaInfo.setFrameShape(QtWidgets.QFrame.NoFrame)
+        scrollAreaInfo.setWidgetResizable(True)
+        #scrollAreaInfo.setContentsMargins(4, 4, 4, 4)
+        scrollAreaInfo.setFocusPolicy(QtCore.Qt.NoFocus)
+        scrollAreaInfo.setWidget(scrollWidgetInfo)
+        scrollAreaInfo.setStyleSheet('QScrollArea {background-color: #3d3d3d; border: 1px solid grey}')
+
+        self.scrollLayout.addWidget(scrollAreaInfo, 7, 0, 1, 25)
+        # Add placeholder text to the scroll layout
+        tmpText = QtWidgets.QLabel("Work in progress.")
+        self.scrollLayoutInfo.addWidget(tmpText, 0, 1, 1, 1)
+
         return newTab
 
     def addDropDownParam(self, tab, paramName, options, id, prefix, slotName=None):
