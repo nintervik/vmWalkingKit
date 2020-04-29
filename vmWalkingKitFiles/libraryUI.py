@@ -274,11 +274,42 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Add general tab
         tabGeneral = self.addTab("General")
 
+        self.createScrollAreaText()
+
         # Create General tab parameters
-        self.addDropDownParam(tabGeneral, "Body beat", self.frameOptions, 0, self.prefixes[0], "onDropDownBodyBeatChanged")
-        self.addDropDownParam(tabGeneral, "Arms beat", self.frameOptions, 1, self.prefixes[1], "onDropDownArmsBeatChanged")
-        self.addSliderParam(tabGeneral, "Up & Down", 2, self.prefixes[2], "onSliderChanged")
-        self.addSliderParam(tabGeneral, "Body Tilt", 3, self.prefixes[3], "onSliderChanged")
+        self.addDropDownParam(tabGeneral, "Body beat", self.frameOptions, 1, self.prefixes[0], "onDropDownBodyBeatChanged")
+        self.addDropDownParam(tabGeneral, "Arms beat", self.frameOptions, 2, self.prefixes[1], "onDropDownArmsBeatChanged")
+        self.addSliderParam(tabGeneral, "Up & Down", 3, self.prefixes[2], "onSliderChanged")
+        self.addSliderParam(tabGeneral, "Body Tilt", 4, self.prefixes[3], "onSliderChanged")
+
+
+    def createScrollAreaText(self):
+        # Information display area
+        scrollWidgetInfo = QtWidgets.QWidget()
+        scrollWidgetInfo.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
+
+        self.scrollLayoutInfo = QtWidgets.QGridLayout(scrollWidgetInfo)
+
+        scrollAreaInfo = QtWidgets.QScrollArea()
+        #scrollAreaInfo.setFrameShape(QtWidgets.QFrame.NoFrame)
+        scrollAreaInfo.setWidgetResizable(True)
+        #scrollAreaInfo.setContentsMargins(4, 4, 4, 4)
+        #scrollAreaInfo.setFocusPolicy(QtCore.Qt.NoFocus)
+        scrollAreaInfo.setWidget(scrollWidgetInfo)
+        scrollAreaInfo.setStyleSheet('QScrollArea {background-color: #3d3d3d; border: 1px solid grey}')
+
+        tmpText = QtWidgets.QLabel("This tab is kind of miscellaneous as it contains "
+                                   " four parameters that could be in another tabs. However this four"
+                                   " parameters are what define the base of a walk cycle so I wanted to"
+                                   " set them apart from the rest.")
+        tmpText.setMaximumSize(220, 90)
+        tmpText.setWordWrap(True)
+
+        tmpText.setFont(QtGui.QFont('Arial', 9.5))
+
+        self.scrollLayoutInfo.addWidget(tmpText)
+
+        self.scrollLayout.addWidget(scrollAreaInfo, 0, 0, 1, 8)
 
     def createHeadTab(self):
         """
@@ -414,25 +445,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
         scrollArea.setWidget(scrollWidget)
         newTab.layout.addWidget(scrollArea, 1, 0, 5, 5)
 
-        # Information display area
-        scrollWidgetInfo = QtWidgets.QWidget()
-        scrollWidgetInfo.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
 
-        self.scrollLayoutInfo = QtWidgets.QGridLayout(scrollWidget)
 
-        # Create the scroll area to add the new tab
-        scrollAreaInfo = QtWidgets.QScrollArea()
-        #scrollAreaInfo.setFrameShape(QtWidgets.QFrame.NoFrame)
-        scrollAreaInfo.setWidgetResizable(True)
-        #scrollAreaInfo.setContentsMargins(4, 4, 4, 4)
-        scrollAreaInfo.setFocusPolicy(QtCore.Qt.NoFocus)
-        scrollAreaInfo.setWidget(scrollWidgetInfo)
-        scrollAreaInfo.setStyleSheet('QScrollArea {background-color: #3d3d3d; border: 1px solid grey}')
 
-        self.scrollLayout.addWidget(scrollAreaInfo, 7, 0, 1, 25)
-        # Add placeholder text to the scroll layout
-        tmpText = QtWidgets.QLabel("Work in progress.")
-        self.scrollLayoutInfo.addWidget(tmpText, 0, 1, 1, 1)
+
 
         return newTab
 
