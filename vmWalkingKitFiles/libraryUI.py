@@ -241,8 +241,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.createTrunkTab()
         self.createArmsTab()
         self.createLegsTab()
-        self.createFeetTab()
-        self.createTailTab()
         self.createSettingsTab()
 
         # Create bottom buttons
@@ -296,7 +294,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.addSliderParam(tabHead, "Head egoist", 2, self.prefixes[6], "onSliderChanged")
         self.addSliderParam(tabHead, "Head nodding", 3, self.prefixes[7], "onSliderChanged")
         self.addSliderParam(tabHead, "Head tilt", 4, self.prefixes[8], "onSliderChanged", 500)
-        self.addDropDownParam(tabHead, "Face expressions", self.faceOptions, 5, self.prefixes[9], "onDropDownChanged")
+        self.addDropDownParam(tabHead, "Facial expression", self.faceOptions, 5, self.prefixes[9], "onDropDownChanged")
 
     def createTrunkTab(self):
         """
@@ -325,7 +323,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Create Arms tab parameters
         self.addSliderParam(tabArms, "Arms swing", 0, self.prefixes[1], "onSliderChanged", 500)
-        self.addSliderParam(tabArms, "Arms Width", 1, self.prefixes[15], "onSliderChanged", 500)
+        self.addSliderParam(tabArms, "Arms separation", 1, self.prefixes[15], "onSliderChanged", 500)
         self.addSliderParam(tabArms, "Elbows drag", 2, self.prefixes[16], "onSliderChanged", 500)
         self.addSliderParam(tabArms, "Hands drag", 3, self.prefixes[17], "onSliderChanged", 500)
         self.addDropDownParam(tabArms, "Hands pose", self.handOptions, 4, self.prefixes[18], "onDropDownChanged")
@@ -337,30 +335,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Add tab for the legs
         tabLegs = self.addTab("Legs")
-
-        # Add placeholder text to the scroll layout
-        tmpText = QtWidgets.QLabel("Work in progress.")
-        self.scrollLayout.addWidget(tmpText)
-
-    def createFeetTab(self):
-        """
-        Creates the feet tab
-        """
-
-        # Add tab for the feet
-        tabLegs = self.addTab("Feet")
-
-        # Add placeholder text to the scroll layout
-        tmpText = QtWidgets.QLabel("Work in progress.")
-        self.scrollLayout.addWidget(tmpText)
-
-    def createTailTab(self):
-        """
-        Creates the tail tab
-        """
-
-        # Add tab for the feet
-        tabtail = self.addTab("Tail")
 
         # Add placeholder text to the scroll layout
         tmpText = QtWidgets.QLabel("Work in progress.")
