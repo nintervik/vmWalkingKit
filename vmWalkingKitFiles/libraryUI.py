@@ -1,3 +1,4 @@
+import os
 from maya import cmds
 from collections import OrderedDict
 
@@ -460,7 +461,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Save button
         saveBtn = QtWidgets.QPushButton('Save preset')
-        # saveBtn.clicked.connect(self.onSave)
+        saveBtn.clicked.connect(partial(self.onSave, self.library.getDirectory()))
         btnLayout.addWidget(saveBtn)
 
         # Read button
@@ -774,7 +775,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         weight = value / 1000.0
         self.library.changeLayerWeight(layerName, weight)
 
-    def onSave(self, name=None, directory=None):
+    def onSave(self, directory):
         """
         Imports the given preset file into the tool.
         If not given, the default name and directory will be used.
@@ -784,14 +785,20 @@ class WalkLibraryUI(QtWidgets.QWidget):
             directory(str): directory where the preset file to import is stored
         """
 
-        if name is None and directory is None:
-            self.library.savePreset()
-        elif name is not None and directory is None:
-            self.library.savePreset(name)
-        elif name is not None and directory is not None:
-            self.library.savePreset(name, directory)
-        else:
-            logger.debug("If a directory is given a name must be given as well.")
+        directory = self.library.getDirectory()
+        fileName = QtWidgets.QFileDialog.getSaveFileName(self, "Preset Browser", directory, "Text Files (*.json)")
+
+        self.library.savePreset(fileName[0])
+
+
+        # if name is None and directory is None:
+        #     self.library.savePreset()
+        # elif name is not None and directory is None:
+        #     self.library.savePreset(name)
+        # elif name is not None and directory is not None:
+        #     self.library.savePreset(name, directory)
+        # else:
+        #     logger.debug("If a directory is given a name must be given as well.")
 
     def onReset(self):
         """
@@ -888,6 +895,7 @@ class ParamLabel(QtWidgets.QLabel):
     def leaveEvent(self, event):
         self.ref.HoverEvent(False, self.prefix, self.index)
         pass
+
 
 # MAYA WINDOWS FUNCTIONS
 

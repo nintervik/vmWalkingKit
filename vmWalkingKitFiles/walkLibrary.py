@@ -18,16 +18,6 @@ DIRECTORY = os.path.join(USER_APP_DIR, 'vmWalkKitPresets')
 # Set the name for the default preset JSON file
 DEFAULT_PRESET_NAME = 'defaultPreset'
 
-def createDirectory(directory=DIRECTORY):
-    """
-    Creates the given directory if it doesn't exist already.
-    Args:
-        directory(str): the directory to create
-    """
-
-    if not os.path.exists(directory):
-        os.mkdir(directory)
-
 class WalkLibrary(object):
     """
     This class manages all the stuff related to animation layers and presets
@@ -39,7 +29,7 @@ class WalkLibrary(object):
         Init method. Here we create the directory to save the presets and reset everything to
         default by reading from the 'defaultPreset.json' file.
         """
-        createDirectory()
+        self.getDirectory()
 
         # Only call this to generate the defaultPreset.json the first time
         if createDefaultPreset:
@@ -285,7 +275,7 @@ class WalkLibrary(object):
 
         return defaultLayers, defaultWeights
 
-    def savePreset(self, name=DEFAULT_PRESET_NAME, directory=DIRECTORY):
+    def savePreset(self, path):
         """
         Saves the current parameters in a preset JSON file.
         Args:
@@ -295,9 +285,8 @@ class WalkLibrary(object):
             directory(str): the path where the preset file will be stored. If
             not specified, it will be saved in the default path.
         """
-
         # Create directory for the JSON preset file
-        infoFile = os.path.join(directory, '%s.json' % name)
+        #infoFile = os.path.join(directory, '%s.json' % name)
 
         # Find all the active animation layers in the scene
         activeLayers, weights = self.getActiveAnimationLayers()
@@ -310,5 +299,17 @@ class WalkLibrary(object):
             dataToWrite[activeLayers[i]] = weights[i]
 
         # Save all the active animation layers and their weights in the JSON preset file
-        with open(infoFile, 'w') as f:
+        with open(path, 'w') as f:
             json.dump(dataToWrite, f, indent=4) # TODO: check for errors here
+
+    def getDirectory(self, directory=DIRECTORY):
+        """
+        Creates the given directory if it doesn't exist already.
+        Args:
+            directory(str): the directory to create
+        """
+
+        if not os.path.exists(directory):
+            os.mkdir(directory)
+
+        return directory
