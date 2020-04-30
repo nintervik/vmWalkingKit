@@ -466,7 +466,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Read button
         importBtn = QtWidgets.QPushButton('Import preset')
-        #importBtn.clicked.connect(self.onImport)
+        importBtn.clicked.connect(partial(self.onImport, self.library.getDirectory()))
         btnLayout.addWidget(importBtn)
 
         # Reset
@@ -781,7 +781,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
         If not given, the default name and directory will be used.
         If just given the name the default directory will be used with the given name.
         Args:
-            name(str): name of the preset file to import.
             directory(str): directory where the preset file to import is stored
         """
 
@@ -799,7 +798,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
             layers, weights = self.library.importPreset()
         else:
             browseDir = self.library.getDirectory()
-            filePath = QtWidgets.QFileDialog.getSaveFileName(self, "Preset Browser", browseDir, "Text Files (*.json)")
+            filePath = QtWidgets.QFileDialog.getOpenFileName(self, "Preset Browser", browseDir, "Text Files (*.json)")
             layers, weights = self.library.importPreset(filePath[0])
 
         # For each parameter apply the default layers data to the parameter
@@ -834,25 +833,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
                         self.onSliderChanged(prefix, weights[i]*1000.0)
         else:
             logger.debug("Query for default preset file failed.")
-
-    def onImportOld(self, name=None, directory=None):
-        """
-        Imports the given preset file into the tool.
-        If not given, the default name and directory will be used.
-        If just given the name the default directory will be used with the given name.
-        Args:
-            name(str): name of the preset file to import.
-            directory(str): directory where the preset file to import is stored
-        """
-
-        if name is None and directory is None:
-            self.library.importPreset()
-        elif name is not None and directory is None:
-            self.library.importPreset(name)
-        elif name is not None and directory is not None:
-            self.library.importPreset(name, directory)
-        else:
-            logger.debug("If a directory is given a name must be given as well.")
 
     def HoverEvent(self, hovered, prefix, index):
         if hovered:
