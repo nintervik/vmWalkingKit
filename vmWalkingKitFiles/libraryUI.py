@@ -867,7 +867,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
             self.paramDescriptionWidgets[index].setText(self.paramDescriptions[prefix])
         else:
-            text = "Hover over a parameter to see its description"
+            self.paramDescriptionWidgets[index].setText("Hover over a parameter to see its description")
 
 
 class ParamLabel(QtWidgets.QLabel):
