@@ -114,7 +114,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Every time we create a new instance, we will automatically create our UI
         self.createUI()
-        self.onReset()
+        self.onImport()
 
         # Add ourself (QtWidgets.QWidget) to the parent's layout
         self.parent().layout().addWidget(self)
@@ -471,7 +471,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Reset
         resetBtn = QtWidgets.QPushButton('Reset')
-        resetBtn.clicked.connect(self.onReset)
+        resetBtn.clicked.connect(self.onImport)
         btnLayout.addWidget(resetBtn)
 
     # UI functionality methods
@@ -790,37 +790,23 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         self.library.savePreset(fileName[0])
 
-
-        # if name is None and directory is None:
-        #     self.library.savePreset()
-        # elif name is not None and directory is None:
-        #     self.library.savePreset(name)
-        # elif name is not None and directory is not None:
-        #     self.library.savePreset(name, directory)
-        # else:
-        #     logger.debug("If a directory is given a name must be given as well.")
-
-    def onReset(self):
+    def onImport(self, directory=""):
         """
         Resets the tool parameters to their default state.
         """
 
-        # Import the default preset and query the layer names and weights
-        defaultLayers, defaultWeights = self.library.importPreset()
-
-        # TODO: make this a method of wallkLibrary
-        # Set default playback options
-        cmds.playbackOptions(animationEndTime=96)
-        cmds.playbackOptions(minTime=1)
-        cmds.playbackOptions(maxTime=24)
-        cmds.playbackOptions(animationStartTime=1)
+        if not directory:
+            print "hjdsdfsdfd"
+            layers, weights = self.library.importPreset()
+        else:
+            layers, weights = self.library.importPreset(directory)
 
         # For each parameter apply the default layers data to the parameter
-        if defaultLayers is not None and defaultWeights is not None:
-            for i in range(0, len(defaultLayers)):
+        if layers is not None and weights is not None:
+            for i in range(0, len(layers)):
 
                 # Get layer prefix
-                splitStr = defaultLayers[i].split("_")
+                splitStr = layers[i].split("_")
                 prefix = splitStr[0]
                 # Get the widget type
 
@@ -829,8 +815,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
                     self.paramWidgets[prefix][0].setCurrentIndex(index)
                     self.onDropDownChanged(prefix, index)
 
-                    self.paramWidgets[prefix][1].setValue(defaultWeights[i]*1000.0)
-                    self.onSliderChanged(prefix, defaultWeights[i]*1000.0)
+                    self.paramWidgets[prefix][1].setValue(weights[i]*1000.0)
+                    self.onSliderChanged(prefix, weights[i]*1000.0)
                 elif prefix != "Corrective":
                     widgetType = type(self.paramWidgets[prefix]).__name__
 
@@ -843,12 +829,12 @@ class WalkLibraryUI(QtWidgets.QWidget):
                         else:
                             self.onDropDownChanged(prefix, index)
                     elif widgetType == 'QSlider':
-                        self.paramWidgets[prefix].setValue(defaultWeights[i]*1000.0)
-                        self.onSliderChanged(prefix, defaultWeights[i]*1000.0)
+                        self.paramWidgets[prefix].setValue(weights[i]*1000.0)
+                        self.onSliderChanged(prefix, weights[i]*1000.0)
         else:
             logger.debug("Query for default preset file failed.")
 
-    def onImport(self, name=None, directory=None):
+    def onImportOld(self, name=None, directory=None):
         """
         Imports the given preset file into the tool.
         If not given, the default name and directory will be used.

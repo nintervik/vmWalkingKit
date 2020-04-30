@@ -235,6 +235,7 @@ class WalkLibrary(object):
 
         # Generate directory name for the JSON preset file
         infoFile = os.path.join(directory, '%s.json' % name)
+        print name
 
         self.activeLayersInfo = OrderedDict()
 
