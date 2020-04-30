@@ -16,7 +16,9 @@ USER_APP_DIR = cmds.internalVar(userAppDir=True)
 DIRECTORY = os.path.join(USER_APP_DIR, 'vmWalkKitPresets')
 
 # Set the name for the default preset JSON file
-DEFAULT_PRESET_NAME = 'defaultPreset'
+DEFAULT_PRESET_NAME = 'defaultPreset.json'
+
+FILE_PATH = os.path.join(DIRECTORY, DEFAULT_PRESET_NAME)
 
 class WalkLibrary(object):
     """
@@ -220,7 +222,7 @@ class WalkLibrary(object):
 
     # PRESETS METHODS
 
-    def importPreset(self, name=DEFAULT_PRESET_NAME, directory=DIRECTORY):
+    def importPreset(self, filePath=FILE_PATH):
         """
         Imports the given preset into the tool.
         Args:
@@ -233,30 +235,28 @@ class WalkLibrary(object):
         # TODO: take into account playback range settings when importing preset (as inDropDownChanged)
         # TODO: when importing a new preset the parameters will also need to be changed accordingly. As in resetPreset()
 
-        # Generate directory name for the JSON preset file
-        infoFile = os.path.join(directory, '%s.json' % name)
-        print name
-
         self.activeLayersInfo = OrderedDict()
+        layers = None
+        weights = None
 
         # Load JSON content into 'activeLayersInfo' dict
-        with open(infoFile, 'r') as f:
+        with open(filePath, 'r') as f:
             self.activeLayersInfo = json.load(f, object_pairs_hook=OrderedDict)
 
         # Make sure the preset file is not empty and exists
         if self.activeLayersInfo is not None:
 
             # These two list will store the layers and weight from the default preset
-            defaultLayers = self.activeLayersInfo.keys()
-            defaultWeights = self.activeLayersInfo.values()
+            layers = self.activeLayersInfo.keys()
+            weights = self.activeLayersInfo.values()
 
             # Get the all the animation layers in the scene
-            childLayers, weights = self.getCurrentAnimationLayers()
+            childLayers, sceneWeights = self.getCurrentAnimationLayers()
 
             # Iterate over all the animation layers in the scene
             for i in range(0, len(childLayers)):
                 # If a layer is in the default preset file it will be unmuted
-                if childLayers[i] in defaultLayers:
+                if childLayers[i] in layers:
                     self.changeLayerMuteState(childLayers[i], False)
                 # If the layer is not in the default preset file it will be muted
                 else:
@@ -268,15 +268,15 @@ class WalkLibrary(object):
                     self.changeLayerWeight(childLayers[i], 0.5)
 
             # Iterate over the layers in the default preset and set their respective weight
-            for i in range(0, len(defaultLayers)):
-                self.changeLayerWeight(defaultLayers[i], defaultWeights[i])
+            for i in range(0, len(layers)):
+                self.changeLayerWeight(layers[i], weights[i])
         # If the preset default file is empty or does not exist we raise a warning
         else:
             logger.error(DEFAULT_PRESET_NAME + "not found or empty.")
 
-        return defaultLayers, defaultWeights
+        return layers, weights
 
-    def savePreset(self, path):
+    def savePreset(self, filePath):
         """
         Saves the current parameters in a preset JSON file.
         Args:
@@ -300,7 +300,7 @@ class WalkLibrary(object):
             dataToWrite[activeLayers[i]] = weights[i]
 
         # Save all the active animation layers and their weights in the JSON preset file
-        with open(path, 'w') as f:
+        with open(filePath, 'w') as f:
             json.dump(dataToWrite, f, indent=4) # TODO: check for errors here
 
     def getDirectory(self, directory=DIRECTORY):

@@ -786,9 +786,9 @@ class WalkLibraryUI(QtWidgets.QWidget):
         """
 
         directory = self.library.getDirectory()
-        fileName = QtWidgets.QFileDialog.getSaveFileName(self, "Preset Browser", directory, "Text Files (*.json)")
+        filePath = QtWidgets.QFileDialog.getSaveFileName(self, "Preset Browser", directory, "Text Files (*.json)")
 
-        self.library.savePreset(fileName[0])
+        self.library.savePreset(filePath[0])
 
     def onImport(self, directory=""):
         """
@@ -796,10 +796,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
         """
 
         if not directory:
-            print "hjdsdfsdfd"
             layers, weights = self.library.importPreset()
         else:
-            layers, weights = self.library.importPreset(directory)
+            browseDir = self.library.getDirectory()
+            filePath = QtWidgets.QFileDialog.getSaveFileName(self, "Preset Browser", browseDir, "Text Files (*.json)")
+            layers, weights = self.library.importPreset(filePath[0])
 
         # For each parameter apply the default layers data to the parameter
         if layers is not None and weights is not None:
