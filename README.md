@@ -3,17 +3,20 @@
 In this README you’ll find all the steps needed in order to make the vmWalkingKit work inside Maya. The steps are the following ones: 
 
 1. Download the latest release .zip from the release [section](https://github.com/nintervik/vmWalkingKit/releases) of the repository and unzip it anywhere on your computer.<br/>
-2. Inside the *vmWalkingKit_v0.5* folder, you’ll find two things:<br/>
-   a. A folder called *vmWalkingKit*.<br/> 
-   b. A script called *Qt.py*.<br/>
-   c. This *README* file.<br/>
-   d. A *LICENSE* file.<br/>
-Move both the folder and the script (a. and b.) to the following directory:<br/>     
+2. Inside the *vmWalkingKit_v0.5* folder, you’ll find five things:<br/>
+   a. A folder called *vmWalkingKit*.<br/>
+   b. A folder called *vmWalkingKitPresets*.<br/>
+   c. A script called *Qt.py*.<br/>
+   d. This *README* file.<br/>
+   e. A *LICENSE* file.<br/>
+Move both the *vmWakingKit* folder and the script *Qt.py* (a. and c.) to the following directory:<br/>     
 *C:\Users\UserName\Documents\maya\version\scripts*<br/>
 Where:<br/>
    - *C:* is the drive where Maya is installed.
    - *UserName* is the name of your user in Windows.
    - *version* is the version number of Maya that you want to use (2017→2019)
+And then, move the *vmWakingKitPresets* folder (b.) to the following directory:<br/>     
+*C:\Users\UserName\Documents\maya*<br/>
 3. Open the Maya version corresponding to where you’ve put the files.<br/>
 4. Go to File→Set Project and navigate to the *vmWalkingKit* folder. Inside you’ll find another folder called *mayaProject*. Set that folder as the project.<br/> 
 5. In Maya, go to File→Open Scene (Ctrl+O) and open the *characterScene_#* where *#* is the Maya version you’re using.<br/>
