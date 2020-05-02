@@ -3,13 +3,13 @@
 In this README you’ll find all the steps needed in order to make the vmWalkingKit work inside Maya. The steps are the following ones: 
 
 1. Download the latest release .zip from the release section of the repository (https://github.com/nintervik/vmWalkingKit/releases) and unzip it anywhere on your computer.
-2. Inside, you’ll find four things:
-   a. A folder called vmWalkingKit. 
-   b. A script called Qt.py
-   c. This README file
-   d. A LICENSE file
+2. Inside, you’ll find four things:<br/>
+   a. A folder called vmWalkingKit.<br/> 
+   b. A script called Qt.py<br/>
+   c. This README file<br/>
+   d. A LICENSE file<br/>
 Move a. and b. (the folder and the .py script) to the next directory:    
-C:\Users\UserName\Documents\maya\version\scripts
+C:\Users\UserName\Documents\maya\version\scripts<br/>
 Where:
    - C: is the drive where Windows is installed.
    - UserName is the name of your user in Windows
@@ -23,7 +23,7 @@ Where:
 ```python
    from vmWalkingKit.vmWalkingKitFiles import libraryUI
 
-   reload(libraryUI)<br/>
+   reload(libraryUI)
    libraryUI.WalkLibraryUI()
 ```
 9. Open the Custom tab in Maya’s Shelf. If the the Shelf is not visible, go to Windows→UI Elements→Shelf.  
