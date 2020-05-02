@@ -21,10 +21,10 @@ Where:
 7. Click on the + icon on the tabs section to open up a new tab. Choose Python as the executer source language.
 8. In this tab, paste the following code:     
 
-from vmWalkingKit.vmWalkingKitFiles import libraryUI
+   from vmWalkingKit.vmWalkingKitFiles import libraryUI
 
-reload(libraryUI)<br/>
-libraryUI.WalkLibraryUI()
+   reload(libraryUI)<br/>
+   libraryUI.WalkLibraryUI()
 
 9. Open the Custom tab in Maya’s Shelf. If the the Shelf is not visible, go to Windows→UI Elements→Shelf.  
 10. Still with the this tab opened and inside the Script Editor, go to File→Save Script To Shelf…, write a name for it (e.g. vmWalkingKit) and click Ok. An icon with the chosen name should have appeared in the Custom Shelf tab.
