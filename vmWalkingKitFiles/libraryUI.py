@@ -130,7 +130,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Get the names and weights of all the animation layers in the scene
         layersNames, layersWeights = self.library.getCurrentAnimationLayers()
-        print layersNames
+
         # Create ordered dictionaries to store the parameters data
 
         # TODO: automate this below
