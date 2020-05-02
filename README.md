@@ -18,7 +18,7 @@ Where:
 4. Go to File→Set Project and navigate to the vmWalkingKitFolder. Inside you’ll find another folder called mayaProject. Set that folder as the project. 
 5. In Maya, go to File→Open Scene (Ctrl+O) and open the characterScene_# where # is the Maya version you’re using.
 6. Open the Script Editor by clicking on the bottom right button with the {;} or by going to Windows→General Editors→Script Editor.
-7. Click on the + icon on the tabs section to open up a new tab. Choose Python as the executer source language.
+7. Click on the + icon in the tabs section to open up a new tab. Choose Python as the executer source language.
 8. In this tab, paste the following code:     
 ```python
    from vmWalkingKit.vmWalkingKitFiles import libraryUI
