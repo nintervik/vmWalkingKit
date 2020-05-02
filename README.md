@@ -14,7 +14,7 @@ Move both the *vmWakingKit* folder and the script *Qt.py* (a. and c.) to the fol
 Where:<br/>
    - *C:* is the drive where Maya is installed.
    - *UserName* is the name of your user in Windows.
-   - *version* is the version number of Maya that you want to use (2017→2019)
+   - *version* is the version number of Maya that you want to use (2017→2019)<br/>
 And then, move the *vmWakingKitPresets* folder (b.) to the following directory:     
 *C:\Users\UserName\Documents\maya*<br/>
 3. Open the Maya version corresponding to where you’ve put the files.<br/>
