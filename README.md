@@ -9,13 +9,13 @@ In this README you’ll find all the steps needed in order to make the vmWalking
    c. A script called *Qt.py*.<br/>
    d. This *README* file.<br/>
    e. A *LICENSE* file.<br/>
-Move both the *vmWakingKit* folder and the script *Qt.py* (a. and c.) to the following directory:<br/>     
+Move both the *vmWakingKit* folder and the script *Qt.py* (a. and c.) to the following directory:     
 *C:\Users\UserName\Documents\maya\version\scripts*<br/>
 Where:<br/>
    - *C:* is the drive where Maya is installed.
    - *UserName* is the name of your user in Windows.
    - *version* is the version number of Maya that you want to use (2017→2019)
-And then, move the *vmWakingKitPresets* folder (b.) to the following directory:<br/>     
+And then, move the *vmWakingKitPresets* folder (b.) to the following directory:     
 *C:\Users\UserName\Documents\maya*<br/>
 3. Open the Maya version corresponding to where you’ve put the files.<br/>
 4. Go to File→Set Project and navigate to the *vmWalkingKit* folder. Inside you’ll find another folder called *mayaProject*. Set that folder as the project.<br/> 
