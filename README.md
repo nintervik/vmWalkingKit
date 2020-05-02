@@ -3,12 +3,13 @@
 In this README you’ll find all the steps needed in order to make the vmWalkingKit work inside Maya. The steps are the following ones: 
 
 1. Download the latest release .zip from the release section of the repository (https://github.com/nintervik/vmWalkingKit/releases) and unzip it anywhere on your computer.
-2. Inside, you’ll find four things:<br/>
-   a. A folder called vmWalkingKit.<br/> 
+2. Inside, you’ll find five things:<br/>
+   a. A folder called vmWalkingKitFiles.<br/> 
    b. A script called Qt.py<br/>
+   c. A script called __init__.py 
    c. This README file<br/>
    d. A LICENSE file<br/>
-Move a. and b. (the folder and the .py script) to the next directory:    
+Move the whole folder (vmWalkingKit) with all its contents to the following directory:     
 C:\Users\UserName\Documents\maya\version\scripts<br/>
 Where:
    - C: is the drive where Windows is installed.
