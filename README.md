@@ -23,7 +23,7 @@ Where:
 
 from vmWalkingKit.vmWalkingKitFiles import libraryUI
 
-reload(libraryUI)
+reload(libraryUI)<br/>
 libraryUI.WalkLibraryUI()
 
 9. Open the Custom tab in Maya’s Shelf. If the the Shelf is not visible, go to Windows→UI Elements→Shelf.  
