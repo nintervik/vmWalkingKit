@@ -817,7 +817,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
                     self.paramWidgets[prefix][1].setValue(weights[i]*1000.0)
                     self.onSliderChanged(prefix, weights[i]*1000.0)
-                elif prefix != "Corrective":
+                elif "Corrective" not in prefix:
                     widgetType = type(self.paramWidgets[prefix]).__name__
 
                     # Set the current index or change the slider value accordingly
