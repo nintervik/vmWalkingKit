@@ -276,7 +276,7 @@ class WalkLibrary(object):
 
         return layers, weights
 
-    def savePreset(self, filePath):
+    def savePreset(self, filePath=DIRECTORY):
         """
         Saves the current parameters in a preset JSON file.
         Args:
@@ -286,8 +286,6 @@ class WalkLibrary(object):
             directory(str): the path where the preset file will be stored. If
             not specified, it will be saved in the default path.
         """
-        # Create directory for the JSON preset file
-        #infoFile = os.path.join(directory, '%s.json' % name)
 
         # Find all the active animation layers in the scene
         activeLayers, weights = self.getActiveAnimationLayers()
