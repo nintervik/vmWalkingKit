@@ -6,8 +6,8 @@ In this README you’ll find all the steps needed in order to make the vmWalking
 2. Inside the vmWalkingKit_v0.5 folder, you’ll find two things:<br/>
    a. A folder called vmWalkingKit.<br/> 
    b. A script called Qt.py<br/>
-   c. This README file.
-   d. A LICENSE file.
+   c. This README file.<br/>
+   d. A LICENSE file.<br/>
 Move both the folder and the script (a. and b.) to the following directory:     
 C:\Users\UserName\Documents\maya\version\scripts<br/>
 Where:
