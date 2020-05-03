@@ -32,6 +32,8 @@ needed.
  
 # Installation instructions
 
+**WARNING:** the tool has only been tested with Maya 2018 and Maya 2020 (it will be tested for Maya 2017 and 2019 in the future).
+
 1. Download the latest release .zip from the release [section](https://github.com/nintervik/vmWalkingKit/releases) of the repository and unzip it anywhere on your computer.<br/>
 2. Inside the *vmWalkingKit_v0.5* folder, you’ll find five things:<br/>
    a. A folder called *vmWalkingKit*.<br/>
