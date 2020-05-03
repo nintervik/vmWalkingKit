@@ -65,7 +65,7 @@ Where:<br/>
 
 **Side note:** if you click on the shelf icon and you cannot see the tool window check the following cases in order:
 * The tool is probably minimized as a tab on the right side of the screen (usually next to the Attribute Editor or the Channel Box tab). * If you still cannot see it try opening a tab that is docked the right side of the screen (e.g the Attribute Editor); then, the tool tab will probably pop up. 
-* Also check the tool window is not minimized on the left bottom of Maya.
+* The tool window may as well be minimized on the bottom left of Maya.
 
 # Attributions
 
