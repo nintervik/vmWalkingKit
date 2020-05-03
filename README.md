@@ -3,6 +3,32 @@
 vmWalkingKit is an animation tool for Maya developed with Python for my Bachelor's Thesis. The tool's goal is to teach the theory behind walking animations while giving the user an interactive playground to experiment while learning. This will be achieved by providing an easy-to-use UI that will allow the animator to tweak parameters in order to modify the end result of a character walking animation. The parameters will be divided into sections representing the main parts of the body.
 
 The program will also come with a set of tool tips and useful information regarding walking animations and the available parameters. This tool is heavily based on the theory of *The Animator's Survival Kit* by Richard Williams; as it contains one of the best studies on the subject of walking.
+
+# Changelog
+
+Down below you'll find the changelog for each version of tool along with the
+correspondent showcase video illustrating the new features.
+
+v0.1 ([video](https://vimeo.com/402131641)):
+* Code structure is done.
+* The tool can be reset to its default values by reading from a JSON file.
+* General tab works and the respective animations are done.
+* Animations always loop correctly.
+* Animations adapt to the beat.
+* UI is native and usable (resizable, with scrollbar, can be docked,
+etc)
+* Performance issues are fixed.
+
+v0.5 ([video](https://vimeo.com/413653094)):
+* Head, trunk, arms tabs and animations are done.
+* Section for the information display works (with placeholder text).
+* Presets can be saved and imported into the tool.
+
+v0.9 (*in progress*):
+* Hands poses, legs and tail parameters work and are animated.
+* All the theory and information is written and displayed where
+needed.
+* Performance settings tab is implemented.
  
 # Installation instructions
 
