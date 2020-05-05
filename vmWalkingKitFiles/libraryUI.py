@@ -704,31 +704,49 @@ class WalkLibraryUI(QtWidgets.QWidget):
             self.library.offsetKeyframes(attrGeneralUpDown, 'UpDown_1', self.prevBodyIndex, currBodyIndex)
 
             attrPelvisYRotation = 'Mr_Buttons:Mr_Buttons_COG_Ctrl.rotateY'
-            self.library.offsetKeyframes(attrPelvisYRotation, 'PelvisYRotation_1',  self.prevBodyIndex, currBodyIndex)
+            self.library.offsetKeyframes(attrPelvisYRotation, 'PelvisYRotation_1', self.prevBodyIndex, currBodyIndex)
 
             attrPelvisWeightShift = 'Mr_Buttons:Mr_Buttons_COG_Ctrl.translateX'
             self.library.offsetKeyframes(attrPelvisWeightShift, 'PelvisWeightShift_1', self.prevBodyIndex, currBodyIndex)
 
             attrHeadPigeon = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.translateZ'
-            self.library.offsetKeyframes(attrHeadPigeon, 'HeadPigeon_1',  self.prevBodyIndex, currBodyIndex)
+            self.library.offsetKeyframes(attrHeadPigeon, 'HeadPigeon_1', self.prevBodyIndex, currBodyIndex)
 
             attrHeadUpDown = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.translateY'
-            self.library.offsetKeyframes(attrHeadUpDown, 'HeadUpDown_1',  self.prevBodyIndex, currBodyIndex)
+            self.library.offsetKeyframes(attrHeadUpDown, 'HeadUpDown_1', self.prevBodyIndex, currBodyIndex)
 
             attrheadEgoist = 'Mr_Buttons:Mr_Buttons_Neck_01FKCtrl.rotateZ'
-            self.library.offsetKeyframes(attrheadEgoist, 'HeadEgoist_1',  self.prevBodyIndex, currBodyIndex)
+            self.library.offsetKeyframes(attrheadEgoist, 'HeadEgoist_1', self.prevBodyIndex, currBodyIndex)
 
             attrHeadNodding = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.rotateX'
-            self.library.offsetKeyframes(attrHeadNodding, 'HeadNodding_1',  self.prevBodyIndex, currBodyIndex)
+            self.library.offsetKeyframes(attrHeadNodding, 'HeadNodding_1', self.prevBodyIndex, currBodyIndex)
 
             attrHeadTilt = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.rotateX'
-            self.library.offsetKeyframes(attrHeadTilt, 'HeadTilt_1',  self.prevBodyIndex, currBodyIndex)
+            self.library.offsetKeyframes(attrHeadTilt, 'HeadTilt_1', self.prevBodyIndex, currBodyIndex)
 
             attrChestUpDown = 'Mr_Buttons:Mr_Buttons_Spine_03FKCtrl.translateY'
-            self.library.offsetKeyframes(attrChestUpDown, 'ChestUpDown_1',  self.prevBodyIndex, currBodyIndex)
+            self.library.offsetKeyframes(attrChestUpDown, 'ChestUpDown_1', self.prevBodyIndex, currBodyIndex)
 
             attrChestYRotation = 'Mr_Buttons:Mr_Buttons_Spine_03FKCtrl.rotateY'
-            self.library.offsetKeyframes(attrChestYRotation, 'ChestYRotation_1',  self.prevBodyIndex, currBodyIndex)
+            self.library.offsetKeyframes(attrChestYRotation, 'ChestYRotation_1', self.prevBodyIndex, currBodyIndex)
+
+            attrTailSwing1 = 'Mr_Buttons:Mr_Buttons_Tail_01Ctrl.rotateY'
+            self.library.offsetKeyframes(attrTailSwing1, 'TailSwing_1', self.prevBodyIndex, currBodyIndex)
+
+            attrTailSwing2 = 'Mr_Buttons:Mr_Buttons_Tail_02Ctrl.rotateY'
+            self.library.offsetKeyframes(attrTailSwing2, 'TailSwing_1', self.prevBodyIndex, currBodyIndex)
+
+            attrTailSwing3 = 'Mr_Buttons:Mr_Buttons_Tail_03Ctrl.rotateY'
+            self.library.offsetKeyframes(attrTailSwing3, 'TailSwing_1', self.prevBodyIndex, currBodyIndex)
+
+            attrTailSwing4 = 'Mr_Buttons:Mr_Buttons_Tail_04Ctrl.rotateY'
+            self.library.offsetKeyframes(attrTailSwing4, 'TailSwing_1', self.prevBodyIndex, currBodyIndex)
+
+            attrTailSwing5 = 'Mr_Buttons:Mr_Buttons_Tail_05Ctrl.rotateY'
+            self.library.offsetKeyframes(attrTailSwing5, 'TailSwing_1', self.prevBodyIndex, currBodyIndex)
+
+
+
 
         # Store the previous BodyBeat index for the next calculation
         WalkLibraryUI.prevBodyIndex = self.paramWidgets[prefix].currentIndex() + 1
