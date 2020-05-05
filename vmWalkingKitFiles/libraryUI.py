@@ -817,6 +817,9 @@ class WalkLibraryUI(QtWidgets.QWidget):
         weight = value / 1000.0
         self.library.changeLayerWeight(layerName, weight)
 
+        if prefix == self.prefixes[2]:
+            self.library.changeLayerWeight("CorrectiveTail_1", weight)
+
     def onSave(self, directory):
         """
         Imports the given preset file into the tool.
