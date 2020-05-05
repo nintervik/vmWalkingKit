@@ -82,7 +82,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.prefixes = ["BodyBeat", "ArmsBeat", "UpDown", "BodyTilt", "HeadUpDown", "HeadPigeon",
                          "HeadEgoist", "HeadNodding", "HeadTilt", "FaceExpression", "BackCurvature",
                          "PelvisYRotation", "PelvisWeightShift", "ChestYRotation", "ChestUpDown",
-                         "ArmsWidth", "ElbowsDrag", "HandsDrag", "HandsPose"]
+                         "TailSwing", "TailCurl", "TailTilt", "ArmsWidth", "ElbowsDrag", "HandsDrag",
+                         "HandsPose"]
 
         self.paramDescriptions = OrderedDict([
             (self.prefixes[0],  "Place holder description 1"),
@@ -100,11 +101,14 @@ class WalkLibraryUI(QtWidgets.QWidget):
             (self.prefixes[12], "Place holder description 13"),
             (self.prefixes[13], "Place holder description 14"),
             (self.prefixes[14], "Place holder description 15"),
-            ("ArmsSwing",       "Place holder description 16"),
-            (self.prefixes[15], "Place holder description 17"),
-            (self.prefixes[16], "Place holder description 18"),
-            (self.prefixes[17], "Place holder description 19"),
-            (self.prefixes[18], "Place holder description 20")
+            (self.prefixes[15], "Place holder description 16"),
+            (self.prefixes[16], "Place holder description 17"),
+            (self.prefixes[17], "Place holder description 18"),
+            ("ArmsSwing",       "Place holder description 19"),
+            (self.prefixes[18], "Place holder description 20"),
+            (self.prefixes[19], "Place holder description 21"),
+            (self.prefixes[20], "Place holder description 22"),
+            (self.prefixes[21], "Place holder description 23")
         ])
 
         self.paramDescriptionWidgets = []
@@ -202,22 +206,34 @@ class WalkLibraryUI(QtWidgets.QWidget):
         chestUpDownDict = OrderedDict()
         chestUpDownDict[layersNames[22]] = layersWeights[22]
 
+        # TailSwing
+        tailSwingDict = OrderedDict()
+        tailSwingDict[layersNames[23]] = layersWeights[23]
+
+        # TailCurl
+        tailCurlDict = OrderedDict()
+        tailCurlDict[layersNames[24]] = layersWeights[24]
+
+        # TailTilt
+        tailTiltDict = OrderedDict()
+        tailTiltDict[layersNames[25]] = layersWeights[25]
+
         # ArmsWidth
         armsWidthDict = OrderedDict()
-        armsWidthDict[layersNames[23]] = layersWeights[23]
+        armsWidthDict[layersNames[26]] = layersWeights[26]
 
         # ElbowsDrag
         elbowsDragDict = OrderedDict()
-        elbowsDragDict[layersNames[24]] = layersWeights[24]
+        elbowsDragDict[layersNames[27]] = layersWeights[27]
 
         # HandsDrag
         handsDragDict = OrderedDict()
-        handsDragDict[layersNames[25]] = layersWeights[25]
+        handsDragDict[layersNames[28]] = layersWeights[28]
 
         # HandsPose
         handsPoseDict = OrderedDict()
-        handsPoseDict[layersNames[26]] = layersWeights[26]
-        handsPoseDict[layersNames[27]] = layersWeights[27]
+        handsPoseDict[layersNames[29]] = layersWeights[29]
+        handsPoseDict[layersNames[30]] = layersWeights[30]
 
         # Create main data list with all the layers information sorted by parameter
 
@@ -237,10 +253,13 @@ class WalkLibraryUI(QtWidgets.QWidget):
             (self.prefixes[12], pelvisWeightShiftDict),
             (self.prefixes[13], chestYRotationDict),
             (self.prefixes[14], chestUpDownDict),
-            (self.prefixes[15], armsWidthDict),
-            (self.prefixes[16], elbowsDragDict),
-            (self.prefixes[17], handsDragDict),
-            (self.prefixes[18], handsPoseDict)
+            (self.prefixes[15], tailSwingDict),
+            (self.prefixes[16], tailCurlDict),
+            (self.prefixes[17], tailTiltDict),
+            (self.prefixes[18], armsWidthDict),
+            (self.prefixes[19], elbowsDragDict),
+            (self.prefixes[20], handsDragDict),
+            (self.prefixes[21], handsPoseDict)
         ])
 
     # UI METHODS
@@ -265,6 +284,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.createGeneralTab()
         self.createHeadTab()
         self.createTrunkTab()
+        self.createTailTab()
         self.createArmsTab()
         self.createLegsTab()
         self.createSettingsTab()
@@ -398,6 +418,27 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         self.createDisplaySection("Hover over a parameter to see its description", 7)
 
+    def createTailTab(self):
+        """
+        Creates the tail tab
+        """
+
+        # Add tab for the trunk
+        tailTrunk = self.addTab("Tail")
+
+        self.createTabDescription()
+
+        index = 3
+
+        # TODO: do a ++i for the ui IDs
+
+        # Create Trunk tab parameters
+        self.addSliderParam("Tail swing", 2, self.prefixes[15], index, "onSliderChanged")
+        self.addSliderParam("Tail curl", 3, self.prefixes[16], index, "onSliderChanged")
+        self.addSliderParam("Tail Tilt", 4, self.prefixes[17], index, "onSliderChanged")
+
+        self.createDisplaySection("Hover over a parameter to see its description", 8)
+
     def createArmsTab(self):
         """
         Creates the arms tab
@@ -406,18 +447,18 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Add tab for the arms
         tabArms = self.addTab("Arms")
 
-        index = 3
+        index = 4
 
         self.createTabDescription()
 
         # Create Arms tab parameters
         self.addSliderParam("Arms swing", 2, self.prefixes[1], index, "onSliderChanged", 500)
-        self.addSliderParam("Arms separation", 3, self.prefixes[15], index, "onSliderChanged", 500)
-        self.addSliderParam("Elbows drag", 4, self.prefixes[16], index, "onSliderChanged", 500)
-        self.addSliderParam("Hands drag", 5, self.prefixes[17], index, "onSliderChanged", 500)
-        self.addDropDownParam("Hands pose", self.handOptions, 6, self.prefixes[18], index, "onDropDownChanged")
+        self.addSliderParam("Arms separation", 3, self.prefixes[18], index, "onSliderChanged", 500)
+        self.addSliderParam("Elbows drag", 4, self.prefixes[19], index, "onSliderChanged", 500)
+        self.addSliderParam("Hands drag", 5, self.prefixes[20], index, "onSliderChanged", 500)
+        self.addDropDownParam("Hands pose", self.handOptions, 6, self.prefixes[21], index, "onDropDownChanged")
 
-        self.createDisplaySection("Hover over a parameter to see its description", 7)
+        self.createDisplaySection("Hover over a parameter to see its description", 9)
 
     def createLegsTab(self):
         """
@@ -427,11 +468,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Add tab for the legs
         tabLegs = self.addTab("Legs")
 
-        index = 4
+        index = 5
 
         self.createTabDescription()
 
-        self.createDisplaySection("Hover over a parameter to see its description", 3)
+        self.createDisplaySection("Hover over a parameter to see its description", 10)
 
     def createSettingsTab(self):
         """
@@ -534,6 +575,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         widget.setValue(defaultValue)
         widget.valueChanged.connect(partial(getattr(self, slotName), prefix))
 
+        print prefix
         self.setUpParamWidget(prefix, widget, paramName, id, index)
 
     def setUpParamWidget(self, prefix, widget, paramName, id, index):
@@ -836,7 +878,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
     def HoverEvent(self, hovered, prefix, index):
         if hovered:
-            if index == 3 and prefix == self.prefixes[1]:
+            if index == 4 and prefix == self.prefixes[1]:
                 prefix = "ArmsSwing"
 
             self.paramDescriptionWidgets[index].setText(self.paramDescriptions[prefix])
