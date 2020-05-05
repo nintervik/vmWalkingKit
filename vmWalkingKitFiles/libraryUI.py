@@ -83,7 +83,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
                          "HeadEgoist", "HeadNodding", "HeadTilt", "FaceExpression", "BackCurvature",
                          "PelvisYRotation", "PelvisWeightShift", "ChestYRotation", "ChestUpDown",
                          "TailSwing", "TailCurl", "TailTilt", "ArmsWidth", "ElbowsDrag", "HandsDrag",
-                         "HandsPose"]
+                         "HandsPose", "LegsSeparation", "FeetYRotation", "StepDistance"]
 
         self.paramDescriptions = OrderedDict([
             (self.prefixes[0],  "Place holder description 1"),
@@ -108,7 +108,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
             (self.prefixes[18], "Place holder description 20"),
             (self.prefixes[19], "Place holder description 21"),
             (self.prefixes[20], "Place holder description 22"),
-            (self.prefixes[21], "Place holder description 23")
+            (self.prefixes[21], "Place holder description 23"),
+            (self.prefixes[22], "Place holder description 24"),
+            (self.prefixes[23], "Place holder description 25"),
+            (self.prefixes[24], "Place holder description 26"),
         ])
 
         self.paramDescriptionWidgets = []
@@ -235,6 +238,18 @@ class WalkLibraryUI(QtWidgets.QWidget):
         handsPoseDict[layersNames[29]] = layersWeights[29]
         handsPoseDict[layersNames[30]] = layersWeights[30]
 
+        # LegsSeparation
+        legsSeparationDict = OrderedDict()
+        legsSeparationDict[layersNames[31]] = layersWeights[31]
+
+        # FeetYRotation
+        feetYRotationDict = OrderedDict()
+        feetYRotationDict[layersNames[32]] = layersWeights[32]
+
+        # StepDistance
+        stepDistanceDict = OrderedDict()
+        stepDistanceDict[layersNames[33]] = layersWeights[33]
+
         # Create main data list with all the layers information sorted by parameter
 
         self.paramLayers = OrderedDict([
@@ -259,7 +274,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
             (self.prefixes[18], armsWidthDict),
             (self.prefixes[19], elbowsDragDict),
             (self.prefixes[20], handsDragDict),
-            (self.prefixes[21], handsPoseDict)
+            (self.prefixes[21], handsPoseDict),
+            (self.prefixes[22], legsSeparationDict),
+            (self.prefixes[23], feetYRotationDict),
+            (self.prefixes[24], stepDistanceDict)
         ])
 
     # UI METHODS
@@ -470,6 +488,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         index = 5
 
+        self.addSliderParam("Legs separation", 2, self.prefixes[22], index, "onSliderChanged")
+        self.addSliderParam("Feet Y-rotation", 3, self.prefixes[23], index, "onSliderChanged")
+        self.addSliderParam("Step distance", 4, self.prefixes[24], index, "onSliderChanged")
+
         self.createTabDescription()
 
         self.createDisplaySection("Hover over a parameter to see its description", 10)
@@ -575,7 +597,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
         widget.setValue(defaultValue)
         widget.valueChanged.connect(partial(getattr(self, slotName), prefix))
 
-        print prefix
         self.setUpParamWidget(prefix, widget, paramName, id, index)
 
     def setUpParamWidget(self, prefix, widget, paramName, id, index):
@@ -745,7 +766,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
             attrTailSwing5 = 'Mr_Buttons:Mr_Buttons_Tail_05Ctrl.rotateY'
             self.library.offsetKeyframes(attrTailSwing5, 'TailSwing_1', self.prevBodyIndex, currBodyIndex)
 
+            attrStepDistanceRight = 'Mr_Buttons:Mr_Buttons_r_Leg_FootIKCtrl.translateZ'
+            self.library.offsetKeyframes(attrStepDistanceRight, 'StepDistance_1', self.prevBodyIndex, currBodyIndex)
 
+            attrStepDistanceLeft = 'Mr_Buttons:Mr_Buttons_l_Leg_FootIKCtrl.translateZ'
+            self.library.offsetKeyframes(attrStepDistanceLeft, 'StepDistance_1', self.prevBodyIndex, currBodyIndex)
 
 
         # Store the previous BodyBeat index for the next calculation
