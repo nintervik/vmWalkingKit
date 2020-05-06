@@ -82,7 +82,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.prefixes = ["BodyBeat", "ArmsBeat", "UpDown", "BodyTilt", "HeadUpDown", "HeadPigeon",
                          "HeadEgoist", "HeadNodding", "HeadTilt", "FaceExpression", "BackCurvature",
                          "PelvisYRotation", "PelvisWeightShift", "ChestYRotation", "ChestUpDown",
-                         "TailSwing", "TailCurl", "TailTilt", "ArmsWidth", "ElbowsDrag", "HandsDrag",
+                         "TailSwing", "TailCurl", "TailTilt", "TailWaving", "ArmsWidth", "ElbowsDrag", "HandsDrag",
                          "HandsPose", "LegsSeparation", "FeetYRotation", "StepDistance"]
 
         self.paramDescriptions = OrderedDict([
@@ -104,14 +104,15 @@ class WalkLibraryUI(QtWidgets.QWidget):
             (self.prefixes[15], "Place holder description 16"),
             (self.prefixes[16], "Place holder description 17"),
             (self.prefixes[17], "Place holder description 18"),
-            ("ArmsSwing",       "Place holder description 19"),
-            (self.prefixes[18], "Place holder description 20"),
+            (self.prefixes[18], "Place holder description 19"),
+            ("ArmsSwing",       "Place holder description 20"),
             (self.prefixes[19], "Place holder description 21"),
             (self.prefixes[20], "Place holder description 22"),
             (self.prefixes[21], "Place holder description 23"),
             (self.prefixes[22], "Place holder description 24"),
             (self.prefixes[23], "Place holder description 25"),
             (self.prefixes[24], "Place holder description 26"),
+            (self.prefixes[25], "Place holder description 27"),
         ])
 
         self.paramDescriptionWidgets = []
@@ -221,34 +222,38 @@ class WalkLibraryUI(QtWidgets.QWidget):
         tailTiltDict = OrderedDict()
         tailTiltDict[layersNames[25]] = layersWeights[25]
 
+        # TailWaving
+        tailWavingDict = OrderedDict()
+        tailWavingDict[layersNames[26]] = layersWeights[26]
+
         # ArmsWidth
         armsWidthDict = OrderedDict()
-        armsWidthDict[layersNames[26]] = layersWeights[26]
+        armsWidthDict[layersNames[27]] = layersWeights[27]
 
         # ElbowsDrag
         elbowsDragDict = OrderedDict()
-        elbowsDragDict[layersNames[27]] = layersWeights[27]
+        elbowsDragDict[layersNames[28]] = layersWeights[28]
 
         # HandsDrag
         handsDragDict = OrderedDict()
-        handsDragDict[layersNames[28]] = layersWeights[28]
+        handsDragDict[layersNames[29]] = layersWeights[29]
 
         # HandsPose
         handsPoseDict = OrderedDict()
-        handsPoseDict[layersNames[29]] = layersWeights[29]
         handsPoseDict[layersNames[30]] = layersWeights[30]
+        handsPoseDict[layersNames[31]] = layersWeights[31]
 
         # LegsSeparation
         legsSeparationDict = OrderedDict()
-        legsSeparationDict[layersNames[31]] = layersWeights[31]
+        legsSeparationDict[layersNames[32]] = layersWeights[32]
 
         # FeetYRotation
         feetYRotationDict = OrderedDict()
-        feetYRotationDict[layersNames[32]] = layersWeights[32]
+        feetYRotationDict[layersNames[33]] = layersWeights[33]
 
         # StepDistance
         stepDistanceDict = OrderedDict()
-        stepDistanceDict[layersNames[33]] = layersWeights[33]
+        stepDistanceDict[layersNames[34]] = layersWeights[34]
 
         # Create main data list with all the layers information sorted by parameter
 
@@ -271,13 +276,14 @@ class WalkLibraryUI(QtWidgets.QWidget):
             (self.prefixes[15], tailSwingDict),
             (self.prefixes[16], tailCurlDict),
             (self.prefixes[17], tailTiltDict),
-            (self.prefixes[18], armsWidthDict),
-            (self.prefixes[19], elbowsDragDict),
-            (self.prefixes[20], handsDragDict),
-            (self.prefixes[21], handsPoseDict),
-            (self.prefixes[22], legsSeparationDict),
-            (self.prefixes[23], feetYRotationDict),
-            (self.prefixes[24], stepDistanceDict)
+            (self.prefixes[18], tailWavingDict),
+            (self.prefixes[19], armsWidthDict),
+            (self.prefixes[20], elbowsDragDict),
+            (self.prefixes[21], handsDragDict),
+            (self.prefixes[22], handsPoseDict),
+            (self.prefixes[23], legsSeparationDict),
+            (self.prefixes[24], feetYRotationDict),
+            (self.prefixes[25], stepDistanceDict)
         ])
 
     # UI METHODS
@@ -453,7 +459,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Create Trunk tab parameters
         self.addSliderParam("Tail swing", 2, self.prefixes[15], index, "onSliderChanged")
         self.addSliderParam("Tail curl", 3, self.prefixes[16], index, "onSliderChanged")
-        self.addSliderParam("Tail Tilt", 4, self.prefixes[17], index, "onSliderChanged")
+        self.addSliderParam("Tail tilt", 4, self.prefixes[17], index, "onSliderChanged")
+        self.addSliderParam("Tail waving", 5, self.prefixes[18], index, "onSliderChanged")
 
         self.createDisplaySection("Hover over a parameter to see its description", 8)
 
@@ -471,10 +478,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Create Arms tab parameters
         self.addSliderParam("Arms swing", 2, self.prefixes[1], index, "onSliderChanged", 500)
-        self.addSliderParam("Arms separation", 3, self.prefixes[18], index, "onSliderChanged", 500)
-        self.addSliderParam("Elbows drag", 4, self.prefixes[19], index, "onSliderChanged", 500)
-        self.addSliderParam("Hands drag", 5, self.prefixes[20], index, "onSliderChanged", 500)
-        self.addDropDownParam("Hands pose", self.handOptions, 6, self.prefixes[21], index, "onDropDownChanged")
+        self.addSliderParam("Arms separation", 3, self.prefixes[19], index, "onSliderChanged", 500)
+        self.addSliderParam("Elbows drag", 4, self.prefixes[20], index, "onSliderChanged", 500)
+        self.addSliderParam("Hands drag", 5, self.prefixes[21], index, "onSliderChanged", 500)
+        self.addDropDownParam("Hands pose", self.handOptions, 6, self.prefixes[22], index, "onDropDownChanged")
 
         self.createDisplaySection("Hover over a parameter to see its description", 9)
 
@@ -488,9 +495,9 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         index = 5
 
-        self.addSliderParam("Legs separation", 2, self.prefixes[22], index, "onSliderChanged")
-        self.addSliderParam("Feet Y-rotation", 3, self.prefixes[23], index, "onSliderChanged")
-        self.addSliderParam("Step distance", 4, self.prefixes[24], index, "onSliderChanged")
+        self.addSliderParam("Legs separation", 2, self.prefixes[23], index, "onSliderChanged")
+        self.addSliderParam("Feet Y-rotation", 3, self.prefixes[24], index, "onSliderChanged")
+        self.addSliderParam("Step distance", 4, self.prefixes[25], index, "onSliderChanged")
 
         self.createTabDescription()
 
@@ -766,12 +773,26 @@ class WalkLibraryUI(QtWidgets.QWidget):
             attrTailSwing5 = 'Mr_Buttons:Mr_Buttons_Tail_05Ctrl.rotateY'
             self.library.offsetKeyframes(attrTailSwing5, 'TailSwing_1', self.prevBodyIndex, currBodyIndex)
 
+            attrTailWaving = 'Mr_Buttons:Mr_Buttons_Tail_01Ctrl.rotateZ'
+            self.library.offsetKeyframes(attrTailWaving, 'TailWaving_1', self.prevBodyIndex, currBodyIndex)
+
+            attrTailWaving = 'Mr_Buttons:Mr_Buttons_Tail_02Ctrl.rotateZ'
+            self.library.offsetKeyframes(attrTailWaving, 'TailWaving_1', self.prevBodyIndex, currBodyIndex)
+
+            attrTailWaving = 'Mr_Buttons:Mr_Buttons_Tail_03Ctrl.rotateZ'
+            self.library.offsetKeyframes(attrTailWaving, 'TailWaving_1', self.prevBodyIndex, currBodyIndex)
+
+            attrTailWaving = 'Mr_Buttons:Mr_Buttons_Tail_04Ctrl.rotateZ'
+            self.library.offsetKeyframes(attrTailWaving, 'TailWaving_1', self.prevBodyIndex, currBodyIndex)
+
+            attrTailWaving = 'Mr_Buttons:Mr_Buttons_Tail_05Ctrl.rotateZ'
+            self.library.offsetKeyframes(attrTailWaving, 'TailWaving_1', self.prevBodyIndex, currBodyIndex)
+
             attrStepDistanceRight = 'Mr_Buttons:Mr_Buttons_r_Leg_FootIKCtrl.translateZ'
             self.library.offsetKeyframes(attrStepDistanceRight, 'StepDistance_1', self.prevBodyIndex, currBodyIndex)
 
             attrStepDistanceLeft = 'Mr_Buttons:Mr_Buttons_l_Leg_FootIKCtrl.translateZ'
             self.library.offsetKeyframes(attrStepDistanceLeft, 'StepDistance_1', self.prevBodyIndex, currBodyIndex)
-
 
         # Store the previous BodyBeat index for the next calculation
         WalkLibraryUI.prevBodyIndex = self.paramWidgets[prefix].currentIndex() + 1
