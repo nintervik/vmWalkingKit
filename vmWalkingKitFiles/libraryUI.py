@@ -115,7 +115,9 @@ class WalkLibraryUI(QtWidgets.QWidget):
             (self.prefixes[23], "Place holder description 25"),
             (self.prefixes[24], "Place holder description 26"),
             (self.prefixes[25], "Place holder description 27"),
-            ("SettingsQuality", "Place holder description 28")
+            ("SettingsQuality", "Place holder description 28"),
+            ("SettingsSilhouette", "Place holder description 29"),
+            ("SettingsPlayback", "Place holder description 30"),
         ])
 
         self.paramDescriptionWidgets = []
@@ -520,6 +522,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         self.addDropDownSetting("Quality", self.qualtyOptions, 2, "SettingsQuality", index, "onDropDownQualityChanged")
         self.addCheckboxSetting("Silhouette", 3, "SettingsSilhouette", index, "onCheckBoxSilhouetteChanged")
+        self.addButtonPlayback("Playback", 4, "SettingsPlayback", index)
 
         self.createDisplaySection("Hover over a parameter to see its description", 11)
 
@@ -617,6 +620,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
     def addCheckboxSetting(self, paramName, id, prefix, index, slotName=None):
         widget = QtWidgets.QCheckBox("")
         widget.stateChanged.connect(getattr(self, slotName))
+        self.setUpSettingWidget(prefix, widget, paramName, id, index)
+
+    def addButtonPlayback(self, paramName, id, prefix, index, slotName=None):
+        widget = QtWidgets.QPushButton('Apply')
+        #widget.stateChanged.connect(getattr(self, slotName))
         self.setUpSettingWidget(prefix, widget, paramName, id, index)
 
     def addSliderParam(self, paramName, id, prefix, index, slotName=None, defaultValue=200):
