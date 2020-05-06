@@ -41,6 +41,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
     # Saving initial BodyBeat and ArmsBeat indices for adapting others parameters accordingly
     prevBodyIndex = 2
     prevArmsIndex = 2
+    currLightingSetting = "deafault"
 
     def __init__(self, dock=True):
 
@@ -518,6 +519,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.createTabDescription()
 
         self.addDropDownSetting("Quality", self.qualtyOptions, 2, "SettingsQuality", index, "onDropDownQualityChanged")
+        self.addCheckboxSetting("Silhouette", 3, "SettingsSilhouette", index, "onCheckBoxSilhouetteChanged")
 
         self.createDisplaySection("Hover over a parameter to see its description", 11)
 
@@ -607,9 +609,14 @@ class WalkLibraryUI(QtWidgets.QWidget):
         for i in range(0, len(options)):
             widget.addItem(options[i])
 
-        widget.currentIndexChanged.connect(partial(getattr(self, slotName)))
+        widget.currentIndexChanged.connect(getattr(self, slotName))
         widget.setCurrentIndex(1)          # TODO: not hardcode this? Maybe read from JSON default preset file
 
+        self.setUpSettingWidget(prefix, widget, paramName, id, index)
+
+    def addCheckboxSetting(self, paramName, id, prefix, index, slotName=None):
+        widget = QtWidgets.QCheckBox("")
+        widget.stateChanged.connect(getattr(self, slotName))
         self.setUpSettingWidget(prefix, widget, paramName, id, index)
 
     def addSliderParam(self, paramName, id, prefix, index, slotName=None, defaultValue=200):
@@ -892,6 +899,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         WalkLibraryUI.prevArmsIndex = self.paramWidgets[prefix][0].currentIndex() + 1
 
     def onDropDownQualityChanged(self, index):
+
         if index == 0:
             cmds.modelEditor('modelPanel4', e=True, displayTextures=False)
             cmds.modelEditor('modelPanel4', e=True, displayLights="default")
@@ -905,6 +913,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
             cmds.modelEditor('modelPanel4', e=True, displayLights="all")
             cmds.modelEditor('modelPanel4', e=True, shadows=True)
             cmds.setAttr("hardwareRenderingGlobals.ssaoEnable", 1)
+
+        WalkLibraryUI.currLightingSetting = cmds.modelEditor('modelPanel4', q=True, displayLights=True)
 
     def onSliderChanged(self, prefix, value):
         """
@@ -925,6 +935,15 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         if prefix == self.prefixes[2]:
             self.library.changeLayerWeight("CorrectiveTail_1", weight)
+
+    def onCheckBoxSilhouetteChanged(self, state):
+        if state:
+            cmds.modelEditor('modelPanel4', e=True, displayLights="none")
+        else:
+            if WalkLibraryUI.currLightingSetting == "all":
+                cmds.modelEditor('modelPanel4', e=True, displayLights="all")
+            else:
+                cmds.modelEditor('modelPanel4', e=True, displayLights="default")
 
     def onSave(self, directory):
         """
