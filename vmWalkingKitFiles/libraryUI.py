@@ -1,6 +1,7 @@
 import os
 from maya import cmds
 from collections import OrderedDict
+import time
 
 # This is not done like this when shipping the tool.
 # Watch from 5:30 of video 57
@@ -522,9 +523,9 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         self.addDropDownSetting("Quality", self.qualtyOptions, 2, "SettingsQuality", index, "onDropDownQualityChanged")
         self.addCheckboxSetting("Silhouette", 3, "SettingsSilhouette", index, "onCheckBoxSilhouetteChanged")
-        self.addButtonPlayback("Playback", 4, "SettingsPlayback", index)
+        self.addButtonPlayback("Playblast", 4, "SettingsPlayback", index, "onPlayblastButtonPressed")
 
-        self.createDisplaySection("Hover over a parameter to see its description", 11)
+        self.createDisplaySection("Hover over a parameter to see its description.", 11)
 
     def createBottomBtns(self):
         """
@@ -624,7 +625,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
     def addButtonPlayback(self, paramName, id, prefix, index, slotName=None):
         widget = QtWidgets.QPushButton('Apply')
-        #widget.stateChanged.connect(getattr(self, slotName))
+        widget.clicked.connect(getattr(self, slotName))
         self.setUpSettingWidget(prefix, widget, paramName, id, index)
 
     def addSliderParam(self, paramName, id, prefix, index, slotName=None, defaultValue=200):
@@ -953,6 +954,12 @@ class WalkLibraryUI(QtWidgets.QWidget):
             else:
                 cmds.modelEditor('modelPanel4', e=True, displayLights="default")
 
+    def onPlayblastButtonPressed(self):
+        pStart = cmds.playbackOptions(q=True, animationStartTime=True)
+        pEnd = cmds.playbackOptions(q=True, animationEndTime=True)
+        name = 'movies/vmwPlayblast_%s_%s' % (time.strftime('%d%m%Y'), time.strftime('%H%M%S'))
+        cmds.playblast(st=pStart, et=pEnd, filename=name, format='avi', quality=100, p=100)
+
     def onSave(self, directory):
         """
         Imports the given preset file into the tool.
@@ -1019,7 +1026,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
             self.paramDescriptionWidgets[index].setText(self.paramDescriptions[prefix])
         else:
-            self.paramDescriptionWidgets[index].setText("Hover over a parameter to see its description")
+            self.paramDescriptionWidgets[index].setText("Hover over a parameter to see its description.")
 
 
 class ParamLabel(QtWidgets.QLabel):
