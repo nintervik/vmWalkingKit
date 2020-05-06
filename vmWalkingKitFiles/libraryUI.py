@@ -76,6 +76,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.rangeOptions = ["Low", "Mid", "High"]
         self.handOptions = ["Relaxed", "Fist"]
         self.faceOptions = ["Happy", "Angry", "Sad", "Cocky", "Scared"]
+        self.qualtyOptions = ["Low", "Medium", "High"]
         self.paramWidgets = OrderedDict()
 
         # Prefixes
@@ -113,6 +114,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
             (self.prefixes[23], "Place holder description 25"),
             (self.prefixes[24], "Place holder description 26"),
             (self.prefixes[25], "Place holder description 27"),
+            ("SettingsQuality", "Place holder description 28")
         ])
 
         self.paramDescriptionWidgets = []
@@ -495,11 +497,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         index = 5
 
+        self.createTabDescription()
+
         self.addSliderParam("Legs separation", 2, self.prefixes[23], index, "onSliderChanged")
         self.addSliderParam("Feet Y-rotation", 3, self.prefixes[24], index, "onSliderChanged")
         self.addSliderParam("Step distance", 4, self.prefixes[25], index, "onSliderChanged")
-
-        self.createTabDescription()
 
         self.createDisplaySection("Hover over a parameter to see its description", 10)
 
@@ -511,11 +513,13 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Add tab for the head
         tabSettings = self.addTab("Settings")
 
-        index = 5
+        index = 6
 
         self.createTabDescription()
 
-        self.createDisplaySection("Hover over a parameter to see its description", 3)
+        self.addDropDownSetting("Quality", self.qualtyOptions, 2, "SettingsQuality", index, "onDropDownQualityChanged")
+
+        self.createDisplaySection("Hover over a parameter to see its description", 11)
 
     def createBottomBtns(self):
         """
@@ -596,6 +600,18 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         self.setUpParamWidget(prefix, widget, paramName, id, index)
 
+    def addDropDownSetting(self, paramName, options, id, prefix, index, slotName=None):
+
+        widget = QtWidgets.QComboBox()
+
+        for i in range(0, len(options)):
+            widget.addItem(options[i])
+
+        widget.currentIndexChanged.connect(partial(getattr(self, slotName)))
+        widget.setCurrentIndex(1)          # TODO: not hardcode this? Maybe read from JSON default preset file
+
+        self.setUpSettingWidget(prefix, widget, paramName, id, index)
+
     def addSliderParam(self, paramName, id, prefix, index, slotName=None, defaultValue=200):
 
         widget = QtWidgets.QSlider(QtCore.Qt.Horizontal)
@@ -620,6 +636,17 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         self.scrollLayout.addWidget(paramText, id, 0, 1, 3)
         paramText.setMinimumHeight(25)
+        self.scrollLayout.addWidget(QtWidgets.QLabel(" "), id, 3, 1, 1)
+        self.scrollLayout.addWidget(widget, id, 4, 1, 3)
+
+    def setUpSettingWidget(self, prefix, widget, paramName, id, index):
+
+        # Set parameter layout
+        settingText = ParamLabel(paramName, self, prefix, index)
+
+
+        self.scrollLayout.addWidget(settingText, id, 0, 1, 3)
+        settingText.setMinimumHeight(25)
         self.scrollLayout.addWidget(QtWidgets.QLabel(" "), id, 3, 1, 1)
         self.scrollLayout.addWidget(widget, id, 4, 1, 3)
 
@@ -863,6 +890,21 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Store the previous ArmsBeat index for the next calculation
         WalkLibraryUI.prevArmsIndex = self.paramWidgets[prefix][0].currentIndex() + 1
+
+    def onDropDownQualityChanged(self, index):
+        if index == 0:
+            cmds.modelEditor('modelPanel4', e=True, displayTextures=False)
+            cmds.modelEditor('modelPanel4', e=True, displayLights="default")
+            cmds.setAttr("hardwareRenderingGlobals.ssaoEnable", 0)
+        elif index == 1:
+            cmds.modelEditor('modelPanel4', e=True, displayTextures=True)
+            cmds.modelEditor('modelPanel4', e=True, displayLights="default")
+            cmds.setAttr("hardwareRenderingGlobals.ssaoEnable", 1)
+        else:
+            cmds.modelEditor('modelPanel4', e=True, displayTextures=True)
+            cmds.modelEditor('modelPanel4', e=True, displayLights="all")
+            cmds.modelEditor('modelPanel4', e=True, shadows=True)
+            cmds.setAttr("hardwareRenderingGlobals.ssaoEnable", 1)
 
     def onSliderChanged(self, prefix, value):
         """
