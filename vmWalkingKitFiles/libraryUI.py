@@ -88,7 +88,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
                          "TailSwing", "TailCurl", "TailTilt", "TailWaving", "ArmsWidth", "ElbowsDrag", "HandsDrag",
                          "HandsPose", "LegsSeparation", "FeetYRotation", "StepDistance"]
 
-        self.paramDescriptions = OrderedDict([
+        self.paramDescriptionsOld = OrderedDict([
             (self.prefixes[0],  "Place holder description 1"),
             (self.prefixes[1],  "Place holder description 2"),
             (self.prefixes[2],  "Place holder description 3"),
@@ -118,8 +118,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
             (self.prefixes[25], "Place holder description 27"),
             ("SettingsQuality", "Place holder description 28"),
             ("SettingsSilhouette", "Place holder description 29"),
-            ("SettingsPlayback", "Place holder description 30"),
+            ("SettingsPlayblast", "Place holder description 30"),
         ])
+
+        self.paramDescriptions = self.library.getUIText("param")
+        self.tabDescriptions = self.library.getUIText("tab")
 
         self.paramDescriptionWidgets = []
 
@@ -370,9 +373,9 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         self.scrollLayout.addWidget(scrollAreaInfo, id, 0, 1, 7)
 
-    def createTabDescription(self, text="Tab description here [WIP]."):
+    def createTabDescription(self, tabName):
         # Add placeholder text to the scroll layout
-        descriptionTxt = QtWidgets.QLabel(text)
+        descriptionTxt = QtWidgets.QLabel(self.tabDescriptions[tabName])
         descriptionTxt.setMinimumSize(200, 8)
         descriptionTxt.setWordWrap(True)
         descriptionTxt.setFont(QtGui.QFont('Arial', 9.5))
@@ -387,11 +390,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
         """
         Creates the general tab.
         """
-
+        tabName = "General"
         # Add general tab
-        tabGeneral = self.addTab("General")
+        tabGeneral = self.addTab(tabName)
 
-        self.createTabDescription()
+        self.createTabDescription(tabName)
 
         index = 0
 
@@ -408,10 +411,12 @@ class WalkLibraryUI(QtWidgets.QWidget):
         Creates the head tab
         """
 
-        # Add tab for the head
-        tabHead = self.addTab("Head")
+        tabName = "Head"
 
-        self.createTabDescription()
+        # Add tab for the head
+        tabHead = self.addTab(tabName)
+
+        self.createTabDescription(tabName)
 
         index = 1
 
@@ -430,10 +435,12 @@ class WalkLibraryUI(QtWidgets.QWidget):
         Creates the trunk tab
         """
 
-        # Add tab for the trunk
-        tabTrunk = self.addTab("Trunk")
+        tabName = "Trunk"
 
-        self.createTabDescription()
+        # Add tab for the trunk
+        tabTrunk = self.addTab(tabName)
+
+        self.createTabDescription(tabName)
 
         index = 2
 
@@ -453,10 +460,12 @@ class WalkLibraryUI(QtWidgets.QWidget):
         Creates the tail tab
         """
 
-        # Add tab for the trunk
-        tailTrunk = self.addTab("Tail")
+        tabName = "Tail"
 
-        self.createTabDescription()
+        # Add tab for the trunk
+        tailTrunk = self.addTab(tabName)
+
+        self.createTabDescription(tabName)
 
         index = 3
 
@@ -474,13 +483,14 @@ class WalkLibraryUI(QtWidgets.QWidget):
         """
         Creates the arms tab
         """
+        tabName = "Arms"
 
         # Add tab for the arms
-        tabArms = self.addTab("Arms")
+        tabArms = self.addTab(tabName)
 
         index = 4
 
-        self.createTabDescription()
+        self.createTabDescription(tabName)
 
         # Create Arms tab parameters
         self.addSliderParam("Arms swing", 2, self.prefixes[1], index, "onSliderChanged", 500)
@@ -496,12 +506,14 @@ class WalkLibraryUI(QtWidgets.QWidget):
         Creates the legs tab
         """
 
+        tabName = "Legs"
+
         # Add tab for the legs
-        tabLegs = self.addTab("Legs")
+        tabLegs = self.addTab(tabName)
 
         index = 5
 
-        self.createTabDescription()
+        self.createTabDescription(tabName)
 
         self.addSliderParam("Legs separation", 2, self.prefixes[23], index, "onSliderChanged")
         self.addSliderParam("Feet Y-rotation", 3, self.prefixes[24], index, "onSliderChanged")
@@ -514,16 +526,18 @@ class WalkLibraryUI(QtWidgets.QWidget):
         Creates the settings tab
         """
 
+        tabName = "Settings"
+
         # Add tab for the head
-        tabSettings = self.addTab("Settings")
+        tabSettings = self.addTab(tabName)
 
         index = 6
 
-        self.createTabDescription()
+        self.createTabDescription(tabName)
 
         self.addDropDownSetting("Quality", self.qualtyOptions, 2, "SettingsQuality", index, "onDropDownQualityChanged")
         self.addCheckboxSetting("Silhouette", 3, "SettingsSilhouette", index, "onCheckBoxSilhouetteChanged")
-        self.addButtonPlayback("Playblast", 4, "SettingsPlayback", index, "onPlayblastButtonPressed")
+        self.addButtonPlayback("Playblast", 4, "SettingsPlayblast", index, "onPlayblastButtonPressed")
 
         self.createDisplaySection("Hover over a parameter to see its description.", 11)
 
@@ -659,7 +673,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Set parameter layout
         settingText = ParamLabel(paramName, self, prefix, index)
-
 
         self.scrollLayout.addWidget(settingText, id, 0, 1, 3)
         settingText.setMinimumHeight(25)
@@ -916,6 +929,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         elif index == 1:
             cmds.modelEditor('modelPanel4', e=True, displayTextures=True)
             cmds.modelEditor('modelPanel4', e=True, displayLights="default")
+            cmds.modelEditor('modelPanel4', e=True, shadows=False)
             cmds.setAttr("hardwareRenderingGlobals.ssaoEnable", 1)
         else:
             cmds.modelEditor('modelPanel4', e=True, displayTextures=True)

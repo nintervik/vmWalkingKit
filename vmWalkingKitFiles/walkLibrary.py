@@ -14,9 +14,12 @@ USER_APP_DIR = cmds.internalVar(userAppDir=True)
 
 # Generate presets path C:\Users\userName\Documents\maya\vmWalkingKitPresets
 DIRECTORY = os.path.join(USER_APP_DIR, 'vmWalkKitPresets')
+TEXT_DIR = os.path.join(USER_APP_DIR, 'uiInfo')
 
 # Set the name for the default preset JSON file
 DEFAULT_PRESET_NAME = 'defaultPreset.json'
+PARAM_TEXT_NAME = 'paramText.json'
+TAB_TEXT_NAME = 'tabText.json'
 
 FILE_PATH = os.path.join(DIRECTORY, DEFAULT_PRESET_NAME)
 
@@ -316,3 +319,27 @@ class WalkLibrary(object):
             os.mkdir(directory)
 
         return directory
+
+    def getUIText(self, element):
+
+        if element == "param":
+            filePath = os.path.join(TEXT_DIR, PARAM_TEXT_NAME)
+        else:
+            filePath = os.path.join(TEXT_DIR, TAB_TEXT_NAME)
+
+        textDict = OrderedDict()
+
+        with open(filePath, 'r') as f:
+            textDict = json.load(f, object_pairs_hook=OrderedDict)
+
+        return textDict
+
+    def getTabext(self):
+
+        filePath = os.path.join(TEXT_DIR, PARAM_TEXT_NAME)
+        paramTextDict = OrderedDict()
+
+        with open(filePath, 'r') as f:
+            paramTextDict = json.load(f, object_pairs_hook=OrderedDict)
+
+        return paramTextDict
