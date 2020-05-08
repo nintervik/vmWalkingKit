@@ -13,8 +13,9 @@ logging.basicConfig()
 USER_APP_DIR = cmds.internalVar(userAppDir=True)
 
 # Generate presets path C:\Users\userName\Documents\maya\vmWalkingKitPresets
-DIRECTORY = os.path.join(USER_APP_DIR, 'vmWalkKitPresets')
-TEXT_DIR = os.path.join(USER_APP_DIR, 'uiInfo')
+PARENT_DIRECTORY = os.path.join(USER_APP_DIR, 'vmWalkingKitData')
+DIRECTORY = os.path.join(PARENT_DIRECTORY, 'vmWalkingKitPresets')
+TEXT_DIR = os.path.join(PARENT_DIRECTORY, 'vmWalkingKitTextFiles')
 
 # Set the name for the default preset JSON file
 DEFAULT_PRESET_NAME = 'defaultPreset.json'
