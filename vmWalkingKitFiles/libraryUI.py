@@ -361,7 +361,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         scrollAreaInfo.setWidget(scrollWidgetInfo)
         #scrollAreaInfo.setStyleSheet('QScrollArea {background-color: #3d3d3d; border: 1px solid grey}')
         scrollAreaInfo.setStyleSheet('QScrollArea {border: 1px solid grey}')
-        scrollAreaInfo.setMinimumSize(292, 100)
+        scrollAreaInfo.setMinimumSize(292, 180)
         textWidget = QtWidgets.QLabel(text)
         textWidget.setMinimumSize(292, 8)
         textWidget.setWordWrap(True)
