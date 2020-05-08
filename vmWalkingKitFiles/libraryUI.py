@@ -361,7 +361,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         scrollAreaInfo.setWidget(scrollWidgetInfo)
         #scrollAreaInfo.setStyleSheet('QScrollArea {background-color: #3d3d3d; border: 1px solid grey}')
         scrollAreaInfo.setStyleSheet('QScrollArea {border: 1px solid grey}')
-
+        scrollAreaInfo.setMinimumSize(292, 100)
         textWidget = QtWidgets.QLabel(text)
         textWidget.setMinimumSize(292, 8)
         textWidget.setWordWrap(True)
@@ -379,7 +379,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         descriptionTxt.setMinimumSize(200, 8)
         descriptionTxt.setWordWrap(True)
         descriptionTxt.setFont(QtGui.QFont('Arial', 9.5))
-        descriptionTxt.setStyleSheet('QLabel{color: #00ff11}')
+        #descriptionTxt.setStyleSheet('QLabel{color: #b0f5b0}')
         self.scrollLayout.addWidget(descriptionTxt, 0, 0, 1, 7)
         sepLine = QtWidgets.QFrame()
         sepLine.setFrameShape(QtWidgets.QFrame.HLine)
