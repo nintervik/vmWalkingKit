@@ -78,7 +78,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.rangeOptions = ["Low", "Mid", "High"]
         self.handOptions = ["Relaxed", "Fist"]
         self.faceOptions = ["Happy", "Angry", "Sad", "Cocky", "Scared"]
-        self.qualtyOptions = ["Low", "Medium", "High"]
+        self.qualityOptions = ["Low", "Medium", "High"]
         self.paramWidgets = OrderedDict()
 
         # Prefixes
@@ -380,11 +380,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
         descriptionTxt.setWordWrap(True)
         descriptionTxt.setFont(QtGui.QFont('Arial', 9.5))
         descriptionTxt.setStyleSheet('QLabel{color: #00ff11}')
-        self.scrollLayout.addWidget(descriptionTxt)
+        self.scrollLayout.addWidget(descriptionTxt, 0, 0, 1, 7)
         sepLine = QtWidgets.QFrame()
         sepLine.setFrameShape(QtWidgets.QFrame.HLine)
         sepLine.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.scrollLayout.addWidget(sepLine)
+        self.scrollLayout.addWidget(sepLine, 1, 0, 1, 7)
 
     def createGeneralTab(self):
         """
@@ -535,7 +535,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         self.createTabDescription(tabName)
 
-        self.addDropDownSetting("Quality", self.qualtyOptions, 2, "SettingsQuality", index, "onDropDownQualityChanged")
+        self.addDropDownSetting("Quality", self.qualityOptions, 2, "SettingsQuality", index, "onDropDownQualityChanged")
         self.addCheckboxSetting("Silhouette", 3, "SettingsSilhouette", index, "onCheckBoxSilhouetteChanged")
         self.addButtonPlayback("Playblast", 4, "SettingsPlayblast", index, "onPlayblastButtonPressed")
 
@@ -592,7 +592,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Create the scroll widget that will contain all the parameters of this new tab
         scrollWidget = QtWidgets.QWidget()
         scrollWidget.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
-
         # Set the scroll layout
         self.scrollLayout = QtWidgets.QGridLayout(scrollWidget)
 
