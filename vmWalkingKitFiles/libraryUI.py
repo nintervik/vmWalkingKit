@@ -493,7 +493,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.createTabDescription(tabName)
 
         # Create Arms tab parameters
-        self.addSliderParam("Arms swing", 2, self.prefixes[1], index, "onSliderChanged", 500)
+        self.addSliderParam("Arms swinging", 2, self.prefixes[1], index, "onSliderChanged", 500)
         self.addSliderParam("Arms separation", 3, self.prefixes[19], index, "onSliderChanged", 500)
         self.addSliderParam("Elbows drag", 4, self.prefixes[20], index, "onSliderChanged", 500)
         self.addSliderParam("Hands drag", 5, self.prefixes[21], index, "onSliderChanged", 500)
