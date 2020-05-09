@@ -472,7 +472,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # TODO: do a ++i for the ui IDs
 
         # Create Trunk tab parameters
-        self.addSliderParam("Tail swing", 2, self.prefixes[15], index, "onSliderChanged")
+        self.addSliderParam("Tail swinging", 2, self.prefixes[15], index, "onSliderChanged")
         self.addSliderParam("Tail curl", 3, self.prefixes[16], index, "onSliderChanged")
         self.addSliderParam("Tail tilt", 4, self.prefixes[17], index, "onSliderChanged")
         self.addSliderParam("Tail waving", 5, self.prefixes[18], index, "onSliderChanged")
