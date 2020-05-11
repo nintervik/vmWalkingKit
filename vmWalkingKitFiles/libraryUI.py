@@ -955,9 +955,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
         weight = value / 1000.0
         self.library.changeLayerWeight(layerName, weight)
 
-        if prefix == self.prefixes[2]:
-            self.library.changeLayerWeight("CorrectiveTail_1", weight)
-
     def onCheckBoxSilhouetteChanged(self, state):
         if state:
             cmds.modelEditor('modelPanel4', e=True, displayLights="none")
