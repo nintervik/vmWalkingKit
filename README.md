@@ -65,10 +65,12 @@ Where:<br/>
 12. Still with the this tab opened and inside the Script Editor, go to File→Save Script To Shelf…, write a name for it (e.g. *vmWalkingKit*) and click Ok. An icon with the chosen name should have appeared in the Custom Shelf tab.<br/>
 13. Now, you can click on that icon once and the tool will be opened. You can resize the window and dock it anywhere you want as any other Maya's native window. And that’s it. You can start playing around with the tool. Have fun!<br/> 
 
-**Side note:** if you click on the shelf icon and you cannot see the tool window check the following cases in order:
+**Side note 1:** if you click on the shelf icon and you cannot see the tool window check the following cases in order:
 * The tool is probably minimized as a tab on the right side of the screen (usually next to the Attribute Editor or the Channel Box tab).
 * If you still cannot see it try opening a tab that is docked the right side of the screen (e.g the Attribute Editor); then, the tool tab will probably pop up. 
 * The tool window may as well be minimized on the bottom left of Maya.
+
+**Side note 2:** please do not delete any of the files that come with the release as they might be crucial in order to run the tool.
 
 # Attributions
 
