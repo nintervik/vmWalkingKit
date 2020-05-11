@@ -24,7 +24,7 @@ v0.5 ([video](https://vimeo.com/413653094)):
 * Section for the information display works (with placeholder text).
 * Presets can be saved and imported into the tool.
 
-v0.9 (*in progress*):
+v0.9 ([video](https://vimeo.com/417271920)):
 * Hands poses, legs and tail parameters work and are animated.
 * All the theory and information is written and displayed where
 needed.
