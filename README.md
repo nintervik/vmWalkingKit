@@ -25,10 +25,10 @@ v0.5 ([video](https://vimeo.com/413653094)):
 * Presets can be saved and imported into the tool.
 
 v0.9 ([video](https://vimeo.com/417271920)):
-* Hands poses, legs and tail parameters work and are animated.
-* All the theory and information is written and displayed where
+* Tail, hands poses, and legs parameters work and are animated.
+* All the theory and information are written and displayed where
 needed.
-* Performance settings tab is implemented.
+* Settings tab is implemented (performance, silhouette, and playblast).
  
 # Installation instructions
 
