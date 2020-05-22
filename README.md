@@ -50,15 +50,15 @@ Where:<br/>
 
 The tool is divided into three parts:
 
-1. The tabs
-2. The tabs content
-3. Bottom buttons
+1. **The animation tabs:** each tab represents a body part of the character. Navigate through them to see all the possible options (the last one is related to the settings of the tool).
+2. **The tabs content:** in each tab you'll find different parameters, hover over them to see their descriptions and tips about how to use them.
+3. **Bottom buttons:** you'll find three buttons at the bottom of the tool to reset the parameters, import or save a preset. If you like a combination you can save the preset anywhere on your computer and import it later. There's already a couple of presets if you want to load them up into the tool.
 
 # About performance
 
 The tool uses a lot of animation layers in order to create all the combinations. That has a considerable hit on performance that may affect your overall experience with the tool. In order to smooth out the potential performance issues it's recommended to follow these tips:
 
-1. If you are using Maya 2018 or 2020 activate the Cached Playback option (*Playback → Cached Playback → Cached Playback*). You need to chose the Animation option in the menu set drop-down (top left corner) in order to access the cached playback option.
+1. If you are using Maya 2018 or 2020 activate the Cached Playback option (*Playback → Cached Playback → Cached Playback*). If you can see the playback menu, check that you have the Animation menu set selected. You can find a drop-down menu to change this in the top left corner.
 2. In the settings tab of the tool (the last one) you'll find information about how to minimize perfomance issues. Make sure to check that section if you run into performance problems.
 
 # Changelog
