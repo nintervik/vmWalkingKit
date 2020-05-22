@@ -109,3 +109,10 @@ v0.9 ([video](https://vimeo.com/417271920)):
 * All the theory and information are written and displayed where
 needed.
 * Settings tab is implemented (performance, silhouette, and playblast).
+
+v0.91:
+* Fixed loop animation issues.
+* FPS are now always displayed.
+* Added a combination preset as an example file.
+* Updated README with information about how to use and install the tool.
+* Updated Maya 2018 file.
