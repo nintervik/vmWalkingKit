@@ -42,7 +42,11 @@ The program will also come with a set of tool tips and useful information regard
 
 <img src="imgs/shelf_custom_script.png" width="900">
 
-13. Now, you can click on that icon once and the tool will be opened. You can resize the window and dock it anywhere you want as any other Maya's native window. And that’s it. You can start playing around with the tool. Have fun!<br/> 
+13. Now, you can click on that icon once and the tool will be opened. You can resize the window and dock it anywhere you want as any other Maya's native window.<br/>
+
+14. Make sure to set the playback speed to *24 fps x 1* before start using the tool.<br/>
+
+<img src="imgs/fps_settings.png" width="900">
 
 **Side note 1:** if you click on the shelf icon and you cannot see the tool window check the following cases in order:
 * The tool is probably minimized as a tab on the right side of the screen (usually next to the Attribute Editor or the Channel Box tab).
@@ -58,6 +62,8 @@ The tool is divided into three parts:
 1. **The animation tabs:** each tab represents a body part of the character. Navigate through them to see all the possible options (the last one is related to the settings of the tool).
 2. **The tabs content:** in each tab you'll find different parameters, hover over them to see their descriptions and tips about how to use them.
 3. **Bottom buttons:** you'll find three buttons at the bottom of the tool to reset the parameters, import or save a preset. If you like a combination you can save the preset anywhere on your computer and import it later. There's already a couple of presets if you want to load them up into the tool.
+
+<img src="imgs/tool_window.png" width="500">
 
 # About performance
 
