@@ -3,6 +3,63 @@
 *vmWalkingKit* is an animation tool for Maya developed with Python for my Bachelor's Thesis. The tool's goal is to teach the theory behind walking animations while giving the user an interactive playground to experiment while learning. This will be achieved by providing an easy-to-use UI that will allow the animator to tweak parameters in order to modify the end result of a character walking animation. The parameters will be divided into sections representing the main parts of the body.
 
 The program will also come with a set of tool tips and useful information regarding walking animations and the available parameters. This tool is heavily based on the theory of *The Animator's Survival Kit* by Richard Williams; as it contains one of the best studies on the subject of walking.
+ 
+# Installation instructions
+
+**DISCLAIMER:** the tool should work with Maya 2017-2020 but it will perform best with later versions of Maya, especially with Maya 2019 and 2020. 
+
+1. Download the latest release .zip from the release [section](https://github.com/nintervik/vmWalkingKit/releases) of the repository and unzip it anywhere on your computer.<br/>
+2. Inside the *vmWalkingKit_v0.5* folder, you’ll find five things:<br/>
+   a. A folder called *vmWalkingKit*.<br/>
+   b. A folder called *vmWalkingKitData*.<br/>
+   c. A script called *Qt.py*.<br/>
+   d. This *README* file.<br/>
+   e. A *LICENSE* file.<br/>
+3. Move both the *vmWakingKit* folder and the script *Qt.py* (a. and c.) to the following directory:     
+*C:\Users\UserName\Documents\maya\version\scripts*<br/>
+Where:<br/>
+   - *C:* is the drive where Maya is installed.
+   - *UserName* is the name of your user in Windows.
+   - *version* is the version number of Maya that you want to use (2017-2019)<br/>
+4. And then, move the *vmWalkingKitData* folder (b.) to the following directory:     
+*C:\Users\UserName\Documents\maya*<br/>
+5. Open the Maya version corresponding to where you’ve put the files.<br/>
+6. Go to File→Set Project and navigate to the *vmWalkingKit* folder. Inside you’ll find another folder called *mayaProject*. Set that folder as the project.<br/> 
+7. In Maya, go to File→Open Scene (Ctrl+O) and open the *characterScene_#* where *#* is the Maya version you’re using. If you can't find your version open the file which has the closer version to the one you're using.<br/>
+8. Open the Script Editor by clicking on the bottom right button with the {;} or by going to Windows→General Editors→Script Editor.<br/>
+9. Click on the + icon in the tabs section to open up a new tab. Choose Python as the executer source language.<br/>
+10. In this tab, paste the following code:<br/>     
+```python
+   from vmWalkingKit.vmWalkingKitFiles import libraryUI
+
+   reload(libraryUI)
+   libraryUI.WalkLibraryUI()
+```
+11. Open the Custom tab in Maya’s Shelf. If the the Shelf is not visible, go to Windows→UI Elements→Shelf.<br/>  
+12. Still with the this tab opened and inside the Script Editor, go to File→Save Script To Shelf…, write a name for it (e.g. *vmWalkingKit*) and click Ok. An icon with the chosen name should have appeared in the Custom Shelf tab.<br/>
+13. Now, you can click on that icon once and the tool will be opened. You can resize the window and dock it anywhere you want as any other Maya's native window. And that’s it. You can start playing around with the tool. Have fun!<br/> 
+
+**Side note 1:** if you click on the shelf icon and you cannot see the tool window check the following cases in order:
+* The tool is probably minimized as a tab on the right side of the screen (usually next to the Attribute Editor or the Channel Box tab).
+* If you still cannot see it try opening a tab that is docked the right side of the screen (e.g the Attribute Editor); then, the tool tab will probably pop up. 
+* The tool window may as well be minimized on the bottom left of Maya.
+
+**Side note 2:** please do not delete any of the files that come with the release as they might be crucial in order to run the tool.
+
+# How to use the tool
+
+The tool is divided into three parts:
+
+1. The tabs
+2. The tabs content
+3. Bottom buttons
+
+# About performance
+
+The tool uses a lot of animation layers in order to create all the combinations. That has a considerable hit on performance that may affect your overall experience with the tool. In order to smooth out the potential performance issues it's recommended to follow these tips:
+
+1. If you are using Maya 2018 or 2020 activate the Cached Playback option (*Playback → Cached Playback → Cached Playback*). You need to chose the Animation option in the menu set drop-down (top left corner) in order to access the cached playback option.
+2. In the settings tab of the tool (the last one) you'll find information about how to minimize perfomance issues. Make sure to check that section if you run into performance problems.
 
 # Changelog
 
@@ -29,48 +86,6 @@ v0.9 ([video](https://vimeo.com/417271920)):
 * All the theory and information are written and displayed where
 needed.
 * Settings tab is implemented (performance, silhouette, and playblast).
- 
-# Installation instructions
-
-**DISCLAIMER:** the tool should work with Maya 2017-2020 but it will perform best with later versions of Maya, especially with Maya 2019 and 2020. 
-
-1. Download the latest release .zip from the release [section](https://github.com/nintervik/vmWalkingKit/releases) of the repository and unzip it anywhere on your computer.<br/>
-2. Inside the *vmWalkingKit_v0.5* folder, you’ll find five things:<br/>
-   a. A folder called *vmWalkingKit*.<br/>
-   b. A folder called *vmWalkingKitData*.<br/>
-   c. A script called *Qt.py*.<br/>
-   d. This *README* file.<br/>
-   e. A *LICENSE* file.<br/>
-3. Move both the *vmWakingKit* folder and the script *Qt.py* (a. and c.) to the following directory:     
-*C:\Users\UserName\Documents\maya\version\scripts*<br/>
-Where:<br/>
-   - *C:* is the drive where Maya is installed.
-   - *UserName* is the name of your user in Windows.
-   - *version* is the version number of Maya that you want to use (2017→2019)<br/>
-4. And then, move the *vmWalkingKitData* folder (b.) to the following directory:     
-*C:\Users\UserName\Documents\maya*<br/>
-5. Open the Maya version corresponding to where you’ve put the files.<br/>
-6. Go to File→Set Project and navigate to the *vmWalkingKit* folder. Inside you’ll find another folder called *mayaProject*. Set that folder as the project.<br/> 
-7. In Maya, go to File→Open Scene (Ctrl+O) and open the *characterScene_#* where *#* is the Maya version you’re using. If you can't find your version open the file which has the closer version to the one you're using.<br/>
-8. Open the Script Editor by clicking on the bottom right button with the {;} or by going to Windows→General Editors→Script Editor.<br/>
-9. Click on the + icon in the tabs section to open up a new tab. Choose Python as the executer source language.<br/>
-10. In this tab, paste the following code:<br/>     
-```python
-   from vmWalkingKit.vmWalkingKitFiles import libraryUI
-
-   reload(libraryUI)
-   libraryUI.WalkLibraryUI()
-```
-11. Open the Custom tab in Maya’s Shelf. If the the Shelf is not visible, go to Windows→UI Elements→Shelf.<br/>  
-12. Still with the this tab opened and inside the Script Editor, go to File→Save Script To Shelf…, write a name for it (e.g. *vmWalkingKit*) and click Ok. An icon with the chosen name should have appeared in the Custom Shelf tab.<br/>
-13. Now, you can click on that icon once and the tool will be opened. You can resize the window and dock it anywhere you want as any other Maya's native window. And that’s it. You can start playing around with the tool. Have fun!<br/> 
-
-**Side note 1:** if you click on the shelf icon and you cannot see the tool window check the following cases in order:
-* The tool is probably minimized as a tab on the right side of the screen (usually next to the Attribute Editor or the Channel Box tab).
-* If you still cannot see it try opening a tab that is docked the right side of the screen (e.g the Attribute Editor); then, the tool tab will probably pop up. 
-* The tool window may as well be minimized on the bottom left of Maya.
-
-**Side note 2:** please do not delete any of the files that come with the release as they might be crucial in order to run the tool.
 
 # Attributions
 
