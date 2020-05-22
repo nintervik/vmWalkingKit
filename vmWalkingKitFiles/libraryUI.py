@@ -1,5 +1,6 @@
 import os
 from maya import cmds
+import maya.mel as mel
 from collections import OrderedDict
 import time
 
@@ -139,6 +140,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # If docked mode is off, directly show our parent
         if not dock:
             parent.show()
+
+        mel.eval("setFrameRateVisibility(1);")
 
     def initParamLayersData(self):
         """
