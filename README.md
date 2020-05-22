@@ -32,7 +32,7 @@ needed.
  
 # Installation instructions
 
-**DISCLAIMER:** the tool should work with Maya 2017-2020 but it will perform best with later versions of Maya, espcially with Maya 2019 and 2020. 
+**DISCLAIMER:** the tool should work with Maya 2017-2020 but it will perform best with later versions of Maya, especially with Maya 2019 and 2020. 
 
 1. Download the latest release .zip from the release [section](https://github.com/nintervik/vmWalkingKit/releases) of the repository and unzip it anywhere on your computer.<br/>
 2. Inside the *vmWalkingKit_v0.5* folder, you’ll find five things:<br/>
