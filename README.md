@@ -73,14 +73,14 @@ The tool uses a lot of animation layers in order to create all the combinations.
 3. Before changing any parameter or importing/saving a preset pause the animation and play it back once the changes are done.
 3. Close any other programs that you don't need while using the tool. 
 
-You can visualize the framerate of the scene by looking at the number display on the right bottom corner of the viewport.
+You can visualize the framerate of the scene by looking at the number displayed on the right bottom corner of the viewport.Anything below 20 fps is an indication of bad performance.
 
 <img src="imgs/framerate_display.png" width="500">
 
 # Changelog
 
 Down below you'll find the changelog for each version of tool along with the
-correspondent showcase video illustrating the new features.
+correspondent showcase video illustrating the new features (for the most important versions only).
 
 v0.1 ([video](https://vimeo.com/402131641)):
 * Code structure is done.
