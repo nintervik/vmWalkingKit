@@ -58,7 +58,7 @@ The tool is divided into three parts:
 
 The tool uses a lot of animation layers in order to create all the combinations. That has a considerable hit on performance that may affect your overall experience with the tool. In order to smooth out the potential performance issues it's recommended to follow these tips (in case of bad performance):
 
-1. If you are using Maya 2018 or 2020 activate the Cached Playback option (*Playback → Cached Playback → Cached Playback*). If you can see the playback menu, check that you have the Animation menu set selected. You can find a drop-down menu to change this in the top left corner.
+1. If you are using Maya 2019 or 2020 activate the Cached Playback option (*Playback → Cached Playback → Cached Playback*). If you can see the playback menu, check that you have the Animation menu set selected. You can find a drop-down menu to change this in the top left corner.
 
 <img src="imgs/cached_playback.png" width="900">
 
@@ -70,6 +70,8 @@ The tool uses a lot of animation layers in order to create all the combinations.
 3. Close any other programs that you don't need while using the tool. 
 
 You can visualize the framerate of the scene by looking at the number display on the right bottom corner of the viewport.
+
+<img src="imgs/framerate_display.png" width="500">
 
 # Changelog
 
