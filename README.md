@@ -61,6 +61,8 @@ The tool uses a lot of animation layers in order to create all the combinations.
 1. If you are using Maya 2018 or 2020 activate the Cached Playback option (*Playback → Cached Playback → Cached Playback*). If you can see the playback menu, check that you have the Animation menu set selected. You can find a drop-down menu to change this in the top left corner.
 2. In the settings tab of the tool (the last one) you'll find information about how to minimize perfomance issues. Make sure to check that section if you run into performance problems.
 
+<img src="imgs/settings_tab.PNG" width="350">
+
 # Changelog
 
 Down below you'll find the changelog for each version of tool along with the
