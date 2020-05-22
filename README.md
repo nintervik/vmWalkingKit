@@ -46,7 +46,7 @@ The program will also come with a set of tool tips and useful information regard
 
 13. Now, you can click on that icon once and the tool will be opened. You can resize the window and dock it anywhere you want as any other Maya's native window.<br/>
 
-14. Make sure to set the playback speed to *24 fps x 1* before start using the tool.<br/>
+14. Make sure to set the playback speed to *24 fps x 1* before starting to use the tool.<br/>
 
 <img src="imgs/fps_settings.png" width="900">
 
