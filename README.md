@@ -7,6 +7,8 @@ The program will also come with a set of tool tips and useful information regard
 ## Attributions
 
 [Mr. Buttons](bloomsbury.com/cw/cartoon-character-animation-with-maya/student-resources/mr-buttons/) rig by [Keith Osborn](http://www.keithosborn.com/).
+
+<img src="imgs/mrbuttons_rig.jpg" width="900">
  
 # Installation instructions
 
@@ -16,10 +18,13 @@ The program will also come with a set of tool tips and useful information regard
 2. Inside the *vmWalkingKit_v0.5* folder, you’ll find five things:<br/>
    a. A folder called *vmWalkingKit*.<br/>
    b. A folder called *vmWalkingKitData*.<br/>
-   c. A script called *Qt.py*.<br/>
-   d. This *README* file.<br/>
-   e. A *LICENSE* file.<br/>
-3. Move both the *vmWakingKit* folder and the script *Qt.py* (a. and c.) to the following directory:     
+   c. This *README* file.<br/>
+   d. A *LICENSE* file.<br/>
+   e. A script called *Qt.py*.<br/>
+  
+   <img src="imgs/release_contents.png" width="500">
+   
+3. Move both the *vmWakingKit* folder and the script *Qt.py* (a. and e.) to the following directory:     
 *C:\Users\UserName\Documents\maya\version\scripts*<br/>
 Where:<br/>
    - *C:* is the drive where Maya is installed.
@@ -41,6 +46,9 @@ Where:<br/>
 ```
 11. Open the Custom tab in Maya’s Shelf. If the the Shelf is not visible, go to Windows→UI Elements→Shelf.<br/>  
 12. Still with the this tab opened and inside the Script Editor, go to File→Save Script To Shelf…, write a name for it (e.g. *vmWalkingKit*) and click Ok. An icon with the chosen name should have appeared in the Custom Shelf tab.<br/>
+
+<img src="imgs/shelf_script.jpg" width="900">
+
 13. Now, you can click on that icon once and the tool will be opened. You can resize the window and dock it anywhere you want as any other Maya's native window. And that’s it. You can start playing around with the tool. Have fun!<br/> 
 
 **Side note 1:** if you click on the shelf icon and you cannot see the tool window check the following cases in order:
@@ -73,7 +81,7 @@ The tool uses a lot of animation layers in order to create all the combinations.
 3. Before changing any parameter or importing/saving a preset pause the animation and play it back once the changes are done.
 3. Close any other programs that you don't need while using the tool. 
 
-You can visualize the framerate of the scene by looking at the number displayed on the right bottom corner of the viewport.Anything below 20 fps is an indication of bad performance.
+You can visualize the framerate of the scene by looking at the number displayed on the right bottom corner of the viewport. Anything below 20 fps is an indication of bad performance.
 
 <img src="imgs/framerate_display.png" width="500">
 
