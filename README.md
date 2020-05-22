@@ -51,7 +51,7 @@ Where:<br/>
 *C:\Users\UserName\Documents\maya*<br/>
 5. Open the Maya version corresponding to where you’ve put the files.<br/>
 6. Go to File→Set Project and navigate to the *vmWalkingKit* folder. Inside you’ll find another folder called *mayaProject*. Set that folder as the project.<br/> 
-7. In Maya, go to File→Open Scene (Ctrl+O) and open the *characterScene_#* where *#* is the Maya version you’re using.<br/>
+7. In Maya, go to File→Open Scene (Ctrl+O) and open the *characterScene_#* where *#* is the Maya version you’re using. If you can find your version open the file which has the closer version to the one you're using.<br/>
 8. Open the Script Editor by clicking on the bottom right button with the {;} or by going to Windows→General Editors→Script Editor.<br/>
 9. Click on the + icon in the tabs section to open up a new tab. Choose Python as the executer source language.<br/>
 10. In this tab, paste the following code:<br/>     
