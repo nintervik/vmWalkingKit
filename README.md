@@ -19,9 +19,7 @@ The program will also come with a set of tool tips and useful information regard
   
    <img src="imgs/release_contents.png" width="200">
    
-3. Move both the *vmWakingKit* folder and the script *Qt.py* (a. and e.) to the following directory:     
-*C:\Users\UserName\Documents\maya\version\scripts*<br/>
-Where:<br/>
+3. Move both the *vmWakingKit* folder and the script *Qt.py* (a. and e.) to the following directory: *C:\Users\UserName\Documents\maya\version\scripts* Where:
    - *C:* is the drive where Maya is installed.
    - *UserName* is the name of your user in Windows.
    - *version* is the version number of Maya that you want to use (2017-2019)<br/>
