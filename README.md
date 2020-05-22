@@ -15,12 +15,7 @@ The program will also come with a set of tool tips and useful information regard
 **DISCLAIMER:** the tool should work with Maya 2017-2020 but it will perform best with later versions of Maya, especially with Maya 2019 and 2020. 
 
 1. Download the latest release .zip from the release [section](https://github.com/nintervik/vmWalkingKit/releases) of the repository and unzip it anywhere on your computer.<br/>
-2. Inside the *vmWalkingKit_v0.5* folder, you’ll find five things:<br/>
-   a. A folder called *vmWalkingKit*.<br/>
-   b. A folder called *vmWalkingKitData*.<br/>
-   c. This *README* file.<br/>
-   d. A *LICENSE* file.<br/>
-   e. A script called *Qt.py*.<br/>
+2. Inside the *vmWalkingKit_v0.5* folder, you’ll find five items:<br/>
   
    <img src="imgs/release_contents.png" width="200">
    
