@@ -17,11 +17,12 @@ PARENT_DIRECTORY = os.path.join(USER_APP_DIR, 'vmWalkingKitData')
 DIRECTORY = os.path.join(PARENT_DIRECTORY, 'vmWalkingKitPresets')
 TEXT_DIR = os.path.join(PARENT_DIRECTORY, 'vmWalkingKitTextFiles')
 
-# Set the name for the default preset JSON file
+# Set the name for the default preset JSON file and UI text data files
 DEFAULT_PRESET_NAME = 'defaultPreset.json'
 PARAM_TEXT_NAME = 'paramText.json'
 TAB_TEXT_NAME = 'tabText.json'
 
+# Set the default preset file path
 FILE_PATH = os.path.join(DIRECTORY, DEFAULT_PRESET_NAME)
 
 class WalkLibrary(object):
@@ -35,6 +36,7 @@ class WalkLibrary(object):
         Init method. Here we create the directory to save the presets and reset everything to
         default by reading from the 'defaultPreset.json' file.
         """
+
         self.getDirectory()
 
         # Only call this to generate the defaultPreset.json the first time
@@ -42,10 +44,7 @@ class WalkLibrary(object):
             self.savePreset()
 
         # Setting playback range to the max frames needed
-        cmds.playbackOptions(animationEndTime=96)
-        cmds.playbackOptions(minTime=1)
-        cmds.playbackOptions(maxTime=24)
-        cmds.playbackOptions(animationStartTime=1)
+        self.setPlaybackOptions(24)
 
     # ANIMATION LAYERS METHODS
 
@@ -77,7 +76,7 @@ class WalkLibrary(object):
             if wasPlaying:
                 cmds.play(state=True)
         else:
-            print(layerNameToChange + " not found!")
+            logger.debug(layerNameToChange + " not found!")
 
     def changeLayerWeight(self, layerNameToChange, weight):
         """
@@ -104,24 +103,24 @@ class WalkLibrary(object):
             if wasPlaying:
                 cmds.play(state=True)
         else:
-            print(layerNameToChange + " not found!")
+            logger.debug(layerNameToChange + " not found!")
 
     def getCurrentAnimationLayers(self):
         """
         Finds all the current existing animation layers in the scene.
 
-        Returns: returns a two lists. One with all the current existing layers in the
+        Returns: returns two lists. One with all the current existing layers names in the
         scene (except the base animation layer) and the other one with their weights.
         """
 
+        # Query animation layers in the scene
         baseAnimationLayer = cmds.animLayer(query=True, root=True)
         childLayers = cmds.animLayer(baseAnimationLayer, query=True, children=True)
 
         weights = []
-
         layersToRemove = []
-        weightsToRemove = []
 
+        # Store the weights if the layers are not corrective (they are just used to correct animations not as parameters)
         for i in range(0, len(childLayers)):
             if "Corrective" not in childLayers[i]:
                 weights.append(cmds.animLayer(childLayers[i], query=True, weight=True))
@@ -130,6 +129,7 @@ class WalkLibrary(object):
 
         sizeToRemove = len(layersToRemove)
 
+        # Remove layers that are corrective from the childLayers list
         for i in range(0, sizeToRemove):
             childLayers.remove(layersToRemove[i])
 
@@ -139,18 +139,20 @@ class WalkLibrary(object):
         """
         Finds all the active animation layers in the scene.
 
-        Returns: returns a two lists. One with all the active layers in the
+        Returns: returns a two lists. One with all the active layers names in the
         scene (except the base animation layer) and the other one with their weights.
         """
 
+        # Query animation layers in the scene
         baseAnimationLayer = cmds.animLayer(query=True, root=True)
         childLayers = cmds.animLayer(baseAnimationLayer, query=True, children=True)
 
         activeLayers = []
         weights = []
 
+        # Store the all the layer's names and their weights (except the corrective ones)
         for i in range(0, len(childLayers)):
-            if not cmds.animLayer(childLayers[i], query=True, mute=True):
+            if not cmds.animLayer(childLayers[i], query=True, mute=True) and "Corrective" not in childLayers[i]:
                 activeLayers.append(childLayers[i])
                 weights.append(cmds.animLayer(childLayers[i], query=True, weight=True))
 
@@ -159,6 +161,14 @@ class WalkLibrary(object):
     # KEYFRAMES METHODS
 
     def offsetKeyframes(self, attrFull, layerName, prevIndex, currIndex):
+        """
+        Offset the keyframes of the given animation curve to match the current body or arms beat.
+        Args:
+            attrFull(str):
+            layerName(str): the name of the layer where the keyframes to offset live.
+            prevIndex(int): the index that represents the beat that we are coming from.
+            currIndex(int): the index that represents the current beat.
+        """
 
         offset = 0
 
@@ -173,11 +183,11 @@ class WalkLibrary(object):
         elif prevIndex == 3 and currIndex == 1:
             offset = -2
 
+        # Select the keyframes from the animation curve of the attribute the given layer
         layerPlug = cmds.animLayer(layerName, e=True, findCurveForPlug=attrFull)
         keyframes = cmds.keyframe(layerPlug[0], q=True)
-        backupKeyframes = keyframes
 
-        # Select attrFull
+        # Select the controller
         cmds.select(attrFull.split('.')[0], r=True)
         cmds.animLayer(layerName, edit=True, selected=True, preferred=True)
         cmds.animLayer(uir=True)
@@ -193,23 +203,17 @@ class WalkLibrary(object):
                               timeChange=offset, time=(keyframes[i],
                               keyframes[len(keyframes)-1]))
 
-        # Spline all keyframes tangents for curves to be smoother. Except if we are in 12f, as they are already
-        # tweaked there. # TODO: better way to do this?
-        #if currBodyIndex != 2:
-            #print "splineeee --------------"
-            #cmds.keyTangent(attrFull.split('.')[0], itt='spline', ott='spline',
-                            #time=(backupKeyframes[0], backupKeyframes[len(keyframes)-1]))
-
         # Clear the active list
         cmds.select(clear=True)
 
-        # Select the layer so its keyframes can be moved
+        # Deselect the layer and make it not preferred
         cmds.animLayer(layerName, edit=True, selected=False, preferred=False)
 
     def calculatePlaybackRange(self, indices):
 
         playBackEndRange = 0
 
+        # Find the LCM (Least Common Multiple) to set the playback range based on the body and arms beats
         if indices[0] == 1 and indices[1] == 1:
             playBackEndRange = 16
         elif (indices[0] == 1 and indices[1] == 2) or (indices[0] == 2 and indices[1] == 1):
@@ -223,6 +227,9 @@ class WalkLibrary(object):
             playBackEndRange = 96
 
         # Set de new calculated playback range
+        self.setPlaybackOptions(playBackEndRange)
+
+    def setPlaybackOptions(self, playBackEndRange):
         cmds.playbackOptions(animationEndTime=96)
         cmds.playbackOptions(minTime=1)
         cmds.playbackOptions(maxTime=playBackEndRange)
