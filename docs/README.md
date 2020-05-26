@@ -1,4 +1,4 @@
-# ABOUT
+# About
 
 vmWalkingKit is an animation tool for Maya developed with Python for my Bachelor's Thesis. The tool's goal is to teach the theory behind walking animations while giving the user an interactive playground to experiment while learning. This will be achieved by providing an easy-to-use UI that will allow the animator to tweak parameters in order to modify the end result of a character walking animation. The parameters will be divided into sections representing the main parts of the body.
 
@@ -6,12 +6,19 @@ The program will also come with a set of tool tips and useful information regard
 
 Development and animation by [Víctor Masó Garcia](https://www.linkedin.com/in/vmasogarcia/).
 
+You can check my other work in my [website](https://nintervik.github.io).
+
 > Download the latest release [here](https://github.com/nintervik/vmWalkingKit/releases/tag/v0.91)
 
 ***
 
+# Attributions
 
-# LICENSE
+[Mr. Buttons](bloomsbury.com/cw/cartoon-character-animation-with-maya/student-resources/mr-buttons/) rig by [Keith Osborn](http://www.keithosborn.com/).
+
+<img src="imgs/mrbuttons_rig.jpg" width="900">
+
+# License
 
 ~~~~~~~~~~~~~~~
 
