@@ -16,7 +16,7 @@ You can check my other work in my [website](https://nintervik.github.io).
 
 [Mr. Buttons](bloomsbury.com/cw/cartoon-character-animation-with-maya/student-resources/mr-buttons/) rig by [Keith Osborn](http://www.keithosborn.com/).
 
-<img src="imgs/mrbuttons_rig.jpg" width="900">
+<img src="../imgs/mrbuttons_rig.jpg" width="900">
 
 # License
 
