@@ -10,6 +10,9 @@ Development and animation by [Víctor Masó Garcia](https://www.linkedin.com/in/
 
 ***
 
+
+# LICENSE
+
 ~~~~~~~~~~~~~~~
 
 MIT License
