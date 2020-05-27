@@ -339,14 +339,17 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Add the main menu options
         actionFile = menubar.addMenu("File")
-        actionFile.addAction("New")
-        actionFile.addAction("Open")
-        actionFile.addAction("Save")
+
+        actionFile.addAction('Import preset', partial(self.onImport, self.library.getDirectory()))
+        actionFile.addAction('Save preset', partial(self.onSave, self.library.getDirectory()))
+        actionFile.addAction("Reset", self.onImport)
         actionFile.addSeparator()
-        actionFile.addAction("Quit")
-        menubar.addMenu("Edit")
-        menubar.addMenu("View")
-        menubar.addMenu("Help")
+        actionFile.addAction("Quit", deleteWindowDock)
+
+        actionHelp = menubar.addMenu("Help")
+        actionHelp.addAction('About')
+        actionHelp.addAction("Documentation")
+        actionHelp.addAction('Startup window')
 
     def createDisplaySection(self, text, id):
 
@@ -1031,6 +1034,9 @@ class WalkLibraryUI(QtWidgets.QWidget):
                         self.onSliderChanged(prefix, weights[i]*1000.0)
         else:
             logger.debug("Query for default preset file failed.")
+
+    def onQuitTool(self):
+        deleteWindowDock()
 
     def HoverEvent(self, hovered, prefix, index):
         if hovered:
