@@ -247,9 +247,6 @@ class WalkLibrary(object):
             not specified, it will be loaded from the default path.
         """
 
-        # TODO: take into account playback range settings when importing preset (as inDropDownChanged)
-        # TODO: when importing a new preset the parameters will also need to be changed accordingly. As in resetPreset()
-
         self.activeLayersInfo = OrderedDict()
         layers = None
         weights = None

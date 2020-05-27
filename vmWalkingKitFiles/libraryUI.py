@@ -3,6 +3,7 @@ from maya import cmds
 import maya.mel as mel
 from collections import OrderedDict
 import time
+import webbrowser
 
 # This is not done like this when shipping the tool.
 # Watch from 5:30 of video 57
@@ -65,9 +66,14 @@ class ToolStartupWindow(QtWidgets.QWidget):
 
     def createUI(self):
          self.layout = QtWidgets.QVBoxLayout(self)
-         widget = QtWidgets.QCheckBox("Show on start")
+         widget = QtWidgets.QCheckBox("Show this at startup")
+         widget1 = QtWidgets.QCheckBox("Show this at startup")
+         widget.setChecked(True)
          #widget.stateChanged.connect(getattr(self, slotName))
          self.layout.addWidget(widget)
+
+    def showUI(self):
+        self.parent.show()
 
 
 class WalkLibraryUI(QtWidgets.QWidget):
@@ -79,6 +85,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
     prevBodyIndex = 2
     prevArmsIndex = 2
     currLightingSetting = "deafault"
+    startupWin = None
 
     def __init__(self, dock=True):
 
@@ -178,7 +185,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         mel.eval('setFrameRateVisibility(1);')
 
-        self.startupWin = ToolStartupWindow()
+        startupWin = ToolStartupWindow()
 
     def initParamLayersData(self):
         """
@@ -376,6 +383,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Add the main menu options
         actionFile = menubar.addMenu("File")
+        actionHelp = menubar.addMenu("Help")
 
         importOpt = actionFile.addAction('Import preset', partial(self.onImport, self.library.getDirectory()))
         importOpt.setStatusTip('Import a saved preset into the tool.')
@@ -387,11 +395,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
         quitOpt = actionFile.addAction("Quit", deleteWindowDock)
         quitOpt.setStatusTip('Quit vmWalkingKit.')
 
-        actionHelp = menubar.addMenu("Help")
-        docOpt = actionHelp.addAction("Documentation")
+
+        docOpt = actionHelp.addAction("Documentation", self.onDocClicked)
         docOpt.setStatusTip('Go to the documentation website.')
-        helpOpt = actionHelp.addAction('Startup window')
-        helpOpt.setStatusTip('Open the startup window.')
+        startupOpt = actionHelp.addAction('Startup window', self.onWinStartup)
+        startupOpt.setStatusTip('Open the startup window.')
         actionHelp.addSeparator()
         aboutOpt = actionHelp.addAction('About')
         aboutOpt.setStatusTip('Show information about vmWalkingKit.')
@@ -1082,6 +1090,13 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
     def onQuitTool(self):
         deleteWindowDock()
+
+    def onWinStartup(self):
+        WalkLibraryUI.startupWin = ToolStartupWindow()
+        WalkLibraryUI.startupWin.showUI()
+
+    def onDocClicked(self):
+        webbrowser.open('https://nintervik.github.io/vmWalkingKit/')
 
     def HoverEvent(self, hovered, prefix, index):
         if hovered:
