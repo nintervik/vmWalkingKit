@@ -110,12 +110,12 @@ class AboutWindow(QtWidgets.QWidget):
         self.parent = QtWidgets.QDialog(parent=getMayaMainWindow())
         self.parent.setObjectName('about')
         self.parent.setWindowTitle('About')
-        self.layout = QtWidgets.QHBoxLayout(self.parent)
+        self.layout = QtWidgets.QVBoxLayout(self.parent)
 
         # Now that our parent is set we can initialize it
         super(AboutWindow, self).__init__(parent=self.parent)
 
-        self.parent.setFixedSize(400, 350)
+        self.parent.setFixedSize(400, 565)
         self.parent.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.CustomizeWindowHint
                                    | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
         self.createUI()
@@ -124,17 +124,60 @@ class AboutWindow(QtWidgets.QWidget):
     def createUI(self):
 
          titleLabel = QtWidgets.QLabel("vmWalkingKit v0.91")
-         titleLabel.setFont(QtGui.QFont('Arial', 12))
+         titleLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont.Bold))
+         titleLabel.setStyleSheet('QLabel{color: #b0f5b0, font-weight: bold}')
          self.layout.addWidget(titleLabel, 0, QtCore.Qt.AlignTop)
 
-
-         welcomeLabel = QtWidgets.QLabel("vmWalkingKit is an animation tool for Maya developed with "
-                                         "Python for my Bachelor's Thesis. The tool's goal is to teach "
-                                         "the theory behind walking animations while giving the user an "
-                                         "interactive playground to experiment while learning.")
-         welcomeLabel.setFont(QtGui.QFont('Arial', 9))
+         welcomeLabel = QtWidgets.QLabel()
+         welcomeLabel.setText('<a href="https://nintervik.github.io/vmWalkingKit/"><span style="color:#7be36f;">vmWalkingKit</span></a>' +
+                              " is an animation tool for Maya developed with " +
+                              "Python for my Bachelor's Thesis. The tool's goal is to teach " +
+                              "the theory behind walking animations while giving the user an " +
+                              "interactive playground to experiment while learning.")
+         welcomeLabel.setFont(QtGui.QFont('Arial', 9.5))
          welcomeLabel.setWordWrap(True)
+         welcomeLabel.setOpenExternalLinks(True)
          self.layout.addWidget(welcomeLabel, 1, QtCore.Qt.AlignTop)
+
+         devLabel = QtWidgets.QLabel()
+         devLabel.setText('<br>Developed and animated by ' + '<a href="https://www.linkedin.com/in/vmasogarcia/"><span style="color:#7be36f;">Victor Maso Garcia</span></a>')
+         devLabel.setOpenExternalLinks(True)
+         devLabel.setFont(QtGui.QFont('Arial', 9.5))
+         self.layout.addWidget(devLabel, 1)
+
+         websiteLabel = QtWidgets.QLabel()
+         websiteLabel.setText('<br>' + '- ' + '<a href="https://www.bloomsbury.com/cw/cartoon-character-animation-with-maya/student-resources/mr-buttons/"><span style="color:#7be36f;">Mr. Buttons</span></a>'
+                              + ' rig by ' + '<a href="http://www.keithosborn.com/"><span style="color:#7be36f;">Keith Osborn</span></a>')
+         websiteLabel.setFont(QtGui.QFont('Arial', 9.5))
+         websiteLabel.setOpenExternalLinks(True)
+         #websiteLabel.setStyleSheet('QLabel{color: #b0f5b0}')
+         self.layout.addWidget(websiteLabel, 1)
+
+         qtLabel = QtWidgets.QLabel()
+         qtLabel.setText('- ' + 'UI programmed with ' + '<a href="https://github.com/mottosso/Qt.py"><span style="color:#7be36f;">Qt.py</span></a>'
+                         + ' by ' + '<a href="https://mottosso.com/"><span style="color:#7be36f;">Marcus Ottosson</span></a>')
+         qtLabel.setFont(QtGui.QFont('Arial', 9.5))
+         qtLabel.setOpenExternalLinks(True)
+         #websiteLabel.setStyleSheet('QLabel{color: #b0f5b0}')
+         self.layout.addWidget(qtLabel, 1)
+
+         licenseLabel = QtWidgets.QLabel()
+         licenseLabel.setText("\n\nMIT License Copyright (c) 2020 nintervik" +
+                              "\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated" +
+                              ' documentation files (the "Software"), to deal in the Software without restriction, including without limitation the' +
+                                                                  " rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell " +
+                                                                  " copies of the Software, and to permit persons to whom the Software is furnished to do " +
+                                                                  " so, subject to the following conditions:\n\n" +
+                                                                  "The above copyright notice and this permission notice shall be included in all copies or "
+                                                                  " substantial portions of the Software.\n\n" +
+                                                                  'THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING ' \
+                                                                  "BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. " \
+                                                                  "IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, " \
+                                                                  "WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE " \
+                                                                   "OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.")
+         licenseLabel.setFont(QtGui.QFont('Arial', 9.5))
+         licenseLabel.setWordWrap(True)
+         self.layout.addWidget(licenseLabel, 1, QtCore.Qt.AlignTop)
 
     def showUI(self):
         self.parent.show()
@@ -255,8 +298,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         mel.eval('setFrameRateVisibility(1);')
 
-        if self.library.getStartupWinPref():
-            WalkLibraryUI.startupWin = ToolStartupWindow(self.library)
+        WalkLibraryUI.startupWin = ToolStartupWindow(self.library)
+
+        if self.library.getStartupWinPref() == False:
+            WalkLibraryUI.startupWin.deleteUI()
 
         WalkLibraryUI.aboutWin = AboutWindow()
         WalkLibraryUI.aboutWin.deleteUI()
