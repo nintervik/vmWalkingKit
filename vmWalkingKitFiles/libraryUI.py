@@ -47,7 +47,6 @@ class ToolStartupWindow(QtWidgets.QWidget):
 
         # Delete UI if it already exists
         self.deleteUI()
-        deleteWindowDock("StartUpWinDock")
 
         self.parent = QtWidgets.QDialog(parent=getMayaMainWindow())
         self.parent.setObjectName('startup')
@@ -97,6 +96,45 @@ class ToolStartupWindow(QtWidgets.QWidget):
         except:
             logger.debug('No previous UI exists.')
 
+class AboutWindow(QtWidgets.QWidget):
+    """
+    The ToolStartupWindow is a startup dialog.
+    """
+
+    def __init__(self, library=None):
+        self.library = library
+
+        # Delete UI if it already exists
+        self.deleteUI()
+
+        self.parent = QtWidgets.QDialog(parent=getMayaMainWindow())
+        self.parent.setObjectName('about')
+        self.parent.setWindowTitle('About')
+        self.layout = QtWidgets.QGridLayout(self.parent)
+
+        # Now that our parent is set we can initialize it
+        super(AboutWindow, self).__init__(parent=self.parent)
+
+        self.parent.setFixedSize(400, 350)
+        self.parent.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.CustomizeWindowHint
+                                   | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
+        self.createUI()
+        self.parent.show()
+
+    def createUI(self):
+         welcomeLabel = QtWidgets.QLabel("            Welcome to vmWalkingKit!   ")
+         welcomeLabel.setFont(QtGui.QFont('Arial', 15))
+         self.layout.addWidget(welcomeLabel, 0, 0, QtCore.Qt.AlignTop)
+
+    def showUI(self):
+        self.parent.show()
+
+    def deleteUI(self):
+        try:
+            cmds.deleteUI('about')
+        except:
+            logger.debug('No previous UI exists.')
+
 class WalkLibraryUI(QtWidgets.QWidget):
     """
     The WalkLibraryUI is a dialog that lets us control all the walkTool parameters.
@@ -107,6 +145,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
     prevArmsIndex = 2
     currLightingSetting = "deafault"
     startupWin = None
+    aboutWin = None
 
     def __init__(self, dock=True):
 
@@ -420,13 +459,12 @@ class WalkLibraryUI(QtWidgets.QWidget):
         quitOpt = actionFile.addAction("Quit", deleteWindowDock)
         quitOpt.setStatusTip('Quit vmWalkingKit.')
 
-
         docOpt = actionHelp.addAction("Documentation", self.onDocClicked)
         docOpt.setStatusTip('Go to the documentation website.')
         startupOpt = actionHelp.addAction('Startup window', self.onWinStartup)
         startupOpt.setStatusTip('Open the startup window.')
         actionHelp.addSeparator()
-        aboutOpt = actionHelp.addAction('About')
+        aboutOpt = actionHelp.addAction('About', self.onAboutClicked)
         aboutOpt.setStatusTip('Show information about vmWalkingKit.')
 
     def createDisplaySection(self, text, id):
@@ -1122,6 +1160,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
     def onDocClicked(self):
         webbrowser.open('https://nintervik.github.io/vmWalkingKit/')
+
+    def onAboutClicked(self):
+        WalkLibraryUI.aboutWin = AboutWindow()
+        WalkLibraryUI.aboutWin.showUI()
 
     def HoverEvent(self, hovered, prefix, index):
         if hovered:
