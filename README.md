@@ -4,7 +4,7 @@
 
 The program will also come with a set of tool tips and useful information regarding walking animations and the available parameters. This tool is heavily based on the theory of *The Animator's Survival Kit* by Richard Williams; as it contains one of the best studies on the subject of walking.
 
-*Development and animation by [Víctor Masó Garcia.](https://www.linkedin.com/in/vmasogarcia/)*
+*Development & animation by [Víctor Masó Garcia.](https://www.linkedin.com/in/vmasogarcia/)*
 
 ## Attributions
 
