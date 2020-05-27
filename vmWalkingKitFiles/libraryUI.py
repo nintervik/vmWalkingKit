@@ -67,7 +67,6 @@ class ToolStartupWindow(QtWidgets.QWidget):
     def createUI(self):
          self.layout = QtWidgets.QVBoxLayout(self)
          widget = QtWidgets.QCheckBox("Show this at startup")
-         widget1 = QtWidgets.QCheckBox("Show this at startup")
          widget.setChecked(True)
          #widget.stateChanged.connect(getattr(self, slotName))
          self.layout.addWidget(widget)
