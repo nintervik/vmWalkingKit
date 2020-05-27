@@ -56,14 +56,18 @@ class ToolStartupWindow(QtWidgets.QWidget):
         # Now that our parent is set we can initialize it
         super(ToolStartupWindow, self).__init__(parent=self.parent)
 
-        # Set default size of the window
-        self.resize(400, 350)
+        self.parent.setFixedSize(400, 350)
+        self.parent.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.CustomizeWindowHint
+                                   | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
 
-        # Add ourselves (QtWidgets.QWidget) to the parent's layout
-        #self.parent().layout().addWidget(self)
-
-        # If docked mode is off, directly show our parent
+        self.createUI()
         self.parent.show()
+
+    def createUI(self):
+         self.layout = QtWidgets.QVBoxLayout(self)
+         widget = QtWidgets.QCheckBox("Show on start")
+         #widget.stateChanged.connect(getattr(self, slotName))
+         self.layout.addWidget(widget)
 
 
 class WalkLibraryUI(QtWidgets.QWidget):
