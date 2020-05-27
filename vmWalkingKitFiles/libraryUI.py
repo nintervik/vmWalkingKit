@@ -110,7 +110,7 @@ class AboutWindow(QtWidgets.QWidget):
         self.parent = QtWidgets.QDialog(parent=getMayaMainWindow())
         self.parent.setObjectName('about')
         self.parent.setWindowTitle('About')
-        self.layout = QtWidgets.QGridLayout(self.parent)
+        self.layout = QtWidgets.QHBoxLayout(self.parent)
 
         # Now that our parent is set we can initialize it
         super(AboutWindow, self).__init__(parent=self.parent)
@@ -122,9 +122,19 @@ class AboutWindow(QtWidgets.QWidget):
         self.parent.show()
 
     def createUI(self):
-         welcomeLabel = QtWidgets.QLabel("            Welcome to vmWalkingKit!   ")
-         welcomeLabel.setFont(QtGui.QFont('Arial', 15))
-         self.layout.addWidget(welcomeLabel, 0, 0, QtCore.Qt.AlignTop)
+
+         titleLabel = QtWidgets.QLabel("vmWalkingKit v0.91")
+         titleLabel.setFont(QtGui.QFont('Arial', 12))
+         self.layout.addWidget(titleLabel, 0, QtCore.Qt.AlignTop)
+
+
+         welcomeLabel = QtWidgets.QLabel("vmWalkingKit is an animation tool for Maya developed with "
+                                         "Python for my Bachelor's Thesis. The tool's goal is to teach "
+                                         "the theory behind walking animations while giving the user an "
+                                         "interactive playground to experiment while learning.")
+         welcomeLabel.setFont(QtGui.QFont('Arial', 9))
+         welcomeLabel.setWordWrap(True)
+         self.layout.addWidget(welcomeLabel, 1, QtCore.Qt.AlignTop)
 
     def showUI(self):
         self.parent.show()
@@ -247,6 +257,9 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         if self.library.getStartupWinPref():
             WalkLibraryUI.startupWin = ToolStartupWindow(self.library)
+
+        WalkLibraryUI.aboutWin = AboutWindow()
+        WalkLibraryUI.aboutWin.deleteUI()
 
     def initParamLayersData(self):
         """
@@ -456,7 +469,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         resetOpt = actionFile.addAction("Reset", self.onImport)
         resetOpt.setStatusTip('Reset the tool parameters to their default state.')
         actionFile.addSeparator()
-        quitOpt = actionFile.addAction("Quit", deleteWindowDock)
+        quitOpt = actionFile.addAction("Quit", self.onQuitTool)
         quitOpt.setStatusTip('Quit vmWalkingKit.')
 
         docOpt = actionHelp.addAction("Documentation", self.onDocClicked)
@@ -1152,6 +1165,13 @@ class WalkLibraryUI(QtWidgets.QWidget):
             logger.debug("Query for default preset file failed.")
 
     def onQuitTool(self):
+
+        if WalkLibraryUI.startupWin is not None:
+            WalkLibraryUI.startupWin.deleteUI()
+
+        if WalkLibraryUI.aboutWin is not None:
+            WalkLibraryUI.aboutWin.deleteUI()
+
         deleteWindowDock()
 
     def onWinStartup(self):
