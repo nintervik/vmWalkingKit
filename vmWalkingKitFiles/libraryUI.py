@@ -18,6 +18,7 @@ import Qt
 import logging
 from maya import OpenMayaUI as omui
 
+
 # Setting up logger
 logger = logging.getLogger('WalkLibraryUI')
 logger.setLevel(logging.DEBUG) # TODO: change to logging.INFO when shipping
@@ -41,12 +42,13 @@ class ToolStartupWindow(QtWidgets.QWidget):
     The ToolStartupWindow is a startup dialog.
     """
 
-    def __init__(self):
+    def __init__(self, library=None):
+        self.library = library
 
         # Delete UI if it already exists
         self.deleteUI()
-
         deleteWindowDock("StartUpWinDock")
+
         self.parent = QtWidgets.QDialog(parent=getMayaMainWindow())
         self.parent.setObjectName('startup')
         self.parent.setWindowTitle('Startup Window')
@@ -63,16 +65,28 @@ class ToolStartupWindow(QtWidgets.QWidget):
         self.parent.show()
 
     def createUI(self):
+         welcomeLabel = QtWidgets.QLabel("            Welcome to vmWalkingKit!   ")
+         welcomeLabel.setFont(QtGui.QFont('Arial', 15))
+         self.layout.addWidget(welcomeLabel, 0, 0, QtCore.Qt.AlignTop)
 
-         widget = QtWidgets.QCheckBox("Show this at startup")
-         widget.setChecked(True)
-         #widget.stateChanged.connect(getattr(self, slotName))
-         self.layout.addWidget(widget, 0, 0, QtCore.Qt.AlignBottom)
+         label = QtWidgets.QLabel(self)
+         pixmap = QtGui.QPixmap(walkLibrary.IMG_DIR)
+         #pixmap = pixmap.scaled(330, 250, QtCore.Qt.KeepAspectRatio)
+         label.setPixmap(pixmap)
+         self.layout.addWidget(label, 0, 0, 1, 2, QtCore.Qt.AlignCenter)
+
+         cb = QtWidgets.QCheckBox("Show this at startup")
+         cb.setChecked(self.library.getStartupWinPref())
+         cb.stateChanged.connect(self.onStartupChanged)
+         self.layout.addWidget(cb, 0, 0, QtCore.Qt.AlignBottom)
 
          okBtn = QtWidgets.QPushButton('OK')
          okBtn.clicked.connect(self.deleteUI)
          okBtn.setMaximumWidth(60)
          self.layout.addWidget(okBtn, 0, 1, QtCore.Qt.AlignBottom)
+
+    def onStartupChanged(self, state):
+        self.library.setStartupWinPref(state)
 
     def showUI(self):
         self.parent.show()
@@ -192,7 +206,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         mel.eval('setFrameRateVisibility(1);')
 
-        startupWin = ToolStartupWindow()
+        if self.library.getStartupWinPref():
+            WalkLibraryUI.startupWin = ToolStartupWindow(self.library)
 
     def initParamLayersData(self):
         """
@@ -349,12 +364,15 @@ class WalkLibraryUI(QtWidgets.QWidget):
             (self.prefixes[25], stepDistanceDict)
         ])
 
+
     # UI METHODS
 
     # UI creation methods
 
     def createUI(self):
         """This method creates the UI"""
+
+        self.library.getStartupWinPref()
 
         # This is the master layout
         self.layout = QtWidgets.QVBoxLayout(self)
@@ -1099,7 +1117,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         deleteWindowDock()
 
     def onWinStartup(self):
-        WalkLibraryUI.startupWin = ToolStartupWindow()
+        WalkLibraryUI.startupWin = ToolStartupWindow(self.library)
         WalkLibraryUI.startupWin.showUI()
 
     def onDocClicked(self):

@@ -24,6 +24,9 @@ TAB_TEXT_NAME = 'tabText.json'
 
 # Set the default preset file path
 FILE_PATH = os.path.join(DIRECTORY, DEFAULT_PRESET_NAME)
+USER_PREFS_PATH = os.path.join(PARENT_DIRECTORY, 'vmWKUserPrefs.json')
+IMG_DIR = os.path.join(PARENT_DIRECTORY, 'startupImg.png')
+
 
 class WalkLibrary(object):
     """
@@ -348,3 +351,24 @@ class WalkLibrary(object):
             paramTextDict = json.load(f, object_pairs_hook=OrderedDict)
 
         return paramTextDict
+
+    def getStartupWinPref(self):
+
+        startupFlag = False
+
+        with open(USER_PREFS_PATH, 'r') as f:
+            startupFlag = json.load(f)["SHOW_STARTUP_WIN"]
+
+        return startupFlag
+
+    def setStartupWinPref(self, state):
+
+        dataToWrite = OrderedDict()
+
+        if state == 2:
+            state = 1
+
+        dataToWrite["SHOW_STARTUP_WIN"] = state
+
+        with open(USER_PREFS_PATH, 'w') as f:
+            json.dump(dataToWrite, f, indent=4)
