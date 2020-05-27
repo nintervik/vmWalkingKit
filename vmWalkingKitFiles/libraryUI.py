@@ -340,16 +340,24 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Add the main menu options
         actionFile = menubar.addMenu("File")
 
-        actionFile.addAction('Import preset', partial(self.onImport, self.library.getDirectory()))
-        actionFile.addAction('Save preset', partial(self.onSave, self.library.getDirectory()))
-        actionFile.addAction("Reset", self.onImport)
+        importOpt = actionFile.addAction('Import preset', partial(self.onImport, self.library.getDirectory()))
+        importOpt.setStatusTip('Import a saved preset into the tool.')
+        saveOpt = actionFile.addAction('Save preset', partial(self.onSave, self.library.getDirectory()))
+        saveOpt.setStatusTip('Save a preset in your computer.')
+        resetOpt = actionFile.addAction("Reset", self.onImport)
+        resetOpt.setStatusTip('Reset the tool parameters to their default state.')
         actionFile.addSeparator()
-        actionFile.addAction("Quit", deleteWindowDock)
+        quitOpt = actionFile.addAction("Quit", deleteWindowDock)
+        quitOpt.setStatusTip('Quit vmWalkingKit.')
 
         actionHelp = menubar.addMenu("Help")
-        actionHelp.addAction('About')
-        actionHelp.addAction("Documentation")
-        actionHelp.addAction('Startup window')
+        docOpt = actionHelp.addAction("Documentation")
+        docOpt.setStatusTip('Go to the documentation website.')
+        helpOpt = actionHelp.addAction('Startup window')
+        helpOpt.setStatusTip('Open the startup window.')
+        actionHelp.addSeparator()
+        aboutOpt = actionHelp.addAction('About')
+        aboutOpt.setStatusTip('Show information about vmWalkingKit.')
 
     def createDisplaySection(self, text, id):
 
