@@ -35,6 +35,37 @@ else: # If we are using PySide2 (Maya 2017 and above)
     from shiboken2 import wrapInstance
 
 
+class ToolStartupWindow(QtWidgets.QWidget):
+    """
+    The ToolStartupWindow is a startup dialog.
+    """
+
+    def __init__(self):
+
+        # Delete UI if it already exists
+        try:
+            cmds.deleteUI('startup')
+        except:
+            logger.debug('No previous UI exists.')
+
+        deleteWindowDock("StartUpWinDock")
+        self.parent = QtWidgets.QDialog(parent=getMayaMainWindow())
+        self.parent.setObjectName('startup')
+        self.parent.setWindowTitle('Startup window')
+
+        # Now that our parent is set we can initialize it
+        super(ToolStartupWindow, self).__init__(parent=self.parent)
+
+        # Set default size of the window
+        self.resize(400, 350)
+
+        # Add ourselves (QtWidgets.QWidget) to the parent's layout
+        #self.parent().layout().addWidget(self)
+
+        # If docked mode is off, directly show our parent
+        self.parent.show()
+
+
 class WalkLibraryUI(QtWidgets.QWidget):
     """
     The WalkLibraryUI is a dialog that lets us control all the walkTool parameters.
@@ -141,7 +172,9 @@ class WalkLibraryUI(QtWidgets.QWidget):
         if not dock:
             parent.show()
 
-        mel.eval("setFrameRateVisibility(1);")
+        mel.eval('setFrameRateVisibility(1);')
+
+        self.startupWin = ToolStartupWindow()
 
     def initParamLayersData(self):
         """
@@ -1055,7 +1088,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
         else:
             self.paramDescriptionWidgets[index].setText("Hover over a parameter to see its description.")
 
-
 class ParamLabel(QtWidgets.QLabel):
     def __init__(self, text, ref, prefix, index, parent=None):
         super(ParamLabel, self).__init__(parent)
@@ -1074,7 +1106,6 @@ class ParamLabel(QtWidgets.QLabel):
     def leaveEvent(self, event):
         self.ref.HoverEvent(False, self.prefix, self.index)
         pass
-
 
 # MAYA WINDOWS FUNCTIONS
 
