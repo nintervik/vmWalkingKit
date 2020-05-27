@@ -44,15 +44,13 @@ class ToolStartupWindow(QtWidgets.QWidget):
     def __init__(self):
 
         # Delete UI if it already exists
-        try:
-            cmds.deleteUI('startup')
-        except:
-            logger.debug('No previous UI exists.')
+        self.deleteUI()
 
         deleteWindowDock("StartUpWinDock")
         self.parent = QtWidgets.QDialog(parent=getMayaMainWindow())
         self.parent.setObjectName('startup')
-        self.parent.setWindowTitle('Startup window')
+        self.parent.setWindowTitle('Startup Window')
+        self.layout = QtWidgets.QGridLayout(self.parent)
 
         # Now that our parent is set we can initialize it
         super(ToolStartupWindow, self).__init__(parent=self.parent)
@@ -65,15 +63,25 @@ class ToolStartupWindow(QtWidgets.QWidget):
         self.parent.show()
 
     def createUI(self):
-         self.layout = QtWidgets.QVBoxLayout(self)
+
          widget = QtWidgets.QCheckBox("Show this at startup")
          widget.setChecked(True)
          #widget.stateChanged.connect(getattr(self, slotName))
-         self.layout.addWidget(widget)
+         self.layout.addWidget(widget, 0, 0, QtCore.Qt.AlignBottom)
+
+         okBtn = QtWidgets.QPushButton('OK')
+         okBtn.clicked.connect(self.deleteUI)
+         okBtn.setMaximumWidth(60)
+         self.layout.addWidget(okBtn, 0, 1, QtCore.Qt.AlignBottom)
 
     def showUI(self):
         self.parent.show()
 
+    def deleteUI(self):
+        try:
+            cmds.deleteUI('startup')
+        except:
+            logger.debug('No previous UI exists.')
 
 class WalkLibraryUI(QtWidgets.QWidget):
     """
