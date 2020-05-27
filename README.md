@@ -4,11 +4,11 @@
 
 The program will also come with a set of tool tips and useful information regarding walking animations and the available parameters. This tool is heavily based on the theory of *The Animator's Survival Kit* by Richard Williams; as it contains one of the best studies on the subject of walking.
 
-*Development and animation by Víctor Masó Garcia.*
+*Development and animation by [Víctor Masó Garcia.](https://www.linkedin.com/in/vmasogarcia/)*
 
 ## Attributions
 
-[Mr. Buttons](bloomsbury.com/cw/cartoon-character-animation-with-maya/student-resources/mr-buttons/) rig by [Keith Osborn](http://www.keithosborn.com/).
+[Mr. Buttons](https://www.bloomsbury.com/cw/cartoon-character-animation-with-maya/student-resources/mr-buttons/) rig by [Keith Osborn](http://www.keithosborn.com/).
 
 <img src="imgs/mrbuttons_rig.jpg" width="900">
  
