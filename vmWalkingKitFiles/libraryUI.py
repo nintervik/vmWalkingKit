@@ -61,7 +61,6 @@ class ToolStartupWindow(QtWidgets.QWidget):
                                    | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
 
         self.createUI()
-        self.parent.show()
 
     def createUI(self):
          welcomeLabel = QtWidgets.QLabel("            Welcome to vmWalkingKit!   ")
@@ -101,9 +100,7 @@ class AboutWindow(QtWidgets.QWidget):
     The ToolStartupWindow is a startup dialog.
     """
 
-    def __init__(self, library=None):
-        self.library = library
-
+    def __init__(self):
         # Delete UI if it already exists
         self.deleteUI()
 
@@ -119,7 +116,6 @@ class AboutWindow(QtWidgets.QWidget):
         self.parent.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.CustomizeWindowHint
                                    | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
         self.createUI()
-        self.parent.show()
 
     def createUI(self):
 
@@ -140,7 +136,7 @@ class AboutWindow(QtWidgets.QWidget):
          self.layout.addWidget(welcomeLabel, 1, QtCore.Qt.AlignTop)
 
          devLabel = QtWidgets.QLabel()
-         devLabel.setText('<br>Developed and animated by ' + '<a href="https://www.linkedin.com/in/vmasogarcia/"><span style="color:#7be36f;">Victor Maso Garcia</span></a>')
+         devLabel.setText('<br>Developed & animated by ' + '<a href="https://nintervik.github.io/"><span style="color:#7be36f;">Victor Maso Garcia</span></a>')
          devLabel.setOpenExternalLinks(True)
          devLabel.setFont(QtGui.QFont('Arial', 9.5))
          self.layout.addWidget(devLabel, 1)
@@ -299,12 +295,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
         mel.eval('setFrameRateVisibility(1);')
 
         WalkLibraryUI.startupWin = ToolStartupWindow(self.library)
-
-        if self.library.getStartupWinPref() == False:
-            WalkLibraryUI.startupWin.deleteUI()
-
         WalkLibraryUI.aboutWin = AboutWindow()
-        WalkLibraryUI.aboutWin.deleteUI()
+
+        if self.library.getStartupWinPref():
+            WalkLibraryUI.startupWin.showUI()
 
     def initParamLayersData(self):
         """
@@ -460,7 +454,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
             (self.prefixes[24], feetYRotationDict),
             (self.prefixes[25], stepDistanceDict)
         ])
-
 
     # UI METHODS
 
