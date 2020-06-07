@@ -9,11 +9,12 @@ Development and animation by [Víctor Masó Garcia](https://www.linkedin.com/in/
 You can check my other work in my [website](https://nintervik.github.io).
 
 > Download the latest release [here](https://github.com/nintervik/vmWalkingKit/releases/tag/v0.91)
+***
+
+# Showcase video
 
 <iframe src="https://player.vimeo.com/video/417271920" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
 <p><a href="https://vimeo.com/417271920">vmWalkingKit v0.9</a> from <a href="https://vimeo.com/nintervik">V&iacute;ctor Mas&oacute; Garcia</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
-
-***
 
 # Attributions
 
