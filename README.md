@@ -19,7 +19,7 @@ The program will also come with a set of tool tips and useful information regard
 **DISCLAIMER:** the tool should work with Maya 2017-2020 but it will perform best with later versions of Maya, especially with Maya 2019 and 2020. 
 
 1. Download the latest release .zip from the release [section](https://github.com/nintervik/vmWalkingKit/releases) of the repository and unzip it anywhere on your computer.<br/>
-2. Inside the *vmWalkingKit_v091* folder, you’ll find five items:<br/>
+2. Inside the *vmWalkingKit_v091* folder, you’ll find six items:<br/>
   
    <img src="imgs/release_contents.png" width="200">
    
@@ -47,6 +47,8 @@ The program will also come with a set of tool tips and useful information regard
 12. Still with the this tab opened and inside the Script Editor, go to File→Save Script To Shelf…, write a name for it (e.g. *vmWK*) and click Ok. An icon with the chosen name should have appeared in the Custom Shelf tab.<br/>
 
 <img src="imgs/shelf_custom_script.png" width="900">
+
+In case, you want the tool icon to show upp instead of the Maya's Pyhton default one this can be done quickly. Right click on the new created shelf icon and go to Edit. Go the the Shelves tab and in the icon field you will see a browse icon folder. The default path usually is *C:/Users/UserName/Documents/maya/mayaVersion/prefs/icons/*. You can move the icon image (*vmWK_icon.png*) from step 1 into that folder or any other that you like. Then, just navigate to the folder where you moved the icon image and select it. Leave the Icon Width field to automatic.
 
 13. Now, you can click on that icon once and the tool will be opened. You can resize the window and dock it anywhere you want as any other Maya's native window.<br/>
 
