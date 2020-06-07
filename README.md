@@ -41,7 +41,7 @@ The program will also come with a set of tool tips and useful information regard
    reload(libraryUI)
    libraryUI.WalkLibraryUI()
 ```
-**Important:** make sure that there aren't indented lines when you paste the code in Maya's Script Editor.
+**Important:** it is quite possible that when you paste the code above into the Script Editor the lines are indented (they contain spaces before them). Just make sure to delete any spaces before the lines; if they are indented the code won't compile at all.
 
 11. Open the Custom tab in Maya’s Shelf. If the the Shelf is not visible, go to Windows→UI Elements→Shelf.<br/>  
 12. Still with the this tab opened and inside the Script Editor, go to File→Save Script To Shelf…, write a name for it (e.g. *vmWK*) and click Ok. An icon with the chosen name should have appeared in the Custom Shelf tab.<br/>
