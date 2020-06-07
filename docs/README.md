@@ -86,7 +86,7 @@ The tool uses a lot of animation layers in order to create all the combinations.
 
 2. In the settings tab of the tool (the last one) you'll find information about how to minimize perfomance issues. Make sure to check that section if you run into performance problems.
 
-<img src="imgs/settings_tab.PNG" width="350">
+<img src="webImgs/settings_tab.PNG" width="350">
 
 3. Before changing any parameter or importing/saving a preset pause the animation and play it back once the changes are done.
 3. Close any other programs that you don't need while using the tool. 
