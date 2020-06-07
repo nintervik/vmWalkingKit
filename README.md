@@ -36,10 +36,10 @@ The program will also come with a set of tool tips and useful information regard
 9. Click on the + icon in the tabs section to open up a new tab. Choose Python as the executer source language.<br/>
 10. In this tab, paste the following code:<br/>     
 ```python
-   from vmWalkingKit.vmWalkingKitFiles import libraryUI
+from vmWalkingKit.vmWalkingKitFiles import libraryUI
 
-   reload(libraryUI)
-   libraryUI.WalkLibraryUI()
+reload(libraryUI)
+libraryUI.WalkLibraryUI()
 ```
 **Important:** it is quite possible that when you paste the code above into the Script Editor the lines are indented (they contain spaces before them). Just make sure to delete any spaces before the lines; if they are indented the code won't compile at all.
 
