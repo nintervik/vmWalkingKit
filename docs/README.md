@@ -26,7 +26,7 @@ You can check my other work in my [website](https://nintervik.github.io).
 1. Download the latest release .zip from the release [section](https://github.com/nintervik/vmWalkingKit/releases) of the repository and unzip it anywhere on your computer.<br/>
 2. Inside the *vmWalkingKit_v091* folder, you’ll find five items:<br/>
   
-   <img src="imgs/release_contents.png" width="200">
+   <img src="webImgs/release_contents.png" width="200">
    
 3. Move both the *vmWakingKit* folder and the script *Qt.py* (a. and e.) to the following directory: *C:\Users\UserName\Documents\maya\version\scripts* Where:
    - *C:* is the drive where Maya is installed.
@@ -51,13 +51,13 @@ You can check my other work in my [website](https://nintervik.github.io).
 11. Open the Custom tab in Maya’s Shelf. If the the Shelf is not visible, go to Windows→UI Elements→Shelf.<br/>  
 12. Still with the this tab opened and inside the Script Editor, go to File→Save Script To Shelf…, write a name for it (e.g. *vmWK*) and click Ok. An icon with the chosen name should have appeared in the Custom Shelf tab.<br/>
 
-<img src="imgs/shelf_custom_script.png" width="900">
+<img src="webImgs/shelf_custom_script.png" width="900">
 
 13. Now, you can click on that icon once and the tool will be opened. You can resize the window and dock it anywhere you want as any other Maya's native window.<br/>
 
 14. Make sure to set the playback speed to *24 fps x 1* before starting to use the tool.<br/>
 
-<img src="imgs/fps_settings.png" width="900">
+<img src="webImgs/fps_settings.png" width="900">
 
 **Side note 1:** if you click on the shelf icon and you cannot see the tool window check the following cases in order:
 * The tool is probably minimized as a tab on the right side of the screen (usually next to the Attribute Editor or the Channel Box tab).
@@ -74,7 +74,7 @@ The tool is divided into three parts:
 2. **The tabs content:** in each tab you'll find different parameters, hover over them to see their descriptions and tips about how to use them.
 3. **Bottom buttons:** you'll find three buttons at the bottom of the tool to reset the parameters, import or save a preset. If you like a combination you can save the preset anywhere on your computer and import it later. There's already a couple of presets if you want to load them up into the tool.
 
-<img src="imgs/tool_window.png" width="500">
+<img src="webImgs/tool_window.png" width="500">
 
 # About performance
 
@@ -82,7 +82,7 @@ The tool uses a lot of animation layers in order to create all the combinations.
 
 1. If you are using Maya 2019 or 2020 activate the Cached Playback option (*Playback → Cached Playback → Cached Playback*). If you can see the playback menu, check that you have the Animation menu set selected. You can find a drop-down menu to change this in the top left corner.
 
-<img src="imgs/cached_playback.png" width="900">
+<img src="webImgs/cached_playback.png" width="900">
 
 2. In the settings tab of the tool (the last one) you'll find information about how to minimize perfomance issues. Make sure to check that section if you run into performance problems.
 
@@ -93,7 +93,7 @@ The tool uses a lot of animation layers in order to create all the combinations.
 
 You can visualize the framerate of the scene by looking at the number displayed on the right bottom corner of the viewport. Anything below 20 fps is an indication of bad performance.
 
-<img src="imgs/framerate_display.png" width="500">
+<img src="webImgs/framerate_display.png" width="500">
 
 
 # License
