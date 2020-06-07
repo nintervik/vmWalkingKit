@@ -95,39 +95,6 @@ You can visualize the framerate of the scene by looking at the number displayed 
 
 <img src="imgs/framerate_display.png" width="500">
 
-# Changelog
-
-Down below you'll find the changelog for each version of tool along with the
-correspondent showcase video illustrating the new features (for the most important versions only).
-
-v0.1 ([video](https://vimeo.com/402131641)):
-* Code structure is done.
-* The tool can be reset to its default values by reading from a JSON file.
-* General tab works and the respective animations are done.
-* Animations always loop correctly.
-* Animations adapt to the beat.
-* UI is native and usable (resizable, with scrollbar, can be docked,
-etc)
-* Performance issues are fixed.
-
-v0.5 ([video](https://vimeo.com/413653094)):
-* Head, trunk, arms tabs and animations are done.
-* Section for the information display works (with placeholder text).
-* Presets can be saved and imported into the tool.
-
-v0.9 ([video](https://vimeo.com/417271920)):
-* Tail, hands poses, and legs parameters work and are animated.
-* All the theory and information are written and displayed where
-needed.
-* Settings tab is implemented (performance, silhouette, and playblast).
-
-v0.91:
-* Fixed loop animation issues.
-* FPS are now always displayed.
-* Added a combination preset as an example file.
-* Updated README with information about how to use and install the tool.
-* Updated Maya 2018 file.
-
 
 # License
 
