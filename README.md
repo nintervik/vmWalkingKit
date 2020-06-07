@@ -23,7 +23,7 @@ The program will also come with a set of tool tips and useful information regard
   
    <img src="imgs/release_contents.png" width="200">
    
-3. Move both the *vmWakingKit* folder and the script *Qt.py* (a. and e.) to the following directory: *C:\Users\UserName\Documents\maya\version\scripts* Where:
+3. Move both the *vmWakingKit* folder and the script *Qt.py* (a. and f.) to the following directory: *C:\Users\UserName\Documents\maya\version\scripts* Where:
    - *C:* is the drive where Maya is installed.
    - *UserName* is the name of your user in Windows.
    - *version* is the version number of Maya that you want to use (2017-2019)<br/>
@@ -48,7 +48,7 @@ The program will also come with a set of tool tips and useful information regard
 
 <img src="imgs/shelf_custom_script.png" width="900">
 
-In case, you want the tool icon to show upp instead of the Maya's Pyhton default one this can be done quickly. Right click on the new created shelf icon and go to Edit. Go the the Shelves tab and in the Icon Name field you will see a browse icon folder. The default path usually is *C:/Users/UserName/Documents/maya/mayaVersion/prefs/icons/*. You can move the icon image (*vmWK_icon.png*) from step 1 into that folder or any other that you like. Then, just navigate to the folder where you moved the icon image and select it. Leave the Icon Width field to automatic. And the icon should be changed for the tool one as in the below image.
+In case, you want the tool icon to show upp instead of the Maya's Pyhton default one this can be done quickly. Right click on the new created shelf icon and go to Edit. Go the the Shelves tab and in the Icon Name field you will see a browse icon folder. The default path usually is *C:/Users/UserName/Documents/maya/mayaVersion/prefs/icons/*. You can move the icon image (*vmWK_icon.png*) from step 1 into that folder or any other that you like. Then, just navigate to the folder where you moved the icon image and select it. Leave the Icon Width field to automatic. And press the Save All Shelves button at the bottom left of the window. The icon should be changed for the tool one as in the below image.
 
 <img src="imgs/icon_shelf_window.PNG" width="650">
 
