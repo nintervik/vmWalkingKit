@@ -46,12 +46,13 @@ You can check my other work in my [website](https://nintervik.github.io).
 8. Open the Script Editor by clicking on the bottom right button with the {;} or by going to Windows→General Editors→Script Editor.<br/>
 9. Click on the + icon in the tabs section to open up a new tab. Choose Python as the executer source language.<br/>
 10. In this tab, paste the following code:<br/>     
-```python
-   from vmWalkingKit.vmWalkingKitFiles import libraryUI
 
-   reload(libraryUI)
-   libraryUI.WalkLibraryUI()
-```
+<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">vmWalkingKit.vmWalkingKitFiles</span> <span style="color: #008800; font-weight: bold">import</span> libraryUI
+
+<span style="color: #007020">reload</span>(libraryUI)
+libraryUI<span style="color: #333333">.</span>WalkLibraryUI()
+</pre></div>
+
 **Important:** make sure that there aren't indented lines when you paste the code in Maya's Script Editor.
 
 11. Open the Custom tab in Maya’s Shelf. If the the Shelf is not visible, go to Windows→UI Elements→Shelf.<br/>  
