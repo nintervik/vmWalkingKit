@@ -126,3 +126,16 @@ v0.91:
 * Added a combination preset as an example file.
 * Updated README with information about how to use and install the tool.
 * Updated Maya 2018 file.
+
+v0.92:
+* Added startup window.
+* Added about window.
+* Top menu bar is now funtional with options the following options: import, save, reset, quit, open startup window, open about window, and open the tool website with the documentation.
+* Added icon image for the tool.
+* Polished upper body animations (hips, spine, and chest).
+* Polished feet animations.
+* Fixed knee pops for 12f beat.
+* Fixed head nodding animation offset.
+* Improved facial expressions with asymmetry and more appealing faces. 
+* Imporved hands relaxed pose.
+* Improved README installation instructions.
