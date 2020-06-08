@@ -10,7 +10,7 @@ Development and animation by [Víctor Masó Garcia](https://www.linkedin.com/in/
 
 You can check my other work in my [website](https://nintervik.github.io).
 
-> Download the latest release [here](https://github.com/nintervik/vmWalkingKit/releases/tag/v0.91)
+> Download the latest release [here](https://github.com/nintervik/vmWalkingKit/releases/tag/v0.92)
 
 ***
 
