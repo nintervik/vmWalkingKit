@@ -137,5 +137,5 @@ v0.92:
 * Fixed knee pops for 12f beat.
 * Fixed head nodding animation offset.
 * Improved facial expressions with asymmetry and more appealing faces. 
-* Imporved hands relaxed pose.
+* Improved hands relaxed pose.
 * Improved README installation instructions.
