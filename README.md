@@ -130,7 +130,7 @@ v0.91:
 v0.92:
 * Added startup window.
 * Added about window.
-* Top menu bar is now funtional with options the following options: import, save, reset, quit, open startup window, open about window, and open the tool website with the documentation.
+* Top menu bar is now functional with options the following options: import, save, reset, quit, open startup window, open about window, and open the tool website with the documentation.
 * Added icon image for the tool.
 * Polished upper body animations (hips, spine, and chest).
 * Polished feet animations.
