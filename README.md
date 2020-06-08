@@ -136,6 +136,7 @@ v0.92:
 * Polished feet animations.
 * Fixed knee pops for 12f beat.
 * Fixed head nodding animation offset.
+* Fixed arm range in 8f beat.
 * Improved facial expressions with asymmetry and more appealing faces. 
 * Improved hands relaxed pose.
 * Improved README installation instructions.
