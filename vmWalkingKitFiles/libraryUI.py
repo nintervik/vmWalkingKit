@@ -240,37 +240,12 @@ class WalkLibraryUI(QtWidgets.QWidget):
                          "TailSwing", "TailCurl", "TailTilt", "TailWaving", "ArmsWidth", "ElbowsDrag", "HandsDrag",
                          "HandsPose", "LegsSeparation", "FeetYRotation", "StepDistance"]
 
-        self.paramDescriptionsOld = OrderedDict([
-            (self.prefixes[0],  "Place holder description 1"),
-            (self.prefixes[1],  "Place holder description 2"),
-            (self.prefixes[2],  "Place holder description 3"),
-            (self.prefixes[3],  "Place holder description 4"),
-            (self.prefixes[4],  "Place holder description 5"),
-            (self.prefixes[5],  "Place holder description 6"),
-            (self.prefixes[6],  "Place holder description 7"),
-            (self.prefixes[7],  "Place holder description 8"),
-            (self.prefixes[8],  "Place holder description 9"),
-            (self.prefixes[9],  "Place holder description 10"),
-            (self.prefixes[10], "Place holder description 11"),
-            (self.prefixes[11], "Place holder description 12"),
-            (self.prefixes[12], "Place holder description 13"),
-            (self.prefixes[13], "Place holder description 14"),
-            (self.prefixes[14], "Place holder description 15"),
-            (self.prefixes[15], "Place holder description 16"),
-            (self.prefixes[16], "Place holder description 17"),
-            (self.prefixes[17], "Place holder description 18"),
-            (self.prefixes[18], "Place holder description 19"),
-            ("ArmsSwing",       "Place holder description 20"),
-            (self.prefixes[19], "Place holder description 21"),
-            (self.prefixes[20], "Place holder description 22"),
-            (self.prefixes[21], "Place holder description 23"),
-            (self.prefixes[22], "Place holder description 24"),
-            (self.prefixes[23], "Place holder description 25"),
-            (self.prefixes[24], "Place holder description 26"),
-            (self.prefixes[25], "Place holder description 27"),
-            ("SettingsQuality", "Place holder description 28"),
-            ("SettingsSilhouette", "Place holder description 29"),
-            ("SettingsPlayblast", "Place holder description 30"),
+        self.offsetAttrDict = OrderedDict([
+            ('Mr_Buttons:Mr_Buttons_COG_Ctrl.translateY', 'UpDown_1'),
+            ('Mr_Buttons:Mr_Buttons_r_Bowtie_01Ctrl.rotateZ', 'UpDown_1'),
+            ('Mr_Buttons:Mr_Buttons_r_Bowtie_02Ctrl.rotateZ', 'UpDown_1'),
+            ('Mr_Buttons:Mr_Buttons_l_Bowtie_01Ctrl.rotateZ', 'UpDown_1'),
+            ('Mr_Buttons:Mr_Buttons_l_Bowtie_02Ctrl.rotateZ', 'UpDown_1')
         ])
 
         self.paramDescriptions = self.library.getUIText("param")
@@ -956,8 +931,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         if currBodyIndex is not None:
             # Create the ty attribute of the controller that handles the up and down body movement
-            attrGeneralUpDown = 'Mr_Buttons:Mr_Buttons_COG_Ctrl.translateY'
-            self.library.offsetKeyframes(attrGeneralUpDown, 'UpDown_1', self.prevBodyIndex, currBodyIndex)
+
+            for attr in self.offsetAttrDict:
+                self.library.offsetKeyframes(attr, self.offsetAttrDict[attr],
+                                             self.prevBodyIndex, currBodyIndex)
 
             attrPelvisYRotation = 'Mr_Buttons:Mr_Buttons_COG_Ctrl.rotateY'
             self.library.offsetKeyframes(attrPelvisYRotation, 'PelvisYRotation_1', self.prevBodyIndex, currBodyIndex)
@@ -1021,6 +998,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
             attrStepDistanceLeft = 'Mr_Buttons:Mr_Buttons_l_Leg_FootIKCtrl.translateZ'
             self.library.offsetKeyframes(attrStepDistanceLeft, 'StepDistance_1', self.prevBodyIndex, currBodyIndex)
+
+
 
         # Store the previous BodyBeat index for the next calculation
         WalkLibraryUI.prevBodyIndex = self.paramWidgets[prefix].currentIndex() + 1
