@@ -240,13 +240,20 @@ class WalkLibraryUI(QtWidgets.QWidget):
                          "TailSwing", "TailCurl", "TailTilt", "TailWaving", "ArmsWidth", "ElbowsDrag", "HandsDrag",
                          "HandsPose", "LegsSeparation", "FeetYRotation", "StepDistance"]
 
-        self.offsetAttrDict = OrderedDict([
-            ('Mr_Buttons:Mr_Buttons_COG_Ctrl.translateY', 'UpDown_1'),
-            ('Mr_Buttons:Mr_Buttons_r_Bowtie_01Ctrl.rotateZ', 'UpDown_1'),
-            ('Mr_Buttons:Mr_Buttons_r_Bowtie_02Ctrl.rotateZ', 'UpDown_1'),
-            ('Mr_Buttons:Mr_Buttons_l_Bowtie_01Ctrl.rotateZ', 'UpDown_1'),
-            ('Mr_Buttons:Mr_Buttons_l_Bowtie_02Ctrl.rotateZ', 'UpDown_1')
-        ])
+        self.offsetAttrDict = [
+            ('UpDown_1','Mr_Buttons:Mr_Buttons_COG_Ctrl.translateY'),
+            ('UpDown_1','Mr_Buttons:Mr_Buttons_r_Bowtie_01Ctrl.rotateZ'),
+            ('UpDown_1','Mr_Buttons:Mr_Buttons_r_Bowtie_02Ctrl.rotateZ'),
+            ('UpDown_1','Mr_Buttons:Mr_Buttons_l_Bowtie_01Ctrl.rotateZ'),
+            ('UpDown_1','Mr_Buttons:Mr_Buttons_l_Bowtie_02Ctrl.rotateZ'),
+            ('PelvisYRotation_1', 'Mr_Buttons:Mr_Buttons_COG_Ctrl.rotateY'),
+            ('PelvisWeightShift_1', 'Mr_Buttons:Mr_Buttons_COG_Ctrl.translateX'),
+            ('HeadPigeon_1', 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.translateZ'),
+            ('HeadUpDown_1', 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.translateY'),
+            ('HeadEgoist_1', 'Mr_Buttons:Mr_Buttons_Neck_01FKCtrl.rotateZ'),
+            ('HeadNodding_1', 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.rotateX'),
+            ('HeadTilt_1', 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.rotateX')
+        ]
 
         self.paramDescriptions = self.library.getUIText("param")
         self.tabDescriptions = self.library.getUIText("tab")
@@ -932,30 +939,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
         if currBodyIndex is not None:
             # Create the ty attribute of the controller that handles the up and down body movement
 
-            for attr in self.offsetAttrDict:
-                self.library.offsetKeyframes(attr, self.offsetAttrDict[attr],
-                                             self.prevBodyIndex, currBodyIndex)
-
-            attrPelvisYRotation = 'Mr_Buttons:Mr_Buttons_COG_Ctrl.rotateY'
-            self.library.offsetKeyframes(attrPelvisYRotation, 'PelvisYRotation_1', self.prevBodyIndex, currBodyIndex)
-
-            attrPelvisWeightShift = 'Mr_Buttons:Mr_Buttons_COG_Ctrl.translateX'
-            self.library.offsetKeyframes(attrPelvisWeightShift, 'PelvisWeightShift_1', self.prevBodyIndex, currBodyIndex)
-
-            attrHeadPigeon = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.translateZ'
-            self.library.offsetKeyframes(attrHeadPigeon, 'HeadPigeon_1', self.prevBodyIndex, currBodyIndex)
-
-            attrHeadUpDown = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.translateY'
-            self.library.offsetKeyframes(attrHeadUpDown, 'HeadUpDown_1', self.prevBodyIndex, currBodyIndex)
-
-            attrheadEgoist = 'Mr_Buttons:Mr_Buttons_Neck_01FKCtrl.rotateZ'
-            self.library.offsetKeyframes(attrheadEgoist, 'HeadEgoist_1', self.prevBodyIndex, currBodyIndex)
-
-            attrHeadNodding = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.rotateX'
-            self.library.offsetKeyframes(attrHeadNodding, 'HeadNodding_1', self.prevBodyIndex, currBodyIndex)
-
-            attrHeadTilt = 'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.rotateX'
-            self.library.offsetKeyframes(attrHeadTilt, 'HeadTilt_1', self.prevBodyIndex, currBodyIndex)
+            for attrInfo in self.offsetAttrDict:
+                layer, attr = attrInfo
+                self.library.offsetKeyframes(attr, layer,
+                                             self.prevBodyIndex,
+                                             currBodyIndex)
 
             attrChestUpDown = 'Mr_Buttons:Mr_Buttons_Spine_03FKCtrl.translateY'
             self.library.offsetKeyframes(attrChestUpDown, 'ChestUpDown_1', self.prevBodyIndex, currBodyIndex)
