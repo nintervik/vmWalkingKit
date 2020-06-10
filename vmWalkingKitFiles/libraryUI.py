@@ -300,6 +300,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
             parent.show()
 
         mel.eval('setFrameRateVisibility(1);')
+        cmds.grid(toggle=False)
+        cmds.displayRGBColor('background', 0.25, 0.25, 0.25)
 
         WalkLibraryUI.startupWin = ToolStartupWindow(self.library)
         WalkLibraryUI.aboutWin = AboutWindow()
