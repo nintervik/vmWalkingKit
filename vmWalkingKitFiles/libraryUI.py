@@ -263,6 +263,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
             ('HeadUpDown_1',        'Mr_Buttons:Mr_Buttons_Nose_02Ctrl.rotateZ'),
             ('HeadEgoist_1',        'Mr_Buttons:Mr_Buttons_Neck_01FKCtrl.rotateZ'),
             ('HeadNodding_1',       'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.rotateX'),
+            ('HeadNodding_1',       'Mr_Buttons:Mr_Buttons_Nose_01Ctrl.rotateZ'),
+            ('HeadNodding_1',       'Mr_Buttons:Mr_Buttons_Nose_02Ctrl.rotateZ'),
             ('HeadTilt_1',          'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.rotateX'),
             ('ChestUpDown_1',       'Mr_Buttons:Mr_Buttons_Spine_03FKCtrl.translateY'),
             ('ChestUpDown_1',       'Mr_Buttons:Mr_Buttons_r_Bowtie_01Ctrl.rotateZ'),
