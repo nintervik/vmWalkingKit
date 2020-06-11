@@ -304,10 +304,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         mel.eval('setFrameRateVisibility(1);')
 
-        cmds.grid(toggle=False)
-        cmds.displayRGBColor('background', 0.25, 0.25, 0.25)
-        cmds.displayRGBColor('backgroundTop', 0.25, 0.25, 0.25)
-        cmds.displayRGBColor('backgroundBottom', 0.25, 0.25, 0.25)
+        #cmds.grid(toggle=False)
+        #cmds.displayRGBColor('background', 0.25, 0.25, 0.25)
+        #cmds.displayRGBColor('backgroundTop', 0.25, 0.25, 0.25)
+        #cmds.displayRGBColor('backgroundBottom', 0.25, 0.25, 0.25)
 
         WalkLibraryUI.startupWin = ToolStartupWindow(self.library)
         WalkLibraryUI.aboutWin = AboutWindow()
@@ -1160,10 +1160,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         deleteWindowDock()
 
-        cmds.grid(toggle=True)
-        cmds.displayRGBColor('background', 0.36, 0.36, 0.36)
-        cmds.displayRGBColor('backgroundTop', 0.535, 0.617, 0.702)
-        cmds.displayRGBColor('backgroundBottom', 0.052, 0.052, 0.052)
+        #cmds.grid(toggle=True)
+        #cmds.displayRGBColor('background', 0.36, 0.36, 0.36)
+        #cmds.displayRGBColor('backgroundTop', 0.535, 0.617, 0.702)
+        #cmds.displayRGBColor('backgroundBottom', 0.052, 0.052, 0.052)
 
     def onWinStartup(self):
         WalkLibraryUI.startupWin = ToolStartupWindow(self.library)
