@@ -27,12 +27,14 @@ You can check my other work in my [website](https://nintervik.github.io).
 
 # Installation instructions
 
-**DISCLAIMER:** the tool should work with Maya 2017-2020 but it will perform best with later versions of Maya, especially with Maya 2019 and 2020. 
+**DISCLAIMERS:** 
+* The tool should work with Maya 2017-2020 but it will perform best with later versions of Maya, especially with Maya 2019 and 2020. 
+* When closing the tool, **always use the File->Quit option**. Do this operation before closing Maya or opening a new scene. 
 
 1. Download the latest release .zip from the release [section](https://github.com/nintervik/vmWalkingKit/releases) of the repository and unzip it anywhere on your computer.<br/>
 2. Inside the *vmWalkingKit_v091* folder, you’ll find six items:<br/>
   
-   <img src="webImgs/release_contents.png" width="200">
+   <img src="imgs/release_contents.png" width="200">
    
 3. Move both the *vmWakingKit* folder and the script *Qt.py* (a. and f.) to the following directory: *C:\Users\UserName\Documents\maya\version\scripts* Where:
    - *C:* is the drive where Maya is installed.
@@ -46,29 +48,28 @@ You can check my other work in my [website](https://nintervik.github.io).
 8. Open the Script Editor by clicking on the bottom right button with the {;} or by going to Windows→General Editors→Script Editor.<br/>
 9. Click on the + icon in the tabs section to open up a new tab. Choose Python as the executer source language.<br/>
 10. In this tab, paste the following code:<br/>     
+```python
+from vmWalkingKit.vmWalkingKitFiles import libraryUI
 
-<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">vmWalkingKit.vmWalkingKitFiles</span> <span style="color: #008800; font-weight: bold">import</span> libraryUI
-
-<span style="color: #007020">reload</span>(libraryUI)
-libraryUI<span style="color: #333333">.</span>WalkLibraryUI()
-</pre></div>
-
+reload(libraryUI)
+libraryUI.WalkLibraryUI()
+```
 **Important:** it is possible that when you paste the code above into the Script Editor the lines are indented (they contain spaces before them). Just make sure to delete any spaces before the lines; if the lines are indented the code won't compile at all.
 
 11. Open the Custom tab in Maya’s Shelf. If the the Shelf is not visible, go to Windows→UI Elements→Shelf.<br/>  
 12. Still with the this tab opened and inside the Script Editor, go to File→Save Script To Shelf…, write a name for it (e.g. *vmWK*) and click Ok. An icon with the chosen name should have appeared in the Custom Shelf tab.<br/>
 
-<img src="webImgs/shelf_custom_script.png" width="900">
+<img src="imgs/shelf_custom_script.png" width="900">
 
 **Optional:** In case, you want the tool icon to show up instead of the Maya's Pyhton default one this can be done quickly. Right click on the new created shelf icon and go to Edit. Go the the Shelves tab and in the Icon Name field you will see a browse icon folder. The default path usually is *C:/Users/UserName/Documents/maya/mayaVersion/prefs/icons/*. You can move the icon image (*vmWK_icon.png*) from step 1 into that folder or any other that you like. Then, just navigate to the folder where you moved the icon image and select it. Leave the Icon Width field to automatic. And press the Save All Shelves button at the bottom left of the window. The icon should be changed for the tool one as in the below image.
 
-<img src="webImgs/icon_shelf_window.PNG" width="650">
+<img src="imgs/icon_shelf_window.PNG" width="650">
 
 13. Now, you can click on that icon once and the tool will be opened. You can resize the window and dock it anywhere you want as any other Maya's native window.<br/>
 
 14. Make sure to set the playback speed to *24 fps x 1* before starting to use the tool.<br/>
 
-<img src="webImgs/fps_settings.png" width="900">
+<img src="imgs/fps_settings.png" width="900">
 
 **Side note 1:** if you click on the shelf icon and you cannot see the tool window check the following cases in order:
 * The tool is probably minimized as a tab on the right side of the screen (usually next to the Attribute Editor or the Channel Box tab).
@@ -76,6 +77,12 @@ libraryUI<span style="color: #333333">.</span>WalkLibraryUI()
 * The tool window may as well be minimized on the bottom left of Maya.
 
 **Side note 2:** please do not delete any of the files that come with the release as they might be crucial in order to run the tool.
+
+**Side note 3:** for a cleaner view, you can hide the grid by going to *Show->Grid* or by clicking on the grid icon. 
+
+<img src="imgs/grid_show.png" width="500">
+
+The background color can also be changed: press ALT+B to cycle through the different default colors. You can also go to *Windows->Settings/Preferences->Color Settings->General->3D Views* to tweak the background colors to your taste.  
 
 # How to use the tool
 
