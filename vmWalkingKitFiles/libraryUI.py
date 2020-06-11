@@ -69,7 +69,6 @@ class ToolStartupWindow(QtWidgets.QWidget):
 
          label = QtWidgets.QLabel(self)
          pixmap = QtGui.QPixmap(walkLibrary.IMG_DIR)
-         #pixmap = pixmap.scaled(330, 250, QtCore.Qt.KeepAspectRatio)
          label.setPixmap(pixmap)
          self.layout.addWidget(label, 0, 0, 1, 2, QtCore.Qt.AlignCenter)
 
@@ -254,6 +253,10 @@ class WalkLibraryUI(QtWidgets.QWidget):
             ('HeadNodding_1',       'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.rotateX'),
             ('HeadTilt_1',          'Mr_Buttons:Mr_Buttons_Head_01FKCtrl.rotateX'),
             ('ChestUpDown_1',       'Mr_Buttons:Mr_Buttons_Spine_03FKCtrl.translateY'),
+            ('ChestUpDown_1',       'Mr_Buttons:Mr_Buttons_r_Bowtie_01Ctrl.rotateZ'),
+            ('ChestUpDown_1',       'Mr_Buttons:Mr_Buttons_r_Bowtie_02Ctrl.rotateZ'),
+            ('ChestUpDown_1',       'Mr_Buttons:Mr_Buttons_l_Bowtie_01Ctrl.rotateZ'),
+            ('ChestUpDown_1',       'Mr_Buttons:Mr_Buttons_l_Bowtie_02Ctrl.rotateZ'),
             ('ChestYRotation_1',    'Mr_Buttons:Mr_Buttons_Spine_03FKCtrl.rotateY'),
             ('ChestYRotation_1',    'Mr_Buttons:Mr_Buttons_r_Bowtie_01Ctrl.rotateY'),
             ('ChestYRotation_1',    'Mr_Buttons:Mr_Buttons_r_Bowtie_02Ctrl.rotateY'),
@@ -302,9 +305,9 @@ class WalkLibraryUI(QtWidgets.QWidget):
         mel.eval('setFrameRateVisibility(1);')
 
         cmds.grid(toggle=False)
-       #cmds.displayRGBColor('background', 0.25, 0.25, 0.25)
-       #cmds.displayRGBColor('backgroundTop', 0.25, 0.25, 0.25)
-       #cmds.displayRGBColor('backgroundBottom', 0.25, 0.25, 0.25)
+        cmds.displayRGBColor('background', 0.25, 0.25, 0.25)
+        cmds.displayRGBColor('backgroundTop', 0.25, 0.25, 0.25)
+        cmds.displayRGBColor('backgroundBottom', 0.25, 0.25, 0.25)
 
         WalkLibraryUI.startupWin = ToolStartupWindow(self.library)
         WalkLibraryUI.aboutWin = AboutWindow()
@@ -1158,9 +1161,9 @@ class WalkLibraryUI(QtWidgets.QWidget):
         deleteWindowDock()
 
         cmds.grid(toggle=True)
-        #cmds.displayRGBColor('background', 0.36, 0.36, 0.36)
-        #cmds.displayRGBColor('backgroundTop', 0.535, 0.617, 0.702)
-        #cmds.displayRGBColor('backgroundBottom', 0.052, 0.052, 0.052)
+        cmds.displayRGBColor('background', 0.36, 0.36, 0.36)
+        cmds.displayRGBColor('backgroundTop', 0.535, 0.617, 0.702)
+        cmds.displayRGBColor('backgroundBottom', 0.052, 0.052, 0.052)
 
     def onWinStartup(self):
         WalkLibraryUI.startupWin = ToolStartupWindow(self.library)
