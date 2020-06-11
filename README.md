@@ -69,7 +69,7 @@ libraryUI.WalkLibraryUI()
 
 **Side note 3:** for a cleaner view, you can hide the grid by going to *Show->Grid* or by clicking on the grid icon. The background color can also be changed: press ALT+B to cycle through the different default colors. 
 
-<img src="imgs/grid_show.png" width="900">
+<img src="imgs/grid_show.png" width="400>
 
 You can also go to *Windows->Settings/Preferences->Color Settings->General->3D Views* to tweak the background colors to your taste.  
 
