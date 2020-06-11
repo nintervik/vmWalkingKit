@@ -67,11 +67,11 @@ libraryUI.WalkLibraryUI()
 
 **Side note 2:** please do not delete any of the files that come with the release as they might be crucial in order to run the tool.
 
-**Side note 3:** for a cleaner view, you can hide the grid by going to *Show->Grid* or by clicking on the grid icon. The background color can also be changed: press ALT+B to cycle through the different default colors. 
+**Side note 3:** for a cleaner view, you can hide the grid by going to *Show->Grid* or by clicking on the grid icon. 
 
 <img src="imgs/grid_show.png" width="500">
 
-You can also go to *Windows->Settings/Preferences->Color Settings->General->3D Views* to tweak the background colors to your taste.  
+The background color can also be changed: press ALT+B to cycle through the different default colors. You can also go to *Windows->Settings/Preferences->Color Settings->General->3D Views* to tweak the background colors to your taste.  
 
 # How to use the tool
 
