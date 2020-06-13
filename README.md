@@ -148,3 +148,15 @@ v0.92:
 * Improved facial expressions with asymmetry and more appealing faces. 
 * Improved hands relaxed pose.
 * Improved README installation instructions.
+
+v0.95:
+* Fixed more knee pops.
+* Added overlap animation on bow-tie.
+* Added overlap animation on ears.
+* Added overlap animation on nose.
+* Added overlap animation on hair.
+* Added overlap animation on cheeks
+* Added overlap animation on
+* Cleaned code for overlapping action.
+* Added circular mini-floor to the scene.
+* Improved README installation instructions.
