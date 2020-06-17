@@ -2,7 +2,7 @@
     "General": "This tab contains the four most important parameters for creating a walk cycle.", 
     "Head": "This tab only contains parameters related to the head movement. Overall, the head parameters are less exaggerated because the neck has not a lot of mobility.", 
     "Trunk": "This tab represents the trunk of the body. From the pelvis/hips until the chest/shoulders.", 
-    "Tail": "This tab contains all the parameters related to how the tail moves. Humans don't have a tail but this part of the body comes really handy to stress the emotional state of the character.", 
+    "Tail": "This tab contains all the parameters related to how the tail moves. Humans don't have a tail but this part of the body comes in really handy to stress the emotional state of the character.", 
     "Arms": "This tab represents all the movements related to the arms (hands included).", 
     "Legs": "This tab represents all the movement related to the legs (feet included).", 
     "Settings": "This tab contains some setting options and other functionalities that are not related to the animation of the character."
