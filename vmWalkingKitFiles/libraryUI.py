@@ -23,7 +23,6 @@ logger.setLevel(logging.INFO)
 logging.basicConfig()
 
 # This makes sure that all import statements work regardless of what Python library it's been used for Qt
-
 if Qt.__binding__ == 'PySide': # If we are using PySide
     logger.debug('Using PySide with shiboken')
     from shiboken import wrapInstance
@@ -37,15 +36,22 @@ else: # If we are using PySide2 (Maya 2017 and above)
 
 class ToolStartupWindow(QtWidgets.QWidget):
     """
-    The ToolStartupWindow is a startup dialog.
+    The ToolStartupWindow is a startup dialog that is only used to show the startup window.
     """
 
     def __init__(self, library=None):
+        """
+        Init method to initialize the dialog.
+        Args:
+            library(walkLibrary): reference to the walkLibrary instance.
+        """
+        # Store the instance of walkLibrary in a local variable
         self.library = library
 
         # Delete UI if it already exists
         self.deleteUI()
 
+        # Set the parent and layout
         self.parent = QtWidgets.QDialog(parent=getMayaMainWindow())
         self.parent.setObjectName('startup')
         self.parent.setWindowTitle('Startup Window')
@@ -54,39 +60,63 @@ class ToolStartupWindow(QtWidgets.QWidget):
         # Now that our parent is set we can initialize it
         super(ToolStartupWindow, self).__init__(parent=self.parent)
 
+        # Customize window properties
         self.parent.setFixedSize(400, 350)
         self.parent.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.CustomizeWindowHint
                                    | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
 
+        # Create the UI
         self.createUI()
 
     def createUI(self):
-         welcomeLabel = QtWidgets.QLabel("            Welcome to vmWalkingKit!   ")
-         welcomeLabel.setFont(QtGui.QFont('Arial', 15))
-         self.layout.addWidget(welcomeLabel, 0, 0, QtCore.Qt.AlignTop)
+        """
+        Creates the UI for the startup window.
+        """
 
-         label = QtWidgets.QLabel(self)
-         pixmap = QtGui.QPixmap(walkLibrary.IMG_DIR)
-         label.setPixmap(pixmap)
-         self.layout.addWidget(label, 0, 0, 1, 2, QtCore.Qt.AlignCenter)
+        # Title
+        welcomeLabel = QtWidgets.QLabel("            Welcome to vmWalkingKit!   ")
+        welcomeLabel.setFont(QtGui.QFont('Arial', 15))
+        self.layout.addWidget(welcomeLabel, 0, 0, QtCore.Qt.AlignTop)
 
-         cb = QtWidgets.QCheckBox("Show this at startup")
-         cb.setChecked(self.library.getStartupWinPref())
-         cb.stateChanged.connect(self.onStartupChanged)
-         self.layout.addWidget(cb, 0, 0, QtCore.Qt.AlignBottom)
+        # Image
+        label = QtWidgets.QLabel(self)
+        pixmap = QtGui.QPixmap(walkLibrary.IMG_DIR)
+        label.setPixmap(pixmap)
+        self.layout.addWidget(label, 0, 0, 1, 2, QtCore.Qt.AlignCenter)
 
-         okBtn = QtWidgets.QPushButton('OK')
-         okBtn.clicked.connect(self.deleteUI)
-         okBtn.setMaximumWidth(60)
-         self.layout.addWidget(okBtn, 0, 1, QtCore.Qt.AlignBottom)
+        # Checkbox to enable or disable the window creation at startup
+        cb = QtWidgets.QCheckBox("Show this at startup")
+        cb.setChecked(self.library.getStartupWinPref())
+        cb.stateChanged.connect(self.onStartupChanged)
+        self.layout.addWidget(cb, 0, 0, QtCore.Qt.AlignBottom)
+
+        # OK button
+        okBtn = QtWidgets.QPushButton('OK')
+        okBtn.clicked.connect(self.deleteUI)
+        okBtn.setMaximumWidth(60)
+        self.layout.addWidget(okBtn, 0, 1, QtCore.Qt.AlignBottom)
 
     def onStartupChanged(self, state):
+        """
+        Sets the startup window user preferences based on the checkbox state.
+        Args:
+            state(int): indicates whether or not the user wants the startup window at startup.
+        """
+
         self.library.setStartupWinPref(state)
 
     def showUI(self):
+        """
+        Displays the UI on screen.
+        """
+
         self.parent.show()
 
     def deleteUI(self):
+        """
+        If the window already exists it will be deleted.
+        """
+
         try:
             cmds.deleteUI('startup')
         except:
