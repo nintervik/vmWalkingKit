@@ -241,11 +241,18 @@ class WalkLibraryUI(QtWidgets.QWidget):
     # Saving initial BodyBeat and ArmsBeat indices for adapting others parameters accordingly
     prevBodyIndex = 2
     prevArmsIndex = 2
-    currLightingSetting = "deafault"
+
+    # Settings variables to default values
+    currLightingSetting = "default"
     startupWin = None
     aboutWin = None
 
     def __init__(self, dock=True):
+        """
+        Method to initialize the class.
+        Args:
+            dock(bool): wether or not to make to tool window dockable.
+        """
 
         # Delete UI if it already exists
         try:
@@ -255,7 +262,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # If dock mode is queried the parent will be the docked window
         # If not, the parent will be the main Maya window
-
         if dock:
             parent = getWindowDock()
         else:
@@ -271,15 +277,17 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Set default size of the window
         self.resize(400, 350)
 
-        # The Library variable points to an instance of our controller library
+        # The Library variable points to an instance of our walkLibrary library
         self.library = walkLibrary.WalkLibrary()
 
-        # Dropdown options list
+        # Drop-down options list
         self.frameOptions = ["8f", "12f", "16f"]
         self.rangeOptions = ["Low", "Mid", "High"]
         self.handOptions = ["Relaxed", "Fist"]
         self.faceOptions = ["Happy", "Angry", "Sad", "Cocky", "Scared"]
         self.qualityOptions = ["Low", "Medium", "High"]
+
+        # Parameters + Widgets relationship
         self.paramWidgets = OrderedDict()
 
         # Prefixes
@@ -289,6 +297,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
                          "TailSwing", "TailCurl", "TailTilt", "TailWaving", "ArmsWidth", "ElbowsDrag", "HandsDrag",
                          "HandsPose", "LegsSeparation", "FeetYRotation", "StepDistance"]
 
+        # Layers + Attributes that need offset
         self.offsetBodyAttrDict = [
             ('UpDown_1',            'Mr_Buttons:Mr_Buttons_COG_Ctrl.translateY'),
             ('UpDown_1',            'Mr_Buttons:Mr_Buttons_r_Bowtie_01Ctrl.rotateZ'),
@@ -433,7 +442,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
             ('StepDistance_1',      'Mr_Buttons:Mr_Buttons_r_Leg_FootIKCtrl.translateZ'),
             ('StepDistance_1',      'Mr_Buttons:Mr_Buttons_l_Leg_FootIKCtrl.translateZ')
         ]
-
         self.offsetArmsAttrDict = [
             ('ElbowsDrag_1', 'Mr_Buttons:Mr_Buttons_r_Arm_ElbowFKCtrl.rotateY'),
             ('ElbowsDrag_1', 'Mr_Buttons:Mr_Buttons_l_Arm_ElbowFKCtrl.rotateY'),
@@ -441,9 +449,9 @@ class WalkLibraryUI(QtWidgets.QWidget):
             ('HandsDrag_1',  'Mr_Buttons:Mr_Buttons_l_Arm_WristFKCtrl.rotateY')
         ]
 
+        # UI text data
         self.paramDescriptions = self.library.getUIText("param")
         self.tabDescriptions = self.library.getUIText("tab")
-
         self.paramDescriptionWidgets = []
 
         # Populate 'paramLayers' dictionary with the current info on the scene
@@ -453,23 +461,21 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.createUI()
         self.onImport()
 
-        # Add ourself (QtWidgets.QWidget) to the parent's layout
+        # Add ourselves (QtWidgets.QWidget) to the parent's layout
         self.parent().layout().addWidget(self)
 
         # If docked mode is off, directly show our parent
         if not dock:
             parent.show()
 
+        # Activate the Framerate visibility for Maya's heads up display
         mel.eval('setFrameRateVisibility(1);')
 
-        #cmds.grid(toggle=False)
-        #cmds.displayRGBColor('background', 0.25, 0.25, 0.25)
-        #cmds.displayRGBColor('backgroundTop', 0.25, 0.25, 0.25)
-        #cmds.displayRGBColor('backgroundBottom', 0.25, 0.25, 0.25)
-
+        # Create the instances for the startup and about window
         WalkLibraryUI.startupWin = ToolStartupWindow(self.library)
         WalkLibraryUI.aboutWin = AboutWindow()
 
+        # Show the startup window if the user preferences indicate so
         if self.library.getStartupWinPref():
             WalkLibraryUI.startupWin.showUI()
 
@@ -596,8 +602,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         stepDistanceDict = OrderedDict()
         stepDistanceDict[layersNames[34]] = layersWeights[34]
 
-        # Create main data list with all the layers information sorted by parameter
-
+        # Create main data dictionary with all the layers information sorted by parameter
         self.paramLayers = OrderedDict([
             (self.prefixes[0],  bodyBeatDict),
             (self.prefixes[1],  armsBeatDict),
@@ -627,9 +632,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
             (self.prefixes[25], stepDistanceDict)
         ])
 
-    # UI METHODS
-
-    # UI creation methods
+    # UI CREATION METHODS
 
     def createUI(self):
         """This method creates the UI"""
@@ -909,7 +912,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         resetBtn.clicked.connect(self.onImport)
         btnLayout.addWidget(resetBtn)
 
-    # UI functionality methods
+    # UI FUNCTIONALITY METHODS
 
     def addTab(self, tabName):
         """
@@ -1328,6 +1331,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
     def onAboutClicked(self):
         WalkLibraryUI.aboutWin = AboutWindow()
         WalkLibraryUI.aboutWin.showUI()
+
+    # EVENT METHODS
 
     def HoverEvent(self, hovered, prefix, index):
         if hovered:
