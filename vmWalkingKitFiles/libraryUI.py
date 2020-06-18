@@ -1360,14 +1360,19 @@ class WalkLibraryUI(QtWidgets.QWidget):
             directory(str): directory where the preset file to import is stored
         """
 
-        directory = self.library.createDirectory()
+        # Open the browser window and save the preset with the user input name
         filePath = QtWidgets.QFileDialog.getSaveFileName(self, "Preset Browser", directory, "Text Files (*.json)")
-
         self.library.savePreset(filePath[0])
 
     def onImport(self, directory=""):
-        """Resets the tool parameters to their default state."""
+        """Imports the given directory.
 
+        Args:
+            directory(str): directory where the preset to be imported is located. If none, it will import the default
+            preset. Hence, the tool will be reset.
+        """
+
+        # Open the browser to select the desired preset to import or import default one directly if none is given
         if not directory:
             layers, weights = self.library.importPreset()
         else:
@@ -1382,16 +1387,22 @@ class WalkLibraryUI(QtWidgets.QWidget):
                 # Get layer prefix
                 splitStr = layers[i].split("_")
                 prefix = splitStr[0]
-                # Get the widget type
 
+                # Workaround for a special case regarding the arms beat (as they have different data structure)
                 if prefix == self.prefixes[1]:
+                    # Get the index from the imported preset, set it on the drop-down and notify it has changed
+                    # so keyframes from arms parameters can be offset properly
                     index = int(splitStr[1]) - 1
                     self.paramWidgets[prefix][0].setCurrentIndex(index)
                     self.onDropDownChanged(prefix, index)
 
+                    # Set the value to the sliders according to the preset weights and notify it has changed
                     self.paramWidgets[prefix][1].setValue(weights[i]*1000.0)
                     self.onSliderChanged(prefix, weights[i]*1000.0)
+                # Check first the animation layer is not corrective (they are just there to correct and are not
+                # associated with
                 elif "Corrective" not in prefix:
+                    # Get the widget type
                     widgetType = type(self.paramWidgets[prefix]).__name__
 
                     # Set the current index or change the slider value accordingly
@@ -1418,19 +1429,18 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         deleteWindowDock()
 
-        #cmds.grid(toggle=True)
-        #cmds.displayRGBColor('background', 0.36, 0.36, 0.36)
-        #cmds.displayRGBColor('backgroundTop', 0.535, 0.617, 0.702)
-        #cmds.displayRGBColor('backgroundBottom', 0.052, 0.052, 0.052)
-
     def onWinStartup(self):
+        """Instantiates and shows the UI for the start up window."""
+
         WalkLibraryUI.startupWin = ToolStartupWindow(self.library)
         WalkLibraryUI.startupWin.showUI()
 
     def onDocClicked(self):
+        """Open tool's website."""
         webbrowser.open('https://nintervik.github.io/vmWalkingKit/')
 
     def onAboutClicked(self):
+        """Instantiates and shows the UI for the about window."""
         WalkLibraryUI.aboutWin = AboutWindow()
         WalkLibraryUI.aboutWin.showUI()
 
