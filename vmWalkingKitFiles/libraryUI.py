@@ -620,9 +620,9 @@ class WalkLibraryUI(QtWidgets.QWidget):
         actionFile = menubar.addMenu("File")
         actionHelp = menubar.addMenu("Help")
 
-        importOpt = actionFile.addAction('Import preset', partial(self.onImport, self.library.getDirectory()))
+        importOpt = actionFile.addAction('Import preset', partial(self.onImport, self.library.createDirectory()))
         importOpt.setStatusTip('Import a saved preset into the tool.')
-        saveOpt = actionFile.addAction('Save preset', partial(self.onSave, self.library.getDirectory()))
+        saveOpt = actionFile.addAction('Save preset', partial(self.onSave, self.library.createDirectory()))
         saveOpt.setStatusTip('Save a preset in your computer.')
         resetOpt = actionFile.addAction("Reset", self.onImport)
         resetOpt.setStatusTip('Reset the tool parameters to their default state.')
@@ -844,12 +844,12 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Save button
         saveBtn = QtWidgets.QPushButton('Save preset')
-        saveBtn.clicked.connect(partial(self.onSave, self.library.getDirectory()))
+        saveBtn.clicked.connect(partial(self.onSave, self.library.createDirectory()))
         btnLayout.addWidget(saveBtn)
 
         # Read button
         importBtn = QtWidgets.QPushButton('Import preset')
-        importBtn.clicked.connect(partial(self.onImport, self.library.getDirectory()))
+        importBtn.clicked.connect(partial(self.onImport, self.library.createDirectory()))
         btnLayout.addWidget(importBtn)
 
         # Reset
@@ -1201,7 +1201,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
             directory(str): directory where the preset file to import is stored
         """
 
-        directory = self.library.getDirectory()
+        directory = self.library.createDirectory()
         filePath = QtWidgets.QFileDialog.getSaveFileName(self, "Preset Browser", directory, "Text Files (*.json)")
 
         self.library.savePreset(filePath[0])
@@ -1214,7 +1214,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         if not directory:
             layers, weights = self.library.importPreset()
         else:
-            browseDir = self.library.getDirectory()
+            browseDir = self.library.createDirectory()
             filePath = QtWidgets.QFileDialog.getOpenFileName(self, "Preset Browser", browseDir, "Text Files (*.json)")
             layers, weights = self.library.importPreset(filePath[0])
 

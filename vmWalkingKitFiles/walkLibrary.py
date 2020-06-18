@@ -30,7 +30,7 @@ IMG_DIR = os.path.join(PARENT_DIRECTORY, 'startupImg.png')
 
 class WalkLibrary(object):
     """
-    This class manages all the stuff related to animation layers and presets
+    This class manages all the stuff related to animation layers and presets.
     """
 
     def __init__(self, createDefaultPreset=False):
@@ -40,7 +40,7 @@ class WalkLibrary(object):
         default by reading from the 'defaultPreset.json' file.
         """
 
-        self.getDirectory()
+        self.createDirectory()
 
         # Only call this to generate the defaultPreset.json the first time
         if createDefaultPreset:
@@ -167,7 +167,7 @@ class WalkLibrary(object):
         """
         Offset the keyframes of the given animation curve to match the current body or arms beat.
         Args:
-            attrFull(str):
+            attrFull(str): the name of the attribute to select (controllerName.attribute)
             layerName(str): the name of the layer where the keyframes to offset live.
             prevIndex(int): the index that represents the beat that we are coming from.
             currIndex(int): the index that represents the current beat.
@@ -213,6 +213,12 @@ class WalkLibrary(object):
         cmds.animLayer(layerName, edit=True, selected=False, preferred=False)
 
     def calculatePlaybackRange(self, indices):
+        """
+        Calculates and sets the playback range according to body and arms beat.
+        Args:
+            indices(list(int)): the indices that represent the current option selected in the drop-down for the beats
+            body and arms beats.
+        """
 
         playBackEndRange = 0
 
@@ -233,20 +239,24 @@ class WalkLibrary(object):
         self.setPlaybackOptions(playBackEndRange)
 
     def setPlaybackOptions(self, playBackEndRange):
+        """
+        Sets the playback end range to the given number.
+        Args:
+            playBackEndRange (int): the desired playback end range.
+        """
+
         cmds.playbackOptions(animationEndTime=96)
         cmds.playbackOptions(minTime=1)
         cmds.playbackOptions(maxTime=playBackEndRange)
         cmds.playbackOptions(animationStartTime=1)
 
-    # PRESETS METHODS
+    # DATA METHODS
 
     def importPreset(self, filePath=FILE_PATH):
         """
         Imports the given preset into the tool.
         Args:
-            name(str): the name of the JSON preset file. If not specified,
-            the default preset will be imported.
-            directory(str): the path from where the preset file will be loaded. If
+            filePath(str): the path from where the preset file will be loaded. If
             not specified, it will be loaded from the default path.
         """
 
@@ -277,8 +287,7 @@ class WalkLibrary(object):
                 else:
                     self.changeLayerMuteState(childLayers[i], True)
 
-                # For now all weights will be 1.0. Just in case the user has manually changed it
-
+                # For now all weights will be 0.5. Just in case the user has manually changed it
                 if "ArmsBeat" in childLayers[i]:
                     self.changeLayerWeight(childLayers[i], 0.5)
 
@@ -295,10 +304,7 @@ class WalkLibrary(object):
         """
         Saves the current parameters in a preset JSON file.
         Args:
-            name(str): the name of the JSON preset file. If not specified,
-            it will be called 'defaultPreset' and will overwrite the default
-            one.
-            directory(str): the path where the preset file will be stored. If
+            filePath(str): the path where the preset file will be stored. If
             not specified, it will be saved in the default path.
         """
 
@@ -308,7 +314,7 @@ class WalkLibrary(object):
         # Create an ordered dict to store the data
         dataToWrite = OrderedDict()
 
-        # Populate the data dic with the active layers and their weights
+        # Populate the data dictionary with the active layers and their weights
         for i in range(0, len(activeLayers)):
             dataToWrite[activeLayers[i]] = weights[i]
 
@@ -316,11 +322,13 @@ class WalkLibrary(object):
         with open(filePath, 'w') as f:
             json.dump(dataToWrite, f, indent=4)
 
-    def getDirectory(self, directory=DIRECTORY):
+    def createDirectory(self, directory=DIRECTORY):
         """
         Creates the given directory if it doesn't exist already.
         Args:
-            directory(str): the directory to create
+            directory(str): the directory to create.
+        Returns:
+            directory(str): the created directory.
         """
 
         if not os.path.exists(directory):
@@ -329,7 +337,15 @@ class WalkLibrary(object):
         return directory
 
     def getUIText(self, element):
+        """
+        Gets the text data for the UI.
+        Args:
+            element(str): type of data to be queried ("param" or "tab").
+        Returns:
+            textDict(dict): dictionary of the text data.
+        """
 
+        # Get the file path of the json containing the queried data type
         if element == "param":
             filePath = os.path.join(TEXT_DIR, PARAM_TEXT_NAME)
         else:
@@ -337,38 +353,45 @@ class WalkLibrary(object):
 
         textDict = OrderedDict()
 
+        # Read the json and store the data inside textDict
         with open(filePath, 'r') as f:
             textDict = json.load(f, object_pairs_hook=OrderedDict)
 
         return textDict
 
-    def getTabext(self):
-
-        filePath = os.path.join(TEXT_DIR, PARAM_TEXT_NAME)
-        paramTextDict = OrderedDict()
-
-        with open(filePath, 'r') as f:
-            paramTextDict = json.load(f, object_pairs_hook=OrderedDict)
-
-        return paramTextDict
-
     def getStartupWinPref(self):
+        """
+        Gets the current startup window preferences set by the user.
+        Returns:
+            startupFlag(bool): indicates whether or not the user wants the startup window at startup.
+        """
 
+        # Set the flag to false by default
         startupFlag = False
 
+        # Read the user preferences json and store the result in startupFlag
         with open(USER_PREFS_PATH, 'r') as f:
             startupFlag = json.load(f)["SHOW_STARTUP_WIN"]
 
         return startupFlag
 
     def setStartupWinPref(self, state):
+        """
+        Sets the startup window user preferences.
+        Args:
+            state(int): indicates whether or not the user wants the startup window at startup.
+        Returns:
 
-        dataToWrite = OrderedDict()
+        """
 
+        # Workaround to compensate for Maya related problem with bools
         if state == 2:
             state = 1
 
+        # Create an ordered dictionary with the state value
+        dataToWrite = OrderedDict()
         dataToWrite["SHOW_STARTUP_WIN"] = state
 
+        # Open the user preferences json and store dataToWrite
         with open(USER_PREFS_PATH, 'w') as f:
             json.dump(dataToWrite, f, indent=4)
