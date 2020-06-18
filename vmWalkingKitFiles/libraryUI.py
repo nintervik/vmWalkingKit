@@ -949,7 +949,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
         Creates a tab with the given name.
         Args:
             tabName(str): name of the tab to create.
-
         Returns:
             newTab(QtWidgets.QWidget): a reference to the new created tab.
         """
@@ -966,6 +965,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         # Create the scroll widget that will contain all the parameters of this new tab
         scrollWidget = QtWidgets.QWidget()
         scrollWidget.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
+
         # Set the scroll layout
         self.scrollLayout = QtWidgets.QGridLayout(scrollWidget)
 
@@ -979,54 +979,133 @@ class WalkLibraryUI(QtWidgets.QWidget):
         return newTab
 
     def addDropDownParam(self, paramName, options, id, prefix, index, slotName=None):
+        """
+        Adds a parameter of type drop-down.
+        Args:
+            paramName(str): the name of the parameter.
+            options(list str): the list of options of the drop-down.
+            id(int): the widget id.
+            prefix(str): the prefix associated with the parameter.
+            index(int): the tab index.
+            slotName(str): the name of the slot method.
+        """
 
+        # Create drop-down and fill it with the options
         widget = QtWidgets.QComboBox()
         for i in range(0, len(options)):
             widget.addItem(options[i])
 
+        # Set the drop-down default option
         widget.setCurrentIndex(1)
 
+        # Connect the drop-down widget with the given slot (beats have a different slot than the rest
+        # because they need to offset all the keyframes when changed).
         if prefix == 'BodyBeat' or prefix == 'ArmsBeat':
             widget.currentIndexChanged.connect(partial(getattr(self, slotName)))
         else:
             widget.currentIndexChanged.connect(partial(getattr(self, slotName), prefix))
 
+        # Set up the widget to be displayed
         self.setUpParamWidget(prefix, widget, paramName, id, index)
 
     def addDropDownSetting(self, paramName, options, id, prefix, index, slotName=None):
+        """
+        Adds a parameter of type drop-down for the settings tab.
+        Args:
+            paramName(str): the name of the parameter.
+            options(list str): the list of options of the drop-down.
+            id(int): the widget id.
+            prefix(str): the prefix associated with the parameter.
+            index(int): the tab index.
+            slotName(str): the name of the slot method.
+        """
 
+        # Create drop-down and fill it with the options
         widget = QtWidgets.QComboBox()
-
         for i in range(0, len(options)):
             widget.addItem(options[i])
 
+        # Connect the drop-down widget with the given slot
         widget.currentIndexChanged.connect(getattr(self, slotName))
+
+        # Set the drop-down default option
         widget.setCurrentIndex(1)
 
+        # Set up the widget to be displayed
         self.setUpSettingWidget(prefix, widget, paramName, id, index)
 
     def addCheckboxSetting(self, paramName, id, prefix, index, slotName=None):
+        """
+        Adds a checkbox widget.
+        Args:
+            paramName(str): the name of the parameter.
+            id(int): the widget id.
+            prefix(str): the prefix associated with the parameter.
+            index(int): the tab index.
+            slotName(str): the name of the slot method.
+        """
+
+        # Create the checkbox widget and connect it to the slot
         widget = QtWidgets.QCheckBox("")
         widget.stateChanged.connect(getattr(self, slotName))
+
+        # Set up the widget to be displayed
         self.setUpSettingWidget(prefix, widget, paramName, id, index)
 
     def addButtonPlayback(self, paramName, id, prefix, index, slotName=None):
+        """
+        Adds the playback button for the settings tab.
+        Args:
+            paramName(str): the name of the parameter.
+            id(int): the widget id.
+            prefix(str): the prefix associated with the parameter.
+            index(int): the tab index.
+            slotName(str): the name of the slot method.
+        """
+
+        # Create the button widget and connect it to the slot
         widget = QtWidgets.QPushButton('Apply')
         widget.clicked.connect(getattr(self, slotName))
+
+        # Set up the widget to be displayed
         self.setUpSettingWidget(prefix, widget, paramName, id, index)
 
     def addSliderParam(self, paramName, id, prefix, index, slotName=None, defaultValue=200):
+        """
+        Adds ans slider widget.
+        Args:
+            paramName(str): the name of the parameter.
+            id(int): the widget id.
+            prefix(str): the prefix associated with the parameter.
+            index(int): the tab index.
+            slotName(str): the name of the slot method.
+            defaultValue(float): default value for the slider.
+        """
 
+        # Create the slider widget and set the default value
         widget = QtWidgets.QSlider(QtCore.Qt.Horizontal)
         widget.setMinimum(0)
         widget.setMaximum(1000)
         widget.setValue(defaultValue)
+
+        # Connect the slider to the slot
         widget.valueChanged.connect(partial(getattr(self, slotName), prefix))
 
+        # Set up the widget to be displayed
         self.setUpParamWidget(prefix, widget, paramName, id, index)
 
     def setUpParamWidget(self, prefix, widget, paramName, id, index):
+        """
+        Sets up the given widget to be displayed.
+        Args:
+            prefix(str): prefix associated with that widget.
+            widget(QWidget): widget to be displayed
+            paramName(str): name of the parameter associated with the widget.
+            id(int): the widget id.
+            index(int): the tab index.
+        """
 
+        # Add the prefix and widgets to paramWidgets to keep track of them
         if prefix == self.prefixes[1] and self.prefixes[1] not in self.paramWidgets:
             self.paramWidgets[prefix] = [widget, None]
         elif prefix == self.prefixes[1] and self.prefixes[1] in self.paramWidgets:
@@ -1034,19 +1113,30 @@ class WalkLibraryUI(QtWidgets.QWidget):
         else:
             self.paramWidgets[prefix] = widget
 
-        # Set parameter layout
+        # Set the text for the parameter
         paramText = ParamLabel(paramName, self, prefix, index)
-
         self.scrollLayout.addWidget(paramText, id, 0, 1, 3)
         paramText.setMinimumHeight(25)
+
+        # Add the parameter text and the widget to the layout
         self.scrollLayout.addWidget(QtWidgets.QLabel(" "), id, 3, 1, 1)
         self.scrollLayout.addWidget(widget, id, 4, 1, 3)
 
     def setUpSettingWidget(self, prefix, widget, paramName, id, index):
+        """
+        Sets up the given settings widget to be displayed.
+        Args:
+            prefix(str): prefix associated with that widget.
+            widget(QWidget): widget to be displayed
+            paramName(str): name of the parameter associated with the widget.
+            id(int): the widget id.
+            index(int): the tab index.
+        """
 
-        # Set parameter layout
+        # Set the text for the parameter
         settingText = ParamLabel(paramName, self, prefix, index)
 
+        # Add the parameter text and the widget to the layout
         self.scrollLayout.addWidget(settingText, id, 0, 1, 3)
         settingText.setMinimumHeight(25)
         self.scrollLayout.addWidget(QtWidgets.QLabel(" "), id, 3, 1, 1)
