@@ -1104,8 +1104,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
     # SLOT METHODS
 
     def onDropDownChanged(self, prefix, index):
-        """
-        Takes in the new current index of the dropdown to change the layer state accordingly.
+        """Takes in the new current index of the drop-down to change the layer state accordingly.
 
         Args:
             prefix:(string): prefix of the layer associated with this parameter.
@@ -1154,13 +1153,12 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.library.calculatePlaybackRange(indices)
 
     def onDropDownBodyBeatChanged(self, index):
-        """
-        Takes in the new current index of the dropdown to change the layer state accordingly. It only differs from
-        the onDropDownChanged() method in the sense that this one is also in charge of moving the keyframes of the
-        UpDown_1 layer in order to adapt to the BodyBeat parameter.
+        """Takes in the new current index of the drop-down to change the layer state accordingly. It only differs from
+        the onDropDownChanged() method in the sense that this one is also in charge of moving the keyframes of other
+        layers in order to adapt to the BodyBeat parameter.
 
         Args:
-            index (int): index of the current selected option in the dropdown
+            index (int): index of the current selected option in the drop-down
         """
 
         prefix = 'BodyBeat'
@@ -1215,13 +1213,12 @@ class WalkLibraryUI(QtWidgets.QWidget):
         WalkLibraryUI.prevBodyIndex = self.paramWidgets[prefix].currentIndex() + 1
 
     def onDropDownArmsBeatChanged(self, index):
-        """
-        Takes in the new current index of the dropdown to change the layer state accordingly. It only differs from
-        the onDropDownChanged() method in the sense that this one is also in charge of moving the keyframes of the
-        UpDown_1 layer in order to adapt to the BodyBeat parameter.
+        """Takes in the new current index of the drop-down to change the layer state accordingly. It only differs from
+        the onDropDownChanged() method in the sense that this one is also in charge of moving the keyframes of other layers
+        in order to adapt to the BodyBeat parameter.
 
         Args:
-            index (int): index of the current selected option in the dropdown
+            index (int): index of the current selected option in the drop-down.
         """
 
         prefix = 'ArmsBeat'
@@ -1276,44 +1273,65 @@ class WalkLibraryUI(QtWidgets.QWidget):
         WalkLibraryUI.prevArmsIndex = self.paramWidgets[prefix][0].currentIndex() + 1
 
     def onDropDownQualityChanged(self, index):
+        """Changes the viewport configuration when the quality settings of the tool are changed.
 
+        Args:
+            index(int): current quality settings option.
+        """
+
+        # Low quality
         if index == 0:
             cmds.modelEditor('modelPanel4', e=True, displayTextures=False)
             cmds.modelEditor('modelPanel4', e=True, displayLights="default")
             cmds.setAttr("hardwareRenderingGlobals.ssaoEnable", 0)
+        # Medium quality
         elif index == 1:
             cmds.modelEditor('modelPanel4', e=True, displayTextures=True)
             cmds.modelEditor('modelPanel4', e=True, displayLights="default")
             cmds.modelEditor('modelPanel4', e=True, shadows=False)
             cmds.setAttr("hardwareRenderingGlobals.ssaoEnable", 1)
+        # High quality
         else:
             cmds.modelEditor('modelPanel4', e=True, displayTextures=True)
             cmds.modelEditor('modelPanel4', e=True, displayLights="all")
             cmds.modelEditor('modelPanel4', e=True, shadows=True)
             cmds.setAttr("hardwareRenderingGlobals.ssaoEnable", 1)
 
+        # Store the current lighting settings for future use
         WalkLibraryUI.currLightingSetting = cmds.modelEditor('modelPanel4', q=True, displayLights=True)
 
     def onSliderChanged(self, prefix, value):
-        """
-        Calculates the normalized slider value and applies it to the layer's weight
+        """Calculates the normalized slider value and applies it to the layer's weight.
         Args:
-            prefix(str): prefix of the layer associated with the slider
-            value(float): current value of the slider
+            prefix(str): prefix of the layer associated with the slider.
+            value(float): current value of the slider.
         """
 
         currIndex = 0
 
+        # Workaround to get the current index for the arms parameters
         if prefix == self.prefixes[1]:
             currIndex = self.paramWidgets[prefix][0].currentIndex()
 
+        # Get the layer name
         layerName = list(self.paramLayers[prefix].keys())[currIndex]
+
+        # Set up the normalized value and change the layer's weight accordingly
         weight = value / 1000.0
         self.library.changeLayerWeight(layerName, weight)
 
     def onCheckBoxSilhouetteChanged(self, state):
+        """Change the scene lighting according to the silhouette checkbox.
+
+        Args:
+            state(bool): whether or not the silhouette checkbox is checked or not.
+        """
+
+        # If checked, turn the lights off
         if state:
             cmds.modelEditor('modelPanel4', e=True, displayLights="none")
+
+        # If not checked, set the corresponding lighting that was previously set
         else:
             if WalkLibraryUI.currLightingSetting == "all":
                 cmds.modelEditor('modelPanel4', e=True, displayLights="all")
@@ -1321,16 +1339,23 @@ class WalkLibraryUI(QtWidgets.QWidget):
                 cmds.modelEditor('modelPanel4', e=True, displayLights="default")
 
     def onPlayblastButtonPressed(self):
+        """Playblast the scene and stores the file with a unique name."""
+
+        # Store the start and end times according to the timeline
         pStart = cmds.playbackOptions(q=True, animationStartTime=True)
         pEnd = cmds.playbackOptions(q=True, animationEndTime=True)
+
+        # Generate a unique name based on the current date and time
         name = 'movies/vmwPlayblast_%s_%s' % (time.strftime('%d%m%Y'), time.strftime('%H%M%S'))
+
+        # Save the playblast at maximum quality with the generated name
         cmds.playblast(st=pStart, et=pEnd, filename=name, format='avi', quality=100, p=100)
 
     def onSave(self, directory):
-        """
-        Imports the given preset file into the tool.
+        """Imports the given preset file into the tool.
         If not given, the default name and directory will be used.
         If just given the name the default directory will be used with the given name.
+
         Args:
             directory(str): directory where the preset file to import is stored
         """
@@ -1341,9 +1366,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.library.savePreset(filePath[0])
 
     def onImport(self, directory=""):
-        """
-        Resets the tool parameters to their default state.
-        """
+        """Resets the tool parameters to their default state."""
 
         if not directory:
             layers, weights = self.library.importPreset()
