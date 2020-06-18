@@ -635,9 +635,9 @@ class WalkLibraryUI(QtWidgets.QWidget):
     # UI CREATION METHODS
 
     def createUI(self):
-        """This method creates the UI"""
-
-        self.library.getStartupWinPref()
+        """
+        This method creates the UI
+        """
 
         # This is the master layout
         self.layout = QtWidgets.QVBoxLayout(self)
@@ -671,10 +671,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
         menubar = QtWidgets.QMenuBar()
         self.layout.addWidget(menubar)
 
-        # Add the main menu options
+        # Add the two top menu bar options
         actionFile = menubar.addMenu("File")
         actionHelp = menubar.addMenu("Help")
 
+        # Add the options for File
         importOpt = actionFile.addAction('Import preset', partial(self.onImport, self.library.createDirectory()))
         importOpt.setStatusTip('Import a saved preset into the tool.')
         saveOpt = actionFile.addAction('Save preset', partial(self.onSave, self.library.createDirectory()))
@@ -685,6 +686,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         quitOpt = actionFile.addAction("Quit", self.onQuitTool)
         quitOpt.setStatusTip('Quit vmWalkingKit.')
 
+        # Add the options for Help
         docOpt = actionHelp.addAction("Documentation", self.onDocClicked)
         docOpt.setStatusTip('Go to the documentation website.')
         startupOpt = actionHelp.addAction('Startup window', self.onWinStartup)
@@ -1335,6 +1337,15 @@ class WalkLibraryUI(QtWidgets.QWidget):
     # EVENT METHODS
 
     def HoverEvent(self, hovered, prefix, index):
+        """
+        Method that is called when a hover event occurs over a parameter label.
+        Args:
+            hovered(bool): indicates if the mouse pointer has entered or exit the label.
+            prefix(str): the prefix associated with the parameter that has triggered the event.
+            index(int): index associated with the parameter.
+        """
+
+        # If hovered, display the correspondent animation theory text
         if hovered:
             if index == 4 and prefix == self.prefixes[1]:
                 prefix = "ArmsSwing"
