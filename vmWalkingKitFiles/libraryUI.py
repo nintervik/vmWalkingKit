@@ -696,54 +696,72 @@ class WalkLibraryUI(QtWidgets.QWidget):
         aboutOpt.setStatusTip('Show information about vmWalkingKit.')
 
     def createDisplaySection(self, text, id):
+        """
+        Creates the display section for the animation theory of a tab.
+        Args:
+            text(str): text to be displayed.
+            id(int): id of the widget within the tab.
+        """
 
         # Information display area
         scrollWidgetInfo = QtWidgets.QWidget()
         scrollWidgetInfo.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
 
+        # Scroll layout
         self.scrollLayoutInfo = QtWidgets.QGridLayout(scrollWidgetInfo)
 
+        # Scroll area widget creation
         scrollAreaInfo = QtWidgets.QScrollArea()
-        #scrollAreaInfo.setFrameShape(QtWidgets.QFrame.NoFrame)
         scrollAreaInfo.setWidgetResizable(True)
-        #scrollAreaInfo.setContentsMargins(4, 4, 4, 4)
-        #scrollAreaInfo.setFocusPolicy(QtCore.Qt.NoFocus)
         scrollAreaInfo.setWidget(scrollWidgetInfo)
-        #scrollAreaInfo.setStyleSheet('QScrollArea {background-color: #3d3d3d; border: 1px solid grey}')
         scrollAreaInfo.setStyleSheet('QScrollArea {border: 1px solid grey}')
         scrollAreaInfo.setMinimumSize(292, 180)
+
+        # Parameter description setup
         textWidget = QtWidgets.QLabel(text)
         textWidget.setMinimumSize(292, 8)
         textWidget.setWordWrap(True)
-
         textWidget.setFont(QtGui.QFont('Arial', 9.5))
+
+        # Add description to the list of paramDescriptionWidgets
         self.paramDescriptionWidgets.append(textWidget)
 
+        # Add widgets to he layouts
         self.scrollLayoutInfo.addWidget(textWidget, 0, 0, 0, 0, QtCore.Qt.AlignTop)
-
         self.scrollLayout.addWidget(scrollAreaInfo, id, 0, 1, 7)
 
     def createTabDescription(self, tabName):
-        # Add placeholder text to the scroll layout
+        """
+        Creates tab description before the parameters
+        Args:
+            tabName(str): name of the tab.
+        """
+
+        # Add the description text to the layout
         descriptionTxt = QtWidgets.QLabel(self.tabDescriptions[tabName])
         descriptionTxt.setMinimumSize(200, 8)
         descriptionTxt.setWordWrap(True)
         descriptionTxt.setFont(QtGui.QFont('Arial', 9.5))
-        #descriptionTxt.setStyleSheet('QLabel{color: #b0f5b0}')
         self.scrollLayout.addWidget(descriptionTxt, 0, 0, 1, 7)
+
+        # Add separation line below the tab description
         sepLine = QtWidgets.QFrame()
         sepLine.setFrameShape(QtWidgets.QFrame.HLine)
         sepLine.setFrameShadow(QtWidgets.QFrame.Raised)
+
+        # Add the widget to the main scroll layout
         self.scrollLayout.addWidget(sepLine, 1, 0, 1, 7)
 
     def createGeneralTab(self):
         """
         Creates the general tab.
         """
+
+        # Add the new tab
         tabName = "General"
-        # Add general tab
         self.addTab(tabName)
 
+        # Create the tab description
         self.createTabDescription(tabName)
 
         index = 0
@@ -754,6 +772,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.addSliderParam("Up & Down", 4, self.prefixes[2], index, "onSliderChanged")
         self.addSliderParam("Body Tilt", 5, self.prefixes[3], index, "onSliderChanged")
 
+        # Create the display section for the parameters descriptions
         self.createDisplaySection("Hover over a parameter to see its description.", 6)
 
     def createHeadTab(self):
@@ -761,11 +780,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
         Creates the head tab
         """
 
+        # Add the new tab
         tabName = "Head"
-
-        # Add tab for the head
         self.addTab(tabName)
 
+        # Create the tab description
         self.createTabDescription(tabName)
 
         index = 1
@@ -778,6 +797,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.addSliderParam("Head tilt", 6, self.prefixes[8], index, "onSliderChanged", 500)
         self.addDropDownParam("Facial expression", self.faceOptions, 7, self.prefixes[9], index, "onDropDownChanged")
 
+        # Create the display section for the parameters descriptions
         self.createDisplaySection("Hover over a parameter to see its description", 8)
 
     def createTrunkTab(self):
@@ -785,11 +805,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
         Creates the trunk tab
         """
 
+        # Add the new tab
         tabName = "Trunk"
-
-        # Add tab for the trunk
         self.addTab(tabName)
 
+        # Create the tab description
         self.createTabDescription(tabName)
 
         index = 2
@@ -801,6 +821,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.addSliderParam("Chest Y-rotation", 5, self.prefixes[13], index, "onSliderChanged")
         self.addSliderParam("Chest up-down", 6, self.prefixes[14], index, "onSliderChanged")
 
+        # Create the display section for the parameters descriptions
         self.createDisplaySection("Hover over a parameter to see its description", 7)
 
     def createTailTab(self):
@@ -808,11 +829,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
         Creates the tail tab
         """
 
+        # Add the new tab
         tabName = "Tail"
-
-        # Add tab for the trunk
         self.addTab(tabName)
 
+        # Create the tab description
         self.createTabDescription(tabName)
 
         index = 3
@@ -823,19 +844,21 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.addSliderParam("Tail tilt", 4, self.prefixes[17], index, "onSliderChanged")
         self.addSliderParam("Tail waving", 5, self.prefixes[18], index, "onSliderChanged")
 
+        # Create the display section for the parameters descriptions
         self.createDisplaySection("Hover over a parameter to see its description", 8)
 
     def createArmsTab(self):
         """
         Creates the arms tab
         """
-        tabName = "Arms"
 
-        # Add tab for the arms
+        # Add the new tab
+        tabName = "Arms"
         self.addTab(tabName)
 
         index = 4
 
+        # Create the tab description
         self.createTabDescription(tabName)
 
         # Create Arms tab parameters
@@ -845,6 +868,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.addSliderParam("Hands drag", 5, self.prefixes[21], index, "onSliderChanged", 500)
         self.addDropDownParam("Hands pose", self.handOptions, 6, self.prefixes[22], index, "onDropDownChanged")
 
+        # Create the display section for the parameters descriptions
         self.createDisplaySection("Hover over a parameter to see its description", 9)
 
     def createLegsTab(self):
@@ -852,19 +876,21 @@ class WalkLibraryUI(QtWidgets.QWidget):
         Creates the legs tab
         """
 
+        # Add the new tab
         tabName = "Legs"
-
-        # Add tab for the legs
         self.addTab(tabName)
 
         index = 5
 
+        # Create the tab description
         self.createTabDescription(tabName)
 
+        # Create General tab parameters
         self.addSliderParam("Legs separation", 2, self.prefixes[23], index, "onSliderChanged")
         self.addSliderParam("Feet Y-rotation", 3, self.prefixes[24], index, "onSliderChanged")
         self.addSliderParam("Step distance", 4, self.prefixes[25], index, "onSliderChanged")
 
+        # Create the display section for the parameters descriptions
         self.createDisplaySection("Hover over a parameter to see its description", 10)
 
     def createSettingsTab(self):
@@ -872,19 +898,21 @@ class WalkLibraryUI(QtWidgets.QWidget):
         Creates the settings tab
         """
 
+        # Add the new tab
         tabName = "Settings"
-
-        # Add tab for the head
         self.addTab(tabName)
 
         index = 6
 
+        # Create the tab description
         self.createTabDescription(tabName)
 
+        # Create General tab parameters
         self.addDropDownSetting("Quality", self.qualityOptions, 2, "SettingsQuality", index, "onDropDownQualityChanged")
         self.addCheckboxSetting("Silhouette", 3, "SettingsSilhouette", index, "onCheckBoxSilhouetteChanged")
         self.addButtonPlayback("Playblast", 4, "SettingsPlayblast", index, "onPlayblastButtonPressed")
 
+        # Create the display section for the parameters descriptions
         self.createDisplaySection("Hover over a parameter to see its description.", 11)
 
     def createBottomBtns(self):
