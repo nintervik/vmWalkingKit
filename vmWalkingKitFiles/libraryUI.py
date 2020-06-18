@@ -1,4 +1,3 @@
-import os
 from maya import cmds
 import maya.mel as mel
 from collections import OrderedDict
@@ -10,7 +9,6 @@ import webbrowser
 import walkLibrary
 reload(walkLibrary)  # TODO: delete this when shipping.
 
-# TODO: Substitute 'PySide2' with 'Qt' when shipping the tool.
 # This is only for developing purposes
 from Qt import QtWidgets, QtCore, QtGui
 from functools import partial
@@ -21,7 +19,7 @@ from maya import OpenMayaUI as omui
 
 # Setting up logger
 logger = logging.getLogger('WalkLibraryUI')
-logger.setLevel(logging.DEBUG) # TODO: change to logging.INFO when shipping
+logger.setLevel(logging.INFO)
 logging.basicConfig()
 
 # This makes sure that all import statements work regardless of what Python library it's been used for Qt
@@ -205,7 +203,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # If dock mode is queried the parent will be the docked window
         # If not, the parent will be the main Maya window
-        # TODO: explain this dock(bool) option in the documentation of the tool
+
         if dock:
             parent = getWindowDock()
         else:
@@ -433,7 +431,6 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         # Create ordered dictionaries to store the parameters data
 
-        # TODO: automate this below
         # BodyBeat
         bodyBeatDict = OrderedDict()
         bodyBeatDict[layersNames[0]] = layersWeights[0]
@@ -688,7 +685,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         """
         tabName = "General"
         # Add general tab
-        tabGeneral = self.addTab(tabName)
+        self.addTab(tabName)
 
         self.createTabDescription(tabName)
 
@@ -710,7 +707,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         tabName = "Head"
 
         # Add tab for the head
-        tabHead = self.addTab(tabName)
+        self.addTab(tabName)
 
         self.createTabDescription(tabName)
 
@@ -734,13 +731,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
         tabName = "Trunk"
 
         # Add tab for the trunk
-        tabTrunk = self.addTab(tabName)
+        self.addTab(tabName)
 
         self.createTabDescription(tabName)
 
         index = 2
-
-        # TODO: do a ++i for the ui IDs
 
         # Create Trunk tab parameters
         self.addSliderParam("Back curvature", 2, self.prefixes[10], index, "onSliderChanged", 500)
@@ -759,13 +754,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
         tabName = "Tail"
 
         # Add tab for the trunk
-        tailTrunk = self.addTab(tabName)
+        self.addTab(tabName)
 
         self.createTabDescription(tabName)
 
         index = 3
-
-        # TODO: do a ++i for the ui IDs
 
         # Create Trunk tab parameters
         self.addSliderParam("Tail swinging", 2, self.prefixes[15], index, "onSliderChanged")
@@ -782,7 +775,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         tabName = "Arms"
 
         # Add tab for the arms
-        tabArms = self.addTab(tabName)
+        self.addTab(tabName)
 
         index = 4
 
@@ -805,7 +798,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         tabName = "Legs"
 
         # Add tab for the legs
-        tabLegs = self.addTab(tabName)
+        self.addTab(tabName)
 
         index = 5
 
@@ -825,7 +818,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         tabName = "Settings"
 
         # Add tab for the head
-        tabSettings = self.addTab(tabName)
+        self.addTab(tabName)
 
         index = 6
 
@@ -906,7 +899,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         for i in range(0, len(options)):
             widget.addItem(options[i])
 
-        widget.setCurrentIndex(1)  # TODO: not hardcode this? Maybe read from JSON default preset file
+        widget.setCurrentIndex(1)
 
         if prefix == 'BodyBeat' or prefix == 'ArmsBeat':
             widget.currentIndexChanged.connect(partial(getattr(self, slotName)))
@@ -923,7 +916,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
             widget.addItem(options[i])
 
         widget.currentIndexChanged.connect(getattr(self, slotName))
-        widget.setCurrentIndex(1)          # TODO: not hardcode this? Maybe read from JSON default preset file
+        widget.setCurrentIndex(1)
 
         self.setUpSettingWidget(prefix, widget, paramName, id, index)
 

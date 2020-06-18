@@ -6,7 +6,7 @@ import logging
 
 # Set up logger
 logger = logging.getLogger('WalkLibraryUI')
-logger.setLevel(logging.DEBUG) # TODO: change to logging.INFO when shipping
+logger.setLevel(logging.INFO)
 logging.basicConfig()
 
 # Query C:\Users\userName\Documents\maya
@@ -314,7 +314,7 @@ class WalkLibrary(object):
 
         # Save all the active animation layers and their weights in the JSON preset file
         with open(filePath, 'w') as f:
-            json.dump(dataToWrite, f, indent=4) # TODO: check for errors here
+            json.dump(dataToWrite, f, indent=4)
 
     def getDirectory(self, directory=DIRECTORY):
         """
