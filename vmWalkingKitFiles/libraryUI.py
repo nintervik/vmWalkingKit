@@ -1339,7 +1339,23 @@ class WalkLibraryUI(QtWidgets.QWidget):
             self.paramDescriptionWidgets[index].setText("Hover over a parameter to see its description.")
 
 class ParamLabel(QtWidgets.QLabel):
+    """
+    This class overwrites the QLabel in order to add the events for hovering over a label
+    that will be used for displaying the animation theory of each parameter.
+    """
+
     def __init__(self, text, ref, prefix, index, parent=None):
+        """
+        Initialize the ParamLabel class.
+        Args:
+            text(str): the text of the label to be displayed.
+            ref(WalkLibraryUI): reference to the WalkLibraryUI instance.
+            prefix(str): prefix associated with the parameter.
+            index(int): index associated with the parameter.
+            parent(obj): parent of the label (optional).
+        """
+
+        # Initialize the class variables with the given parameters
         super(ParamLabel, self).__init__(parent)
         self.setAutoFillBackground(False)
         self.setMouseTracking(True)
@@ -1350,18 +1366,30 @@ class ParamLabel(QtWidgets.QLabel):
         self.index = index
 
     def enterEvent(self, event):
+        """
+        Event triggered when the mouse pointer hovers over the label.
+        Args:
+            event(obj): event object.
+        """
+
+        # Call a method in WalkLibraryUI to notify of the event
         self.ref.HoverEvent(True, self.prefix, self.index)
-        pass
 
     def leaveEvent(self, event):
+        """
+        Event triggered when the mouse pointer stops hovering over the label.
+        Args:
+            event(obj): event object.
+        """
+
+        # Call a method in WalkLibraryUI to notify of the event
         self.ref.HoverEvent(False, self.prefix, self.index)
-        pass
 
 # MAYA WINDOWS FUNCTIONS
 
 def getMayaMainWindow():
     """
-    Get the main Maya windows (which is also built with Qt).
+    Get the main Maya window (which is also built with Qt).
 
     Returns:
         ptr(QtWidgets.QMainWindow): The Maya MainWindow
@@ -1380,7 +1408,6 @@ def getWindowDock(name='WalkToolWinDock'):
     Create dock with the given name.
     Args:
         name(str): name of the dock to create.
-
     Returns:
         ptr(QtWidget.QWidget): The dock's widget
     """
@@ -1388,7 +1415,7 @@ def getWindowDock(name='WalkToolWinDock'):
     # Delete older dock
     deleteWindowDock(name)
 
-    # Create a dock and query its name
+    # Create a dock next to the Attribute Editor and query its name
     ctrl = cmds.workspaceControl(name, tabToControl=('AttributeEditor', 2), label='vmWalkingKit', vis=True)
 
     # Query the correspondent QtWidget associated with the dock
