@@ -29,16 +29,11 @@ IMG_DIR = os.path.join(PARENT_DIRECTORY, 'startupImg.png')
 
 
 class WalkLibrary(object):
-    """
-    This class manages all the stuff related to animation layers and presets.
-    """
+    """This class manages all the stuff related to animation layers and presets."""
 
     def __init__(self, createDefaultPreset=False):
-
-        """
-        Init method. Here we create the directory to save the presets and reset everything to
-        default by reading from the 'defaultPreset.json' file.
-        """
+        """Init method. Here we create the directory to save the presets and reset everything to
+        default by reading from the 'defaultPreset.json' file."""
 
         self.createDirectory()
 
@@ -52,8 +47,8 @@ class WalkLibrary(object):
     # ANIMATION LAYERS METHODS
 
     def changeLayerMuteState(self, layerNameToChange, mute):
-        """
-        Change the muted state of the given animation layer if this exists
+        """Change the muted state of the given animation layer if this exists.
+
         Args:
             layerNameToChange(str): the animation layer name to change
             mute(bool): mute state that will be applied to the given layer
@@ -82,8 +77,8 @@ class WalkLibrary(object):
             logger.debug(layerNameToChange + " not found!")
 
     def changeLayerWeight(self, layerNameToChange, weight):
-        """
-        Change the weight of the given animation layer if this exists
+        """Change the weight of the given animation layer if this exists.
+
         Args:
             layerNameToChange(str): the animation layer name to change
             weight(float): weight that will be set to the given layer
@@ -109,11 +104,11 @@ class WalkLibrary(object):
             logger.debug(layerNameToChange + " not found!")
 
     def getCurrentAnimationLayers(self):
-        """
-        Finds all the current existing animation layers in the scene.
+        """Finds all the current existing animation layers in the scene.
 
-        Returns: returns two lists. One with all the current existing layers names in the
-        scene (except the base animation layer) and the other one with their weights.
+        Returns:
+            Returns two lists. One with all the current existing layers names in the
+            scene (except the base animation layer) and the other one with their weights.
         """
 
         # Query animation layers in the scene
@@ -139,11 +134,11 @@ class WalkLibrary(object):
         return childLayers, weights
 
     def getActiveAnimationLayers(self):
-        """
-        Finds all the active animation layers in the scene.
+        """Finds all the active animation layers in the scene.
 
-        Returns: returns a two lists. One with all the active layers names in the
-        scene (except the base animation layer) and the other one with their weights.
+        Returns:
+            Returns a two lists. One with all the active layers names in the
+            scene (except the base animation layer) and the other one with their weights.
         """
 
         # Query animation layers in the scene
@@ -164,8 +159,8 @@ class WalkLibrary(object):
     # KEYFRAMES METHODS
 
     def offsetKeyframes(self, attrFull, layerName, prevIndex, currIndex):
-        """
-        Offset the keyframes of the given animation curve to match the current body or arms beat.
+        """Offset the keyframes of the given animation curve to match the current body or arms beat.
+
         Args:
             attrFull(str): the name of the attribute to select (controllerName.attribute)
             layerName(str): the name of the layer where the keyframes to offset live.
@@ -213,8 +208,8 @@ class WalkLibrary(object):
         cmds.animLayer(layerName, edit=True, selected=False, preferred=False)
 
     def calculatePlaybackRange(self, indices):
-        """
-        Calculates and sets the playback range according to body and arms beat.
+        """Calculates and sets the playback range according to body and arms beat.
+
         Args:
             indices(list(int)): the indices that represent the current option selected in the drop-down for the beats
             body and arms beats.
@@ -239,8 +234,8 @@ class WalkLibrary(object):
         self.setPlaybackOptions(playBackEndRange)
 
     def setPlaybackOptions(self, playBackEndRange):
-        """
-        Sets the playback end range to the given number.
+        """Sets the playback end range to the given number.
+
         Args:
             playBackEndRange (int): the desired playback end range.
         """
@@ -253,8 +248,8 @@ class WalkLibrary(object):
     # DATA METHODS
 
     def importPreset(self, filePath=FILE_PATH):
-        """
-        Imports the given preset into the tool.
+        """Imports the given preset into the tool.
+
         Args:
             filePath(str): the path from where the preset file will be loaded. If
             not specified, it will be loaded from the default path.
@@ -301,8 +296,8 @@ class WalkLibrary(object):
         return layers, weights
 
     def savePreset(self, filePath=DIRECTORY):
-        """
-        Saves the current parameters in a preset JSON file.
+        """Saves the current parameters in a preset JSON file.
+
         Args:
             filePath(str): the path where the preset file will be stored. If
             not specified, it will be saved in the default path.
@@ -323,12 +318,13 @@ class WalkLibrary(object):
             json.dump(dataToWrite, f, indent=4)
 
     def createDirectory(self, directory=DIRECTORY):
-        """
-        Creates the given directory if it doesn't exist already.
+        """Creates the given directory if it doesn't exist already.
+
         Args:
             directory(str): the directory to create.
+
         Returns:
-            directory(str): the created directory.
+            A string of the created directory.
         """
 
         if not os.path.exists(directory):
@@ -337,12 +333,13 @@ class WalkLibrary(object):
         return directory
 
     def getUIText(self, element):
-        """
-        Gets the text data for the UI.
+        """Gets the text data for the UI.
+
         Args:
             element(str): type of data to be queried ("param" or "tab").
+
         Returns:
-            textDict(dict): dictionary of the text data.
+            A dictionary of the text data.
         """
 
         # Get the file path of the json containing the queried data type
@@ -360,10 +357,10 @@ class WalkLibrary(object):
         return textDict
 
     def getStartupWinPref(self):
-        """
-        Gets the current startup window preferences set by the user.
+        """Gets the current startup window preferences set by the user.
+
         Returns:
-            startupFlag(bool): indicates whether or not the user wants the startup window at startup.
+            A bool that indicates whether or not the user wants the startup window at startup.
         """
 
         # Set the flag to false by default
@@ -376,12 +373,10 @@ class WalkLibrary(object):
         return startupFlag
 
     def setStartupWinPref(self, state):
-        """
-        Sets the startup window user preferences.
-        Args:
-            state(int): indicates whether or not the user wants the startup window at startup.
-        Returns:
+        """Sets the startup window user preferences.
 
+        Args:
+            An int that indicates whether or not the user wants the startup window at startup.
         """
 
         # Workaround to compensate for Maya related problem with bools

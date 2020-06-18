@@ -35,13 +35,11 @@ else: # If we are using PySide2 (Maya 2017 and above)
 
 
 class ToolStartupWindow(QtWidgets.QWidget):
-    """
-    The ToolStartupWindow is a startup dialog that is only used to show the startup window.
-    """
+    """The ToolStartupWindow is a startup dialog that is only used to show the startup window."""
 
     def __init__(self, library=None):
-        """
-        Init method to initialize the dialog.
+        """Init method to initialize the dialog.
+
         Args:
             library(walkLibrary): reference to the walkLibrary instance.
         """
@@ -69,9 +67,7 @@ class ToolStartupWindow(QtWidgets.QWidget):
         self.createUI()
 
     def createUI(self):
-        """
-        Creates the UI for the startup window.
-        """
+        """Creates the UI for the startup window."""
 
         # Title
         welcomeLabel = QtWidgets.QLabel("            Welcome to vmWalkingKit!   ")
@@ -97,8 +93,8 @@ class ToolStartupWindow(QtWidgets.QWidget):
         self.layout.addWidget(okBtn, 0, 1, QtCore.Qt.AlignBottom)
 
     def onStartupChanged(self, state):
-        """
-        Sets the startup window user preferences based on the checkbox state.
+        """Sets the startup window user preferences based on the checkbox state.
+
         Args:
             state(int): indicates whether or not the user wants the startup window at startup.
         """
@@ -106,16 +102,12 @@ class ToolStartupWindow(QtWidgets.QWidget):
         self.library.setStartupWinPref(state)
 
     def showUI(self):
-        """
-        Displays the UI on screen.
-        """
+        """Displays the UI on screen."""
 
         self.parent.show()
 
     def deleteUI(self):
-        """
-        If the window already exists it will be deleted.
-        """
+        """If the window already exists it will be deleted."""
 
         try:
             cmds.deleteUI('startup')
@@ -123,14 +115,10 @@ class ToolStartupWindow(QtWidgets.QWidget):
             logger.debug('No previous UI exists.')
 
 class AboutWindow(QtWidgets.QWidget):
-    """
-    The AboutWindow is a dialog that is only used to show the about window.
-    """
+    """The AboutWindow is a dialog that is only used to show the about window."""
 
     def __init__(self):
-        """
-        Init method to initialize the dialog.
-        """
+        """Init method to initialize the dialog."""
 
         # Delete UI if it already exists
         self.deleteUI()
@@ -152,9 +140,7 @@ class AboutWindow(QtWidgets.QWidget):
         self.createUI()
 
     def createUI(self):
-        """
-        Creates the UI for the startup window.
-        """
+        """Creates the UI for the startup window."""
 
         # Title
         titleLabel = QtWidgets.QLabel("vmWalkingKit v0.91")
@@ -217,16 +203,12 @@ class AboutWindow(QtWidgets.QWidget):
         self.layout.addWidget(licenseLabel, 1, QtCore.Qt.AlignTop)
 
     def showUI(self):
-        """
-        Displays the UI on screen.
-        """
+        """Displays the UI on screen."""
 
         self.parent.show()
 
     def deleteUI(self):
-        """
-        If the window already exists it will be deleted.
-        """
+        """If the window already exists it will be deleted."""
 
         try:
             cmds.deleteUI('about')
@@ -234,9 +216,7 @@ class AboutWindow(QtWidgets.QWidget):
             logger.debug('No previous UI exists.')
 
 class WalkLibraryUI(QtWidgets.QWidget):
-    """
-    The WalkLibraryUI is a dialog that lets us control all the walkTool parameters.
-    """
+    """The WalkLibraryUI is a dialog that lets us control all the walkTool parameters."""
 
     # Saving initial BodyBeat and ArmsBeat indices for adapting others parameters accordingly
     prevBodyIndex = 2
@@ -248,8 +228,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
     aboutWin = None
 
     def __init__(self, dock=True):
-        """
-        Method to initialize the class.
+        """Method to initialize the class.
+
         Args:
             dock(bool): wether or not to make to tool window dockable.
         """
@@ -480,9 +460,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
             WalkLibraryUI.startupWin.showUI()
 
     def initParamLayersData(self):
-        """
-        Initializes all the data structures needed for controlling animation layers and parameters.
-        """
+        """Initializes all the data structures needed for controlling animation layers and parameters."""
 
         # Get the names and weights of all the animation layers in the scene
         layersNames, layersWeights = self.library.getCurrentAnimationLayers()
@@ -635,9 +613,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
     # UI CREATION METHODS
 
     def createUI(self):
-        """
-        This method creates the UI
-        """
+        """This method creates the UI."""
 
         # This is the master layout
         self.layout = QtWidgets.QVBoxLayout(self)
@@ -663,9 +639,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.createBottomBtns()
 
     def createMenuBar(self):
-        """
-        Creates the top menu bar.
-        """
+        """Creates the top menu bar."""
 
         # Creates the menu bar widges and add it to the master layout
         menubar = QtWidgets.QMenuBar()
@@ -696,8 +670,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
         aboutOpt.setStatusTip('Show information about vmWalkingKit.')
 
     def createDisplaySection(self, text, id):
-        """
-        Creates the display section for the animation theory of a tab.
+        """Creates the display section for the animation theory of a tab.
+
         Args:
             text(str): text to be displayed.
             id(int): id of the widget within the tab.
@@ -731,8 +705,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.scrollLayout.addWidget(scrollAreaInfo, id, 0, 1, 7)
 
     def createTabDescription(self, tabName):
-        """
-        Creates tab description before the parameters
+        """Creates tab description before the parameters.
+
         Args:
             tabName(str): name of the tab.
         """
@@ -753,9 +727,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.scrollLayout.addWidget(sepLine, 1, 0, 1, 7)
 
     def createGeneralTab(self):
-        """
-        Creates the general tab.
-        """
+        """Creates the general tab."""
 
         # Add the new tab
         tabName = "General"
@@ -776,9 +748,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.createDisplaySection("Hover over a parameter to see its description.", 6)
 
     def createHeadTab(self):
-        """
-        Creates the head tab
-        """
+        """Creates the head tab."""
 
         # Add the new tab
         tabName = "Head"
@@ -801,9 +771,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.createDisplaySection("Hover over a parameter to see its description", 8)
 
     def createTrunkTab(self):
-        """
-        Creates the trunk tab
-        """
+        """Creates the trunk tab."""
 
         # Add the new tab
         tabName = "Trunk"
@@ -825,9 +793,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.createDisplaySection("Hover over a parameter to see its description", 7)
 
     def createTailTab(self):
-        """
-        Creates the tail tab
-        """
+        """Creates the tail tab."""
 
         # Add the new tab
         tabName = "Tail"
@@ -848,9 +814,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.createDisplaySection("Hover over a parameter to see its description", 8)
 
     def createArmsTab(self):
-        """
-        Creates the arms tab
-        """
+        """Creates the arms tab."""
 
         # Add the new tab
         tabName = "Arms"
@@ -872,9 +836,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.createDisplaySection("Hover over a parameter to see its description", 9)
 
     def createLegsTab(self):
-        """
-        Creates the legs tab
-        """
+        """Creates the legs tab."""
 
         # Add the new tab
         tabName = "Legs"
@@ -894,9 +856,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.createDisplaySection("Hover over a parameter to see its description", 10)
 
     def createSettingsTab(self):
-        """
-        Creates the settings tab
-        """
+        """Creates the settings tab."""
 
         # Add the new tab
         tabName = "Settings"
@@ -916,9 +876,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.createDisplaySection("Hover over a parameter to see its description.", 11)
 
     def createBottomBtns(self):
-        """
-        Creates the bottom buttons.
-        """
+        """Creates the bottom buttons."""
 
         # This is our child widget that holds all the buttons
         btnWidget = QtWidgets.QWidget()
@@ -945,10 +903,11 @@ class WalkLibraryUI(QtWidgets.QWidget):
     # UI FUNCTIONALITY METHODS
 
     def addTab(self, tabName):
-        """
-        Creates a tab with the given name.
+        """Creates a tab with the given name.
+
         Args:
             tabName(str): name of the tab to create.
+
         Returns:
             newTab(QtWidgets.QWidget): a reference to the new created tab.
         """
@@ -979,8 +938,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
         return newTab
 
     def addDropDownParam(self, paramName, options, id, prefix, index, slotName=None):
-        """
-        Adds a parameter of type drop-down.
+        """Adds a parameter of type drop-down.
+
         Args:
             paramName(str): the name of the parameter.
             options(list str): the list of options of the drop-down.
@@ -1009,8 +968,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.setUpParamWidget(prefix, widget, paramName, id, index)
 
     def addDropDownSetting(self, paramName, options, id, prefix, index, slotName=None):
-        """
-        Adds a parameter of type drop-down for the settings tab.
+        """Adds a parameter of type drop-down for the settings tab.
+
         Args:
             paramName(str): the name of the parameter.
             options(list str): the list of options of the drop-down.
@@ -1035,8 +994,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.setUpSettingWidget(prefix, widget, paramName, id, index)
 
     def addCheckboxSetting(self, paramName, id, prefix, index, slotName=None):
-        """
-        Adds a checkbox widget.
+        """Adds a checkbox widget.
+
         Args:
             paramName(str): the name of the parameter.
             id(int): the widget id.
@@ -1053,8 +1012,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.setUpSettingWidget(prefix, widget, paramName, id, index)
 
     def addButtonPlayback(self, paramName, id, prefix, index, slotName=None):
-        """
-        Adds the playback button for the settings tab.
+        """Adds the playback button for the settings tab.
+
         Args:
             paramName(str): the name of the parameter.
             id(int): the widget id.
@@ -1071,8 +1030,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.setUpSettingWidget(prefix, widget, paramName, id, index)
 
     def addSliderParam(self, paramName, id, prefix, index, slotName=None, defaultValue=200):
-        """
-        Adds ans slider widget.
+        """Adds ans slider widget.
+
         Args:
             paramName(str): the name of the parameter.
             id(int): the widget id.
@@ -1095,8 +1054,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.setUpParamWidget(prefix, widget, paramName, id, index)
 
     def setUpParamWidget(self, prefix, widget, paramName, id, index):
-        """
-        Sets up the given widget to be displayed.
+        """Sets up the given widget to be displayed.
+
         Args:
             prefix(str): prefix associated with that widget.
             widget(QWidget): widget to be displayed
@@ -1123,8 +1082,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
         self.scrollLayout.addWidget(widget, id, 4, 1, 3)
 
     def setUpSettingWidget(self, prefix, widget, paramName, id, index):
-        """
-        Sets up the given settings widget to be displayed.
+        """Sets up the given settings widget to be displayed.
+
         Args:
             prefix(str): prefix associated with that widget.
             widget(QWidget): widget to be displayed
@@ -1150,7 +1109,7 @@ class WalkLibraryUI(QtWidgets.QWidget):
 
         Args:
             prefix:(string): prefix of the layer associated with this parameter.
-            index (int): index of the current selected option in the dropdown
+            index (int): index of the current selected option in the drop-down.
         """
 
         # Convert the index into a string and inside a [1-3] range to match the animation layer naming convention
@@ -1455,8 +1414,8 @@ class WalkLibraryUI(QtWidgets.QWidget):
     # EVENT METHODS
 
     def HoverEvent(self, hovered, prefix, index):
-        """
-        Method that is called when a hover event occurs over a parameter label.
+        """Method that is called when a hover event occurs over a parameter label.
+
         Args:
             hovered(bool): indicates if the mouse pointer has entered or exit the label.
             prefix(str): the prefix associated with the parameter that has triggered the event.
@@ -1473,14 +1432,12 @@ class WalkLibraryUI(QtWidgets.QWidget):
             self.paramDescriptionWidgets[index].setText("Hover over a parameter to see its description.")
 
 class ParamLabel(QtWidgets.QLabel):
-    """
-    This class overwrites the QLabel in order to add the events for hovering over a label
-    that will be used for displaying the animation theory of each parameter.
-    """
+    """This class overwrites the QLabel in order to add the events for hovering over a label
+    that will be used for displaying the animation theory of each parameter."""
 
     def __init__(self, text, ref, prefix, index, parent=None):
-        """
-        Initialize the ParamLabel class.
+        """Initialize the ParamLabel class.
+
         Args:
             text(str): the text of the label to be displayed.
             ref(WalkLibraryUI): reference to the WalkLibraryUI instance.
@@ -1500,8 +1457,8 @@ class ParamLabel(QtWidgets.QLabel):
         self.index = index
 
     def enterEvent(self, event):
-        """
-        Event triggered when the mouse pointer hovers over the label.
+        """Event triggered when the mouse pointer hovers over the label.
+
         Args:
             event(obj): event object.
         """
@@ -1510,8 +1467,8 @@ class ParamLabel(QtWidgets.QLabel):
         self.ref.HoverEvent(True, self.prefix, self.index)
 
     def leaveEvent(self, event):
-        """
-        Event triggered when the mouse pointer stops hovering over the label.
+        """Event triggered when the mouse pointer stops hovering over the label.
+
         Args:
             event(obj): event object.
         """
@@ -1522,11 +1479,10 @@ class ParamLabel(QtWidgets.QLabel):
 # MAYA WINDOWS FUNCTIONS
 
 def getMayaMainWindow():
-    """
-    Get the main Maya window (which is also built with Qt).
+    """Get the main Maya window (which is also built with Qt).
 
     Returns:
-        ptr(QtWidgets.QMainWindow): The Maya MainWindow
+        ptr(QtWidgets.QMainWindow): The Maya MainWindow.
     """
 
     # With OpenMayaUI API we query a reference to Maya's MainWindow
@@ -1538,12 +1494,13 @@ def getMayaMainWindow():
     return ptr
 
 def getWindowDock(name='WalkToolWinDock'):
-    """
-    Create dock with the given name.
+    """Create dock with the given name.
+
     Args:
         name(str): name of the dock to create.
+
     Returns:
-        ptr(QtWidget.QWidget): The dock's widget
+        ptr(QtWidget.QWidget): The dock's widget.
     """
 
     # Delete older dock
@@ -1561,10 +1518,10 @@ def getWindowDock(name='WalkToolWinDock'):
     return ptr
 
 def deleteWindowDock(name='WalkToolWinDock'):
-    """
-    Deletes the given dock if this exists.
+    """Deletes the given dock if this exists.
+
     Args:
-        name(str): name of the window to delete
+        name(str): name of the window to delete.
     """
 
     if cmds.workspaceControl(name, exists=True):
