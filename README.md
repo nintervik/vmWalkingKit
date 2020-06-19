@@ -58,7 +58,7 @@ libraryUI.WalkLibraryUI()
 
 13. Now, you can click on that icon once and the tool will be opened. You can resize the window and dock it anywhere you want as any other Maya's native window.<br/>
 
-14. Make sure to set the playback speed to *24 fps x 1* before starting to use the tool and that the playback is set to loop.<br/>
+14. Before starting to use the tool, ake sure to set the playback speed to *24 fps x 1* and that the playback is set to loop.<br/>
 
 <img src="imgs/fps_settings.png" width="900">
 
