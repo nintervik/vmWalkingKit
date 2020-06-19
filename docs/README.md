@@ -24,14 +24,13 @@ You can check my other work in my [website](https://nintervik.github.io).
 
 <img src="webImgs/mrbuttons_rig.jpg" width="500">
 
-
 # Installation instructions
 
 **DISCLAIMERS:** 
 * The tool should work with Maya 2017-2020 but it will perform best with later versions of Maya, especially with Maya 2019 and 2020. 
 * When closing the tool, **always use the File->Quit option**. Do this operation before closing Maya or opening a new scene. 
 
-You can watch this video down below or follow the written steps.
+You can watch this 10-minute video down below or follow the written steps.
 
 <iframe src="https://player.vimeo.com/video/430754588" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
 
