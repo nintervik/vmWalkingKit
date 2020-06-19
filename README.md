@@ -58,9 +58,11 @@ libraryUI.WalkLibraryUI()
 
 13. Now, you can click on that icon once and the tool will be opened. You can resize the window and dock it anywhere you want as any other Maya's native window.<br/>
 
-14. Make sure to set the playback speed to *24 fps x 1* before starting to use the tool.<br/>
+14. Make sure to set the playback speed to *24 fps x 1* before starting to use the tool and that the playback is set to loop.<br/>
 
 <img src="imgs/fps_settings.png" width="900">
+
+<img src="imgs/loop_opt.png" width="300">
 
 **Side note 1:** if you click on the shelf icon and you cannot see the tool window check the following cases in order:
 * The tool is probably minimized as a tab on the right side of the screen (usually next to the Attribute Editor or the Channel Box tab).
