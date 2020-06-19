@@ -4,10 +4,9 @@ from collections import OrderedDict
 import time
 import webbrowser
 
-# This is not done like this when shipping the tool.
-# Watch from 5:30 of video 57
+# Reload walkLibrary each time we execute this script to keep the package updated
 import walkLibrary
-reload(walkLibrary)  # TODO: delete this when shipping.
+reload(walkLibrary)
 
 # This is only for developing purposes
 from Qt import QtWidgets, QtCore, QtGui
