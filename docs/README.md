@@ -31,6 +31,10 @@ You can check my other work in my [website](https://nintervik.github.io).
 * The tool should work with Maya 2017-2020 but it will perform best with later versions of Maya, especially with Maya 2019 and 2020. 
 * When closing the tool, **always use the File->Quit option**. Do this operation before closing Maya or opening a new scene. 
 
+You can watch this video down below or follow the written steps.
+
+<iframe src="https://player.vimeo.com/video/430754588" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+
 1. Download the latest release .zip from the release [section](https://github.com/nintervik/vmWalkingKit/releases) of the repository and unzip it anywhere on your computer.<br/>
 2. Inside the *vmWalkingKit_v091* folder, you’ll find six items:<br/>
   
