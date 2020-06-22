@@ -1,3 +1,7 @@
+<iframe src="https://player.vimeo.com/video/431497237" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+
+# About
+
 <img src="webImgs/startup.png" width="400">
 
 *vmWalkingKit* is an animation tool for Maya developed with Python for my Bachelor's Thesis. The tool's goal is to offer an interactive study about the theory behind walk cycles by providing the user with a playground to experiment with. This will be achieved through an easy-to-use UI that will allow the animator to tweak parameters in order to modify the end result of a character walking animation. The parameters will be divided into sections representing the main parts of the body.
@@ -11,10 +15,6 @@ You can check my other work in my [website](https://nintervik.github.io).
 > Download the latest release [here](https://github.com/nintervik/vmWalkingKit/releases/tag/v0.95)
 
 ***
-
-# Showcase video
-
-<iframe src="https://player.vimeo.com/video/417271920" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
 
 # Attributions
 
