@@ -8,6 +8,8 @@ The program will also come with a set of tool tips and useful information regard
 
 *Development & animation by [Víctor Masó Garcia.](https://www.linkedin.com/in/vmasogarcia/)*
 
+You can wath the showcase video [here](https://vimeo.com/431497237).
+
 ## Attributions
 
 [Mr. Buttons](https://www.bloomsbury.com/cw/cartoon-character-animation-with-maya/student-resources/mr-buttons/) rig by [Keith Osborn](http://www.keithosborn.com/).
