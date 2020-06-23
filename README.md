@@ -166,3 +166,12 @@ v0.95:
 * Cleaned code for overlapping action.
 * Added circular mini-floor to the scene.
 * Improved README installation instructions.
+
+v1.0:
+* Added 5 presets for visual reference: angry, cocky, sad, goofy, and scared.
+* Completed all TODOs in the code.
+* Added docstrings to all the methods, functions, and classes.
+* Added explanatory comments to the code.
+* Tonned downd the cheek overalpping action animations.
+* Fixed UI texte typos.
+* Tested for Maya 2017.
