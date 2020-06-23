@@ -172,6 +172,6 @@ v1.0:
 * Completed all TODOs in the code.
 * Added docstrings to all the methods, functions, and classes.
 * Added explanatory comments to the code.
-* Tonned downd the cheek overalpping action animations.
-* Fixed UI texte typos.
+* Toned down the cheek overalpping action animations.
+* Fixed UI text typos.
 * Tested for Maya 2017.
