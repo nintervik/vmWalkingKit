@@ -174,6 +174,6 @@ v0.98:
 * Completed all TODOs in the code.
 * Added docstrings to all the methods, functions, and classes.
 * Added explanatory comments to the code.
-* Toned down the cheek overalpping action animations.
+* Toned down the cheek overlapping action animations.
 * Fixed UI text typos.
 * Fixed UI text box size for smaller aspect ratios.
