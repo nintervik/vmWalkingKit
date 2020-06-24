@@ -81,6 +81,8 @@ The background color can also be changed: press ALT+B to cycle through the diffe
 
 # How to use the tool
 
+You can watch an 8-minute video about how to use the tool [here](https://vimeo.com/432083999).
+
 The tool is divided into three parts:
 
 1. **The animation tabs:** each tab represents a body part of the character. Navigate through them to see all the possible options (the last one is related to the settings of the tool).
