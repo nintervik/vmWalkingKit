@@ -33,7 +33,7 @@ To install the tool, you can watch this 10-minute video down below or follow the
 <iframe src="https://player.vimeo.com/video/430754588" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
 
 1. Download the latest release .zip from the release [section](https://github.com/nintervik/vmWalkingKit/releases) of the repository and unzip it anywhere on your computer.<br/>
-2. Inside the *vmWalkingKit_v0.#* folder (where # is the version number of the tool), you’ll find six items:<br/>
+2. Inside the *vmWalkingKit_v#* folder (where # is the version number of the tool), you’ll find six items:<br/>
   
    <img src="webImgs/release_contents.png" width="200">
    
