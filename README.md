@@ -87,7 +87,7 @@ The tool is divided into three parts:
 
 1. **The animation tabs:** each tab represents a body part of the character. Navigate through them to see all the possible options (the last one is related to the settings of the tool).
 2. **The tabs content:** in each tab you'll find different parameters, hover over them to see their descriptions and tips about how to use them.
-3. **Bottom buttons:** you'll find three buttons at the bottom of the tool to reset the parameters, import or save a preset. If you like a combination you can save the preset anywhere on your computer and import it later. There's already a couple of presets if you want to load them up into the tool.
+3. **Bottom buttons:** you'll find three buttons at the bottom of the tool to reset the parameters, import or save a preset. If you like a combination you can save the preset anywhere on your computer and import it later. There's already a five presets in the *vmWalkingKitData/vmWalkingKitPresets/PresetsExamples* folder if you want to load them up into the tool.
 
 <img src="imgs/tool_window.png" width="500">
 
