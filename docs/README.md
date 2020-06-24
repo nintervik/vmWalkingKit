@@ -90,6 +90,8 @@ The background color can also be changed: press ALT+B to cycle through the diffe
 
 # How to use the tool
 
+<iframe src="https://player.vimeo.com/video/432083999" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+
 The tool is divided into three parts:
 
 1. **The animation tabs:** each tab represents a body part of the character. Navigate through them to see all the possible options (the last one is related to the settings of the tool).
