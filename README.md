@@ -25,7 +25,7 @@ You can wath the showcase video [here](https://vimeo.com/431497237).
 You can watch this 10-minute installation tutorial [video](https://vimeo.com/430754588) too instead of reading all the following steps.
 
 1. Download the latest release .zip from the release [section](https://github.com/nintervik/vmWalkingKit/releases) of the repository and unzip it anywhere on your computer.<br/>
-2. Inside the *vmWalkingKit_v0.#* folder (where # is the version number of the tool), you’ll find six items:<br/>
+2. Inside the *vmWalkingKit_v#* folder (where # is the version number of the tool), you’ll find six items:<br/>
   
    <img src="imgs/release_contents.png" width="200">
    
