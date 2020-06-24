@@ -169,11 +169,11 @@ v0.95:
 * Added circular mini-floor to the scene.
 * Improved README installation instructions.
 
-v1.0:
+v0.98:
 * Added 5 presets for visual reference: angry, cocky, sad, goofy, and scared.
 * Completed all TODOs in the code.
 * Added docstrings to all the methods, functions, and classes.
 * Added explanatory comments to the code.
 * Toned down the cheek overalpping action animations.
 * Fixed UI text typos.
-* Tested for Maya 2017.
+* Fixed UI text box size for smaller aspect ratios.
