@@ -142,7 +142,7 @@ class AboutWindow(QtWidgets.QWidget):
         """Creates the UI for the startup window."""
 
         # Title
-        titleLabel = QtWidgets.QLabel("vmWalkingKit v0.91")
+        titleLabel = QtWidgets.QLabel("vmWalkingKit v1.0")
         titleLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont.Bold))
         titleLabel.setStyleSheet('QLabel{color: #b0f5b0, font-weight: bold}')
         self.layout.addWidget(titleLabel, 0, QtCore.Qt.AlignTop)
