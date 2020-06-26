@@ -177,3 +177,8 @@ v0.98:
 * Toned down the cheek overlapping action animations.
 * Fixed UI text typos.
 * Fixed UI text box size for smaller aspect ratios.
+
+v1.0:
+* CNTRLs are now hidden from the user.
+* Tested for Maya 2017.
+* Improved README.
